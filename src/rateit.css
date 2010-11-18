@@ -1,0 +1,42 @@
+div.rateit
+{
+    display: inline-block;
+    position: relative;
+}
+
+div.rateit div.rateit-range
+{
+    position: relative;
+    display: inline-block;
+    background: url(star.gif);
+    height: 16px;
+}
+
+div.rateit div.rateit-hover, div.rateit div.rateit-selected
+{
+    position: absolute;
+}
+
+div.rateit div.rateit-hover
+{
+    background: url(star.gif) 0 -32px;
+}
+
+div.rateit div.rateit-selected
+{
+    background: url(star.gif) 0 -16px;
+}
+
+div.rateit div.rateit-reset
+{
+    background: url(delete.gif) 0 0;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    float: left;
+}
+
+div.rateit div.rateit-reset:hover
+{
+    background-position: 0 -16px;
+}

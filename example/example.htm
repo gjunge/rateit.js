@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RateIt</title>
+    <link href="../src/rateit.css" rel="stylesheet" type="text/css">
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js" type="text/javascript"></script>
+
+    <!-- syntax highlighter -->
+    <link href="sh/shCore.css" rel="stylesheet" type="text/css">
+    <link href="sh/shCoreDefault.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <h1>
+        RateIt plugin</h1>
+    <h2>
+        Prerequisites</h2>
+    <p>
+        In order to use RateIt you'll need:
+        <ul>
+            <li><a href="http://www.jquery.com">jQuery 1.4.3</a> or newer.</li>
+            <li>jquery.rateit.min.js, rateit.css, delete.gif, star.gif</li>
+            <li>Place a reference to the rateit.css stylesheet into the page head.</li>
+            <li>Place a script reference to jquery.rateit.js before your &lt;/body&gt; tag.
+            </li>
+        </ul>
+    </p>
+    <h2>
+        Options</h2>
+    <h2>
+        Examples</h2>
+    <ul>
+        <li>
+            <h3>
+                1) Basic usage</h3>
+            <div class="rateit">
+            </div>
+            <pre class="brush: xml">
+            &lt;div class="rateit">
+            &lt;/div>
+            </pre>
+        </li>
+        <li>
+            <h3>
+                2) Progressive enhancement
+            </h3>
+            <input type="range" min="0" max="5" value="0" step="0.5" id="backing2">
+            <div class="rateit" data-rateit-backingfld="#backing2">
+            <pre class="brush: xml">
+            &lt;input type="range" min="0" max="5" value="0" step="0.5" id="backing2">
+            &lt;div class="rateit" data-rateit-backingfld="#backing2">
+            </pre>
+        </li>
+        <li>
+            <h3>
+                3) Readonly and preset value</h3>
+            <div class="rateit" data-rateit-value="2.5" data-rateit-readonly="true"></div>
+            <pre class="brush: xml">
+                &lt;div class="rateit" data-rateit-value="2.5" data-rateit-readonly="true">&lt;/div>
+            </pre>
+        </li>
+        <li>
+            <h3>
+                4) More settings</h3>
+            <input type="range" min="0" max="10" value="0" step="0.25" id="backing4">
+            <div class="rateit" data-rateit-backingfld="#backing4" data-rateit-resetable="false"
+                data-rateit-step="0.25" data-rateit-ld="0" data-rateit-ub="10">
+            </div>
+            <pre class="brush: xml">
+            &lt;input type="range" min="0" max="10" value="0" step="0.25" id="backing4">
+            &lt;div class="rateit" data-rateit-backingfld="#backing4" data-rateit-resetable="false"
+                data-rateit-step="0.25" data-rateit-ld="0" data-rateit-ub="10">
+            &lt;/div>
+
+            </pre>
+        </li>
+        <li>
+            <h3>
+                5) Javascript interaction</h3>
+            <div class="rateit" id="rateit5" data-rateit-min="2">
+            </div>
+
+            <script type="text/javascript">
+                $("#rateit5").bind('rated', function () { alert('You\'ve rated it: ' + $(this).data('rateit-value')); });
+                $("#rateit5").bind('reset', function () { alert('Rating reset'); }); 
+            </script>
+            <pre class="brush: xml">
+            &lt;div class="rateit" id="rateit5" data-rateit-min="2">
+            &lt;/div>
+
+            &lt;script type="text/javascript">
+                $("#rateit5").bind('rated', function () { alert('You\'ve rated it: ' + $(this).data('rateit-value')); });
+                $("#rateit5").bind('reset', function () { alert('Rating reset'); }); 
+            &lt;/script>            
+            </pre>
+
+        </li>
+        <li>
+            <h3>
+                6) Javascript invocation</h3>
+            <input type="hidden" id="backing6">
+            <div id="rateit6">
+            </div>
+
+            <script type="text/javascript">
+                $(function () { $('#rateit6').rateit({ upperbound: 20, step: 2, backingfld: '#backing6' }); });
+            </script>
+
+            <pre class="brush: xml">
+            &lt;input type="hidden" id="backing6">
+            &lt;div id="rateit6">
+            &lt;/div>
+
+            &lt;script type="text/javascript">
+                $(function () { $('#rateit6').rateit({ upperbound: 20, step: 2, backingfld: '#backing6' }); });
+            &lt;/script>
+            </pre>
+        </li>
+
+        <li>
+            <h3>RTL support</h3>
+            <div style="direction:rtl">
+                Now we are in RTL mode. No changes needed to make this work.
+                <div class="rateit"></div>
+            </div>
+        </li>
+    </ul>
+
+    <script src="../src/jquery.rateit.js" type="text/javascript"></script>
+
+    <!-- syntax highlighter -->
+
+    <script src="sh/shCore.js" type="text/javascript"></script>
+
+    <script src="sh/shBrushJScript.js" type="text/javascript"></script>
+
+    <script src="sh/shBrushXml.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        SyntaxHighlighter.all()
+    </script>
+
+</body>
+</html>
