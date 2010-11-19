@@ -19,13 +19,24 @@ div.rateit div.rateit-hover, div.rateit div.rateit-selected
 
 div.rateit div.rateit-hover
 {
-    background: url(star.gif) 0 -32px;
+    background: url(star.gif) left -32px;
+}
+
+div.rateit div.rateit-hover-rtl
+{
+    background-position: right -32px;
 }
 
 div.rateit div.rateit-selected
 {
-    background: url(star.gif) 0 -16px;
+    background: url(star.gif) left -16px;
 }
+
+div.rateit div.rateit-selected-rtl
+{
+    background-position: right -16px;
+}
+
 
 div.rateit div.rateit-reset
 {

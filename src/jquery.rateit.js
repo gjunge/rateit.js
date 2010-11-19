@@ -1,7 +1,7 @@
 /*
     RateIt
-    version 0.92
-    11/19/2010
+    version 0.93
+    11/20/2010
     @gjunge
 
 */
@@ -55,7 +55,11 @@
             item.append('<div class="rateit-reset"></div><div class="rateit-range"><div class="rateit-selected" style="height:' + options.starheight + 'px"></div><div class="rateit-hover" style="height:' + options.starheight + 'px"></div></div>');
 
             //if we are in RTL mode, we have to change the float of the "reset button"
-            if (!ltr) $('div.rateit-reset', item).css('float', 'right');
+            if (!ltr) {
+                $('div.rateit-reset', item).css('float', 'right');
+                $('div.rateit-selected', item).addClass('rateit-selected-rtl');
+                $('div.rateit-hover', item).addClass('rateit-hover-rtl');
+            }
 
             //set the range element to fit all the stars.
             var range = $('div.rateit-range', item);
@@ -65,12 +69,6 @@
             if (item.data('rateit-value')) {
                 var score = (item.data('rateit-value') - lb) * options.starwidth;
                 item.find('div.rateit-selected').width(score);
-
-                if (!ltr) {
-                    //in RTL we have to change the X position of the background picture in order for it to be displayed correctly.
-                    var buffer = score % options.starwidth;
-                    $.fn.rateit.setBackgroundX($("div.rateit-selected", item), buffer);
-                }
             }
 
             var resetbtn = $("div.rateit-reset", item);
@@ -104,16 +102,12 @@
                     if (h.data("width") != w) {
                         $("div.rateit-selected", item).hide();
                         h.width(w).show();
-                        if (!ltr) {
-                            var buffer = w % options.starwidth;
-                            $.fn.rateit.setBackgroundX(h, buffer);
-                        }
                         h.data("width", w);
                     }
                 });
                 //when the mouse leaves the range, we have to hide the hover stars, and show the current value.
                 range.mouseleave(function (e) {
-                    $("div.rateit-hover", item).hide().width(0).data('width','');
+                    $("div.rateit-hover", item).hide().width(0).data('width', '');
                     $("div.rateit-selected", item).show();
                 });
                 //when we click on the range, we have to set the value, hide the hover.
@@ -125,10 +119,6 @@
                     item.data('rateit-value', (score * step) + lb);
                     if (backingfld) $(backingfld).val((score * step) + lb);
                     $("div.rateit-selected", item).width(score * options.starwidth * step);
-                    if (!ltr) {
-                        var buffer = (score * options.starwidth * step) % options.starwidth;
-                        $.fn.rateit.setBackgroundX($("div.rateit-selected", item), buffer);
-                    }
                     $("div.rateit-hover", item).hide();
                     $("div.rateit-selected", item).show();
                     item.trigger('rated');
@@ -137,29 +127,14 @@
             }
             else {
                 resetbtn.hide();
-
             }
 
         });
-
-
     };
 
     //some default values.
     $.fn.rateit.defaults = { min: 0, max: 5, step: 0.5, starwidth: 16, starheight: 16, readonly: false, resetable: true };
-    //a function to change the background position X axis.
-    $.fn.rateit.setBackgroundX = function (element, x) {
-        if (bgx) {
-            element.css('background-position-x', x + 'px');
-        }
-        else {
-            element.css('background-position', function (i, v) { return v.replace(/^\S+/, buffer + 'px'); });
-        }
-    };
-
 
     //invoke it on all div.rateit elements. This could be removed if not wanted.
     $('div.rateit').rateit();
 })(jQuery);
-
-
