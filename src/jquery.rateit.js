@@ -105,7 +105,7 @@
                 });
                 //when the mouse leaves the range, we have to hide the hover stars, and show the current value.
                 range.mouseleave(function (e) {
-                    $("div.rateit-hover", item).hide().width(0);
+                    $("div.rateit-hover", item).hide().width(0).data('width','');
                     $("div.rateit-selected", item).show();
                 });
                 //when we click on the range, we have to set the value, hide the hover.
