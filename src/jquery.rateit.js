@@ -1,3 +1,10 @@
+/*
+    RateIt
+    version 0.92
+    11/19/2010
+    @gjunge
+
+*/
 (function ($) {
     $.fn.rateit = function (options) {
         //quick way out.
@@ -27,10 +34,11 @@
                 item.data('rateit-value', fld.hide().val());
 
                 if (fld[0].nodeName == 'INPUT') {
-                    if (fld[0].type == 'range') {
-                        lb = fld[0].min || lb;
-                        ub = fld[0].max || ub;
-                        step = fld[0].step || step;
+                    if (fld[0].type == 'range' || fld[0].type == 'text') { //in browsers not support the range type, it defaults to text
+
+                        lb = fld.attr('min') || lb; //if we would have done fld[0].min it wouldn't have worked in browsers not supporting the range type.
+                        ub = fld.attr('max') || ub;
+                        step = fld.attr('step') || step;
                     }
                 }
                 if (fld[0].nodeName == 'SELECT' && fld[0].options.length > 1) {
