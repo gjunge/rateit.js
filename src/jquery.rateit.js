@@ -48,9 +48,6 @@
                 }
             }
 
-            //IE (and also chrome by now), support background-position-x, instead of background-position. Here we check what we mode we are in.
-            bgx = item[0].style.backgroundPositionX !== undefined;
-
             //Create the needed tags.
             item.append('<div class="rateit-reset"></div><div class="rateit-range"><div class="rateit-selected" style="height:' + options.starheight + 'px"></div><div class="rateit-hover" style="height:' + options.starheight + 'px"></div></div>');
 
