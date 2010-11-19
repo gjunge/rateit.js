@@ -3,7 +3,7 @@
         //quick way out.
         if (this.length == 0) return this;
 
-        var options = $.extend({}, $.fn.rateit.defaults, options);
+        options = $.extend({}, $.fn.rateit.defaults, options);
 
         return this.each(function () {
             var item = $(this);
@@ -22,8 +22,22 @@
             //are we LTR or RTL?
             var ltr = item.css('direction') != 'rtl';
             if (backingfld) {
-                //if we have a backing field, hide it, and get its value.
-                item.data('rateit-value', $(backingfld).hide().val());
+                //if we have a backing field, hide it, and get its value, and override defaults if range.
+                var fld = $(backingfld);
+                item.data('rateit-value', fld.hide().val());
+
+                if (fld[0].nodeName == 'INPUT') {
+                    if (fld[0].type == 'range') {
+                        lb = fld[0].min || lb;
+                        ub = fld[0].max || ub;
+                        step = fld[0].step || step;
+                    }
+                }
+                if (fld[0].nodeName == 'SELECT' && fld[0].options.length > 1) {
+                    lb = fld[0].options[0].value;
+                    ub = fld[0].options[fld[0].length - 1].value;
+                    step = fld[0].options[1].value - fld[0].options[0].value;
+                }
             }
 
             //IE (and also chrome by now), support background-position-x, instead of background-position. Here we check what we mode we are in.
