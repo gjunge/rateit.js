@@ -12,6 +12,8 @@
         h3 { font-size: 1.2em;}
         ul.nostyle { list-style: none;} ul.nostyle h3 { margin-left: -20px; } 
     </style>
+    <!-- alternative style --> 
+    <link href="content/bigstars.css" rel="stylesheet" type="text/css">
     <!-- syntax highlighter -->
     <link href="sh/shCore.css" rel="stylesheet" type="text/css">
     <link href="sh/shCoreDefault.css" rel="stylesheet" type="text/css">
@@ -144,8 +146,53 @@
             </pre>
         </li>
         <li>
-            <h3>
-                RTL support</h3>
+            <h3>Different style</h3>
+            <p>You can change the styles of the plugin in a two ways.
+            <ul>
+                <li>You can change change the star.gif and delete.gif pictures (and perhaps the default starwidth, and starheight values in the javascript file). This will change the style everywhere.</li>
+                <li>You can change individual items, by adding a stylesheet with a few rules.</li>
+            </ul>
+            Here I've opted for the second option.
+            </p>
+            
+            <div class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32"></div>
+            <h4>Inline code</h4>
+            <pre class="brush: xml">
+            &lt;div class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32">&lt;/div>
+            </pre>
+            <h4>Style sheet</h4>
+            <pre class="brush: css">
+            div.bigstars div.rateit-range
+            {
+                background: url(star-white32.png);
+                height: 32px;
+            }
+
+            div.bigstars div.rateit-hover
+            {
+                background: url(star-gold32.png);
+            }
+
+            div.bigstars div.rateit-selected
+            {
+                background: url(star-red32.png);
+            }
+
+            div.bigstars div.rateit-reset
+            {
+                background: url(star-black32.png);
+                width: 32px;
+                height: 32px;
+            }
+
+            div.bigstars div.rateit-reset:hover
+            {
+                background: url(star-white32.png);
+            }
+            </pre>
+        </li>
+        <li>
+            <h3>RTL support</h3>
             <div style="direction: rtl">
                 Now we are in RTL mode. No changes needed to make this work.
                 <div class="rateit">
@@ -157,13 +204,10 @@
     <script src="../src/jquery.rateit.js" type="text/javascript"></script>
 
     <!-- syntax highlighter -->
-
     <script src="sh/shCore.js" type="text/javascript"></script>
-
     <script src="sh/shBrushJScript.js" type="text/javascript"></script>
-
     <script src="sh/shBrushXml.js" type="text/javascript"></script>
-
+    <script src="sh/shBrushCss.js" type="text/javascript"></script>
     <script type="text/javascript">
         SyntaxHighlighter.all()
     </script>
