@@ -194,7 +194,31 @@
         </li>
         <li><h3>7b) More styling</h3>
             <p>Here we use one big image (actually 3), with different dimensions. Not very pretty, but it conveys the message I hope.</p>
+
             <div class="rateit antenna" data-rateit-starwidth="11" data-rateit-starheight="25"></div>
+            
+            <h4>Inline code</h4>
+            <pre class="brush: xml">
+&lt;div class="rateit antenna" data-rateit-starwidth="11" data-rateit-starheight="25">&lt;/div>            
+            </pre>
+            <h4>Style sheet</h4>
+            <pre class="brush: css">
+div.antenna div.rateit-range
+{
+    background: url(antenna-black.png) no-repeat;
+    height: 25px;
+}
+
+div.antenna div.rateit-hover
+{
+    background: url(antenna-yellow.png) no-repeat;
+}
+
+div.antenna div.rateit-selected
+{
+    background: url(antenna-red.png) no-repeat;
+}            
+            </pre>
         </li>
         <li>
             <h3>8) RTL support</h3>
