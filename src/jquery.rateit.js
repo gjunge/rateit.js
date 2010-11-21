@@ -1,8 +1,9 @@
 /*
     RateIt
-    version 0.93
-    11/20/2010
-    @gjunge
+    version 0.94
+    11/21/2010
+    http://rateit.codeplex.com
+    Twitter: @gjunge
 
 */
 (function ($) {
