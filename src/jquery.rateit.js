@@ -25,6 +25,8 @@
             var readonly = item.data('rateit-readonly') !== undefined ? item.data('rateit-readonly') : options.readonly;
             var resetable = item.data('rateit-resetable') !== undefined ? item.data('rateit-resetable') : options.resetable;
             var backingfld = item.data('rateit-backingfld') || options.backingfld;
+            var starw = item.data('rateit-starwidth') || options.starwidth;
+            var starh = item.data('rateit-starheight') || options.starheight;
 
             //are we LTR or RTL?
             var ltr = item.css('direction') != 'rtl';
@@ -49,7 +51,7 @@
             }
 
             //Create the needed tags.
-            item.append('<div class="rateit-reset"></div><div class="rateit-range"><div class="rateit-selected" style="height:' + options.starheight + 'px"></div><div class="rateit-hover" style="height:' + options.starheight + 'px"></div></div>');
+            item.append('<div class="rateit-reset"></div><div class="rateit-range"><div class="rateit-selected" style="height:' + starh + 'px"></div><div class="rateit-hover" style="height:' + starh + 'px"></div></div>');
 
             //if we are in RTL mode, we have to change the float of the "reset button"
             if (!ltr) {
@@ -60,11 +62,11 @@
 
             //set the range element to fit all the stars.
             var range = $('div.rateit-range', item);
-            range.width(options.starwidth * (ub - lb)).height(options.starheight);
+            range.width(starw * (ub - lb)).height(starh);
 
             //set the value if we have it.
             if (item.data('rateit-value')) {
-                var score = (item.data('rateit-value') - lb) * options.starwidth;
+                var score = (item.data('rateit-value') - lb) * starw;
                 item.find('div.rateit-selected').width(score);
             }
 
@@ -94,7 +96,7 @@
 
                     if (!ltr) offsetx = range.width() - offsetx;
 
-                    var w = Math.ceil(offsetx / options.starwidth * (1 / step)) * options.starwidth * step;
+                    var w = Math.ceil(offsetx / starw * (1 / step)) * starw * step;
                     var h = $("div.rateit-hover", item);
                     if (h.data("width") != w) {
                         $("div.rateit-selected", item).hide();
@@ -112,10 +114,10 @@
                     var offsetx = e.pageX - $(this).offset().left;
                     if (!ltr) offsetx = range.width() - offsetx;
 
-                    var score = Math.ceil(offsetx / options.starwidth * (1 / step));
+                    var score = Math.ceil(offsetx / starw * (1 / step));
                     item.data('rateit-value', (score * step) + lb);
                     if (backingfld) $(backingfld).val((score * step) + lb);
-                    $("div.rateit-selected", item).width(score * options.starwidth * step);
+                    $("div.rateit-selected", item).width(score * starw * step);
                     $("div.rateit-hover", item).hide();
                     $("div.rateit-selected", item).show();
                     item.trigger('rated');
