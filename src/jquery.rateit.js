@@ -1,88 +1,123 @@
 /*
     RateIt
-    version 0.94
-    11/21/2010
+    version 0.95
+    11/22/2010
     http://rateit.codeplex.com
     Twitter: @gjunge
 
 */
 (function ($) {
-    $.fn.rateit = function (options) {
+    $.fn.rateit = function (p1, p2) {
         //quick way out.
+        var options = {}; var mode = 'init';
         if (this.length == 0) return this;
 
-        options = $.extend({}, $.fn.rateit.defaults, options);
+
+        var tp1 = $.type(p1);
+        if (tp1 == 'object' || p1 === undefined || p1 == null) {
+            options = $.extend({}, $.fn.rateit.defaults, p1); //wants to init new rateit plugin(s).
+        }
+        else if (tp1 == 'string' && p2 === undefined) {
+            return this.data('rateit-' + p1); //wants to get a value.
+        }
+        else if (tp1 == 'string') {
+            mode = 'setvalue'
+        }
 
         return this.each(function () {
             var item = $(this);
 
+            //shorten all the item('rateit-XXX'), will save space in closure compiler, will be like item.data('XXX') will become x('XXX')
+            var itemdata = function (key, value) { return item.data('rateit-' + key, value); };
+
             //add the rate it class.
             if (!item.hasClass('rateit')) item.addClass('rateit');
 
-            //get our values, either from the data-* html5 attribute or from the options.
-            var lb = item.data('rateit-min') || options.min;
-            var ub = item.data('rateit-max') || options.max;
-            var step = item.data('rateit-step') || options.step;
-            var readonly = item.data('rateit-readonly') !== undefined ? item.data('rateit-readonly') : options.readonly;
-            var resetable = item.data('rateit-resetable') !== undefined ? item.data('rateit-resetable') : options.resetable;
-            var backingfld = item.data('rateit-backingfld') || options.backingfld;
-            var starw = item.data('rateit-starwidth') || options.starwidth;
-            var starh = item.data('rateit-starheight') || options.starheight;
-
-            //are we LTR or RTL?
             var ltr = item.css('direction') != 'rtl';
-            if (backingfld) {
-                //if we have a backing field, hide it, and get its value, and override defaults if range.
-                var fld = $(backingfld);
-                item.data('rateit-value', fld.hide().val());
 
-                if (fld[0].nodeName == 'INPUT') {
-                    if (fld[0].type == 'range' || fld[0].type == 'text') { //in browsers not support the range type, it defaults to text
+            // set value mode
+            if (mode == 'setvalue') {
+                if (!itemdata('init')) throw 'Can\'t set a value when plugin is not intialized';
 
-                        lb = fld.attr('min') || lb; //if we would have done fld[0].min it wouldn't have worked in browsers not supporting the range type.
-                        ub = fld.attr('max') || ub;
-                        step = fld.attr('step') || step;
+
+                //if readonly now and it wasn't readonly, remove the eventhandlers.
+                if (p1 == 'readonly' && !itemdata('readonly')) {
+                    $('div.rateit-range', item).unbind('mouseleave').unbind('mousemove').unbind('click');
+                    
+                }
+
+                itemdata(p1, p2);
+            }
+
+            //init rateit plugin
+            if (!itemdata('init')) {
+
+                //get our values, either from the data-* html5 attribute or from the options.
+                itemdata('min', itemdata('min') || options.min);
+                itemdata('max', itemdata('max') || options.max);
+                itemdata('step', itemdata('step') || options.step);
+                itemdata('readonly', itemdata('readonly') !== undefined ? itemdata('readonly') : options.readonly);
+                itemdata('resetable', itemdata('resetable') !== undefined ? itemdata('resetable') : options.resetable);
+                itemdata('backingfld', itemdata('backingfld') || options.backingfld);
+                itemdata('starwidth', itemdata('starwidth') || options.starwidth);
+                itemdata('starheight', itemdata('starheight') || options.starheight);
+                itemdata('value', itemdata('value') || options.min);
+                //are we LTR or RTL?
+
+                if (itemdata('backingfld')) {
+                    //if we have a backing field, hide it, and get its value, and override defaults if range.
+                    var fld = $(itemdata('backingfld'));
+                    itemdata('value', fld.hide().val());
+
+                    if (fld[0].nodeName == 'INPUT') {
+                        if (fld[0].type == 'range' || fld[0].type == 'text') { //in browsers not support the range type, it defaults to text
+
+                            itemdata('min', parseInt(fld.attr('min')) || itemdata('min')); //if we would have done fld[0].min it wouldn't have worked in browsers not supporting the range type.
+                            itemdata('max', parseInt(fld.attr('max')) || itemdata('max'));
+                            itemdata('step', parseInt(fld.attr('step')) || itemdata('step'));
+                        }
+                    }
+                    if (fld[0].nodeName == 'SELECT' && fld[0].options.length > 1) {
+                        itemdata('min', parseInt(fld[0].options[0].value));
+                        itemdata('max', parseInt(fld[0].options[fld[0].length - 1].value));
+                        itemdata('step', parseInt(fld[0].options[1].value - fld[0].options[0].value));
                     }
                 }
-                if (fld[0].nodeName == 'SELECT' && fld[0].options.length > 1) {
-                    lb = fld[0].options[0].value;
-                    ub = fld[0].options[fld[0].length - 1].value;
-                    step = fld[0].options[1].value - fld[0].options[0].value;
+
+                //Create the needed tags.
+                item.append('<div class="rateit-reset"></div><div class="rateit-range"><div class="rateit-selected" style="height:' + itemdata('starheight') + 'px"></div><div class="rateit-hover" style="height:' + itemdata('starheight') + 'px"></div></div>');
+
+                //if we are in RTL mode, we have to change the float of the "reset button"
+                if (!ltr) {
+                    $('div.rateit-reset', item).css('float', 'right');
+                    $('div.rateit-selected', item).addClass('rateit-selected-rtl');
+                    $('div.rateit-hover', item).addClass('rateit-hover-rtl');
                 }
+                itemdata('init', true);
             }
 
-            //Create the needed tags.
-            item.append('<div class="rateit-reset"></div><div class="rateit-range"><div class="rateit-selected" style="height:' + starh + 'px"></div><div class="rateit-hover" style="height:' + starh + 'px"></div></div>');
-
-            //if we are in RTL mode, we have to change the float of the "reset button"
-            if (!ltr) {
-                $('div.rateit-reset', item).css('float', 'right');
-                $('div.rateit-selected', item).addClass('rateit-selected-rtl');
-                $('div.rateit-hover', item).addClass('rateit-hover-rtl');
-            }
 
             //set the range element to fit all the stars.
             var range = $('div.rateit-range', item);
-            range.width(starw * (ub - lb)).height(starh);
+            range.width(itemdata('starwidth') * (itemdata('max') - itemdata('min'))).height(itemdata('starheight'));
 
             //set the value if we have it.
-            if (item.data('rateit-value')) {
-                var score = (item.data('rateit-value') - lb) * starw;
+            if (itemdata('value')) {
+                var score = (itemdata('value') - itemdata('min')) * itemdata('starwidth');
                 item.find('div.rateit-selected').width(score);
             }
 
             var resetbtn = $("div.rateit-reset", item);
-            if (!readonly) {
+            if (!itemdata('readonly')) {
                 //if we are not read only, add all the events
 
                 //if we have a reset button, set the event handler.
-                if (resetable) {
-                    buffer = resetbtn.width();
+                if (itemdata('resetable')) {
                     resetbtn.click(function () {
-                        item.data('rateit-value', lb);
+                        itemdata('value', itemdata('min'));
                         $("div.rateit-hover", item).hide().width(0);
                         $("div.rateit-selected", item).width(0).show();
-                        if (backingfld) $(backingfld).val(lb);
+                        if (itemdata('backingfld')) $(itemdata('backingfld')).val(itemdata('min'));
                         item.trigger('reset');
                     });
 
@@ -97,7 +132,7 @@
 
                     if (!ltr) offsetx = range.width() - offsetx;
 
-                    var w = Math.ceil(offsetx / starw * (1 / step)) * starw * step;
+                    var w = Math.ceil(offsetx / itemdata('starwidth') * (1 / itemdata('step'))) * itemdata('starwidth') * itemdata('step');
                     var h = $("div.rateit-hover", item);
                     if (h.data("width") != w) {
                         $("div.rateit-selected", item).hide();
@@ -115,10 +150,12 @@
                     var offsetx = e.pageX - $(this).offset().left;
                     if (!ltr) offsetx = range.width() - offsetx;
 
-                    var score = Math.ceil(offsetx / starw * (1 / step));
-                    item.data('rateit-value', (score * step) + lb);
-                    if (backingfld) $(backingfld).val((score * step) + lb);
-                    $("div.rateit-selected", item).width(score * starw * step);
+                    var score = Math.ceil(offsetx / itemdata('starwidth') * (1 / itemdata('step')));
+                    itemdata('value', (score * itemdata('step')) + itemdata('min'));
+                    if (itemdata('backingfld')) {
+                        $(itemdata('backingfld')).val((score * itemdata('step')) + itemdata('min'));
+                    }
+                    $("div.rateit-selected", item).width(score * itemdata('starwidth') * itemdata('step'));
                     $("div.rateit-hover", item).hide();
                     $("div.rateit-selected", item).show();
                     item.trigger('rated');
@@ -128,8 +165,9 @@
             else {
                 resetbtn.hide();
             }
-
         });
+
+
     };
 
     //some default values.
