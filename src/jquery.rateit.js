@@ -1,7 +1,7 @@
 /*
     RateIt
-    version 0.95
-    11/22/2010
+    version 0.96
+    11/23/2010
     http://rateit.codeplex.com
     Twitter: @gjunge
 
@@ -43,7 +43,18 @@
                 //if readonly now and it wasn't readonly, remove the eventhandlers.
                 if (p1 == 'readonly' && !itemdata('readonly')) {
                     $('div.rateit-range', item).unbind('mouseleave').unbind('mousemove').unbind('click');
-                    
+
+                }
+
+                if (itemdata('backingfld')) {
+                    //if we have a backing field, check which fields we should update. 
+                    //In case of input[type=range], although we did read its attributes even in browsers that don't support it (using fld.attr())
+                    //we only update it in browser that support it (&& fld[0].min only works in supporting browsers), not only does it save us from checking if it is range input type, it also is unnecessary.
+                    var fld = $(itemdata('backingfld'));
+                    if (p1 == 'value') fld.val(p2);
+                    if (p1 == 'min' && fld[0].min) fld[0].min = p2;
+                    if (p1 == 'max' && fld[0].max) fld[0].max = p2;
+                    if (p1 == 'step' && fld[0].step) fld[0].step = p2;
                 }
 
                 itemdata(p1, p2);
