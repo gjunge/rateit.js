@@ -4,15 +4,36 @@
     <title>RateIt</title>
     <link href="../src/rateit.css" rel="stylesheet" type="text/css">
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"></script>
+
     <style>
-        body { font-family: Tahoma; font-size: 12px; }
-        h1 { font-size: 1.7em;}
-        h2 { font-size: 1.5em;}
-        h3 { font-size: 1.2em;}
-        ul.nostyle { list-style: none;} ul.nostyle h3 { margin-left: -20px; } 
+        body
+        {
+            font-family: Tahoma;
+            font-size: 12px;
+        }
+        h1
+        {
+            font-size: 1.7em;
+        }
+        h2
+        {
+            font-size: 1.5em;
+        }
+        h3
+        {
+            font-size: 1.2em;
+        }
+        ul.nostyle
+        {
+            list-style: none;
+        }
+        ul.nostyle h3
+        {
+            margin-left: -20px;
+        }
     </style>
-    <!-- alternative styles --> 
+    <!-- alternative styles -->
     <link href="content/bigstars.css" rel="stylesheet" type="text/css">
     <link href="content/antenna.css" rel="stylesheet" type="text/css">
     <!-- syntax highlighter -->
@@ -28,14 +49,17 @@
         In order to use RateIt you'll need:
         <ul>
             <li><a target="_blank" href="http://www.jquery.com">jQuery 1.4.3</a> or newer.</li>
-            <li>jquery.rateit.min.js, rateit.css, delete.gif, star.gif - <a href="http://rateit.codeplex.com/releases">Download RateIt</a></li>
+            <li>jquery.rateit.min.js, rateit.css, delete.gif, star.gif - <a href="http://rateit.codeplex.com/releases">
+                Download RateIt</a></li>
             <li>Place a reference to the rateit.css stylesheet into the page head.</li>
             <li>Place a script reference to jquery.rateit.js before your &lt;/body&gt; tag.
             </li>
         </ul>
     </p>
-    <h2>Options</h2>
-    Go to the <a href="http://rateit.codeplex.com">RateIt project homepage</a> to view the documentation.
+    <h2>
+        Options</h2>
+    Go to the <a href="http://rateit.codeplex.com">RateIt project homepage</a> to view
+    the documentation.
     <h2>
         Examples</h2>
     <ul class="nostyle">
@@ -54,12 +78,14 @@
                 2a) Progressive enhancement (using HTML5 range input type)
             </h3>
             <input type="range" min="0" max="7" value="0" step="0.5" id="backing2">
-            <div class="rateit" data-rateit-backingfld="#backing2"></div>
-                <pre class="brush: xml">
+            <div class="rateit" data-rateit-backingfld="#backing2">
+            </div>
+            <pre class="brush: xml">
             &lt;input type="range" min="0" max="7" value="0" step="0.5" id="backing2">
             &lt;div class="rateit" data-rateit-backingfld="#backing2">&lt;/div>
             </pre>
-            <button onclick="$('#backing2').toggle()">Toggle Backing Field visibility</button>
+            <button onclick="$('#backing2').toggle()">
+                Toggle Backing Field visibility</button>
         </li>
         <li>
             <h3>
@@ -71,8 +97,9 @@
                 <option value="2">Great</option>
                 <option value="3">Excellent</option>
             </select>
-            <div class="rateit" data-rateit-backingfld="#backing2b"></div>
-                <pre class="brush: xml">
+            <div class="rateit" data-rateit-backingfld="#backing2b">
+            </div>
+            <pre class="brush: xml">
             &lt;select id="backing2b">
                 &lt;option value="0">Bad&lt;/option>
                 &lt;option value="1">OK&lt;/option>
@@ -92,7 +119,8 @@
             </pre>
         </li>
         <li>
-            <h3>4) More settings</h3>
+            <h3>
+                4) More settings</h3>
             <input type="range" value="0" step="0.25" id="backing4">
             <div class="rateit" data-rateit-backingfld="#backing4" data-rateit-resetable="false"
                 data-rateit-min="0" data-rateit-max="10">
@@ -110,19 +138,28 @@
                 5) Javascript interaction</h3>
             <div class="rateit" id="rateit5" data-rateit-min="2">
             </div>
+            <div>
+                <span id="value5"></span><span id="hover5"></span>
+            </div>
 
             <script type="text/javascript">
-                $("#rateit5").bind('rated', function () { alert('You\'ve rated it: ' + $(this).data('rateit-value')); });
-                $("#rateit5").bind('reset', function () { alert('Rating reset'); }); 
+                $("#rateit5").bind('rated', function (event, value) { $('#value5').text('You\'ve rated it: ' + value); });
+                $("#rateit5").bind('reset', function () { $('#value5').text('Rating reset'); });
+                $("#rateit5").bind('hover', function (event, value) { $('#hover5').text('Hovering over: ' + value); });
             </script>
 
             <pre class="brush: xml">
             &lt;div class="rateit" id="rateit5" data-rateit-min="2">
             &lt;/div>
+            &lt;div>
+                &lt;span id="value5">&lt;/span>
+                &lt;span id="hover5">&lt;/span>
+            &lt;/div>
 
             &lt;script type="text/javascript">
-                $("#rateit5").bind('rated', function () { alert('You\'ve rated it: ' + $(this).data('rateit-value')); });
-                $("#rateit5").bind('reset', function () { alert('Rating reset'); }); 
+                $("#rateit5").bind('rated', function (event, value) { $('#value5').text('You\'ve rated it: ' + value); });
+                $("#rateit5").bind('reset', function () { $('#value5').text('Rating reset'); });
+                $("#rateit5").bind('hover', function (event, value) { $('#hover5').text('Hovering over: ' + value); });
             &lt;/script>            
             </pre>
         </li>
@@ -148,21 +185,27 @@
             </pre>
         </li>
         <li>
-            <h3>7a) Styling</h3>
-            <p>You can change the styles of the plugin in a two ways.
-            <ul>
-                <li>You can change change the star.gif and delete.gif pictures (and perhaps the default starwidth, and starheight values in the javascript file). This will change the style everywhere.</li>
-                <li>You can change individual items, by adding a stylesheet with a few rules.</li>
-            </ul>
-            Here I've opted for the second option.
+            <h3>
+                7a) Styling</h3>
+            <p>
+                You can change the styles of the plugin in a two ways.
+                <ul>
+                    <li>You can change change the star.gif and delete.gif pictures (and perhaps the default
+                        starwidth, and starheight values in the javascript file). This will change the style
+                        everywhere.</li>
+                    <li>You can change individual items, by adding a stylesheet with a few rules.</li>
+                </ul>
+                Here I've opted for the second option.
             </p>
-            
-            <div class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32"></div>
-            <h4>Inline code</h4>
+            <div class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32">
+            </div>
+            <h4>
+                Inline code</h4>
             <pre class="brush: xml">
             &lt;div class="rateit bigstars" data-rateit-starwidth="32" data-rateit-starheight="32">&lt;/div>
             </pre>
-            <h4>Style sheet</h4>
+            <h4>
+                Style sheet</h4>
             <pre class="brush: css">
             div.bigstars div.rateit-range
             {
@@ -193,16 +236,21 @@
             }
             </pre>
         </li>
-        <li><h3>7b) More styling</h3>
-            <p>Here we use one big image (actually 3), with different dimensions. Not very pretty, but it conveys the message I hope.</p>
-
-            <div class="rateit antenna" data-rateit-starwidth="11" data-rateit-starheight="25"></div>
-            
-            <h4>Inline code</h4>
+        <li>
+            <h3>
+                7b) More styling</h3>
+            <p>
+                Here we use one big image (actually 3), with different dimensions. Not very pretty,
+                but it conveys the message I hope.</p>
+            <div class="rateit antenna" data-rateit-starwidth="11" data-rateit-starheight="25">
+            </div>
+            <h4>
+                Inline code</h4>
             <pre class="brush: xml">
 &lt;div class="rateit antenna" data-rateit-starwidth="11" data-rateit-starheight="25">&lt;/div>            
             </pre>
-            <h4>Style sheet</h4>
+            <h4>
+                Style sheet</h4>
             <pre class="brush: css">
 div.antenna div.rateit-range
 {
@@ -222,36 +270,45 @@ div.antenna div.rateit-selected
             </pre>
         </li>
         <li>
-            <h3>8) RTL support</h3>
+            <h3>
+                8) RTL support</h3>
             <div style="direction: rtl">
                 Now we are in RTL mode. No changes needed to make this work.
                 <div class="rateit">
                 </div>
             </div>
         </li>
-
         <li>
-            <h3>9) Setting and Getting values</h3>
-                <p>All properties can also be set on the fly. Here are a few examples:</p>
-                <div class="rateit" id="rateit9">
-                </div>
-                <div>
-                    <button onclick="alert($('#rateit9').rateit('value'))">Get value</button>
-                    <button onclick="$('#rateit9').rateit('value', prompt('Input numerical value'))">Set value</button>
-                </div>
-                <div>
-                    <button onclick="alert($('#rateit9').rateit('max'))">Get max value</button>
-                    <button onclick="$('#rateit9').rateit('max', prompt('Input numerical value'))">Set max value</button>
-                </div>
-                <div>
-                    <button onclick="alert($('#rateit9').rateit('step'))">Get step size</button>
-                    <button onclick="$('#rateit9').rateit('step', prompt('Input numerical value'))">Set step size</button>
-                </div>
-                <div>
-                    <button onclick="alert($('#rateit9').rateit('readonly'))">Get readonly value</button>
-                    <button onclick="$('#rateit9').rateit('readonly',!$('#rateit9').rateit('readonly'))">Change readonly</button>
-                </div>
-            
+            <h3>
+                9) Setting and Getting values</h3>
+            <p>
+                All properties can also be set on the fly. Here are a few examples:</p>
+            <div class="rateit" id="rateit9">
+            </div>
+            <div>
+                <button onclick="alert($('#rateit9').rateit('value'))">
+                    Get value</button>
+                <button onclick="$('#rateit9').rateit('value', prompt('Input numerical value'))">
+                    Set value</button>
+            </div>
+            <div>
+                <button onclick="alert($('#rateit9').rateit('max'))">
+                    Get max value</button>
+                <button onclick="$('#rateit9').rateit('max', prompt('Input numerical value'))">
+                    Set max value</button>
+            </div>
+            <div>
+                <button onclick="alert($('#rateit9').rateit('step'))">
+                    Get step size</button>
+                <button onclick="$('#rateit9').rateit('step', prompt('Input numerical value'))">
+                    Set step size</button>
+            </div>
+            <div>
+                <button onclick="alert($('#rateit9').rateit('readonly'))">
+                    Get readonly value</button>
+                <button onclick="$('#rateit9').rateit('readonly',!$('#rateit9').rateit('readonly'))">
+                    Change readonly</button>
+            </div>
             <pre class="brush: xml">
 	            &lt;div class="rateit" id="rateit9">
                 &lt;/div>
@@ -273,16 +330,62 @@ div.antenna div.rateit-selected
                 &lt;/div>            
             </pre>
         </li>
+        <li>
+            <h3>
+                10) Tooltip example</h3>
+            <p>
+                Using tooltips is easy. Just bind to the hover event, and do your thing. Shown here is the basic tooltip, but of course you can use any tooltip you'd like.</p>
+            <h4>
+                Basic numbers</h4>
+            <div class="rateit" id="rateit10">
+            </div>
 
+            <script type="text/javascript">
+                $("#rateit10").bind('hover', function (event, value) { $(this).attr('title', value); });
+            </script>
+
+            <pre class="brush: xml">
+            &lt;div class="rateit" id="rateit10">
+            &lt;/div>
+
+            &lt;script type="text/javascript">
+                $("#rateit10").bind('hover', function (event,value) { $(this).attr('title', value); });
+            &lt;/script>       
+            </pre>
+            <h4>
+                Custom text</h4>
+            <div class="rateit" id="rateit10b" data-rateit-step="1">
+            </div>
+
+            <script type="text/javascript">
+                var tooltipvalues = ['bad', 'poor', 'ok', 'good', 'super'];
+                $("#rateit10b").bind('hover', function (event, value) { $(this).attr('title', tooltipvalues[value - 1]); });
+            </script>
+
+            <pre class="brush: xml">
+            &lt;div class="rateit" id="rateit10b" data-rateit-step="1">
+            &lt;/div>
+
+            &lt;script type="text/javascript">
+                var tooltipvalues = ['bad', 'poor', 'ok', 'good', 'super'];
+                $("#rateit10b").bind('hover', function (event, value) { $(this).attr('title', tooltipvalues[value-1]); });
+            &lt;/script>
+            </pre>
+        </li>
     </ul>
 
     <script src="../src/jquery.rateit.js" type="text/javascript"></script>
 
     <!-- syntax highlighter -->
+
     <script src="sh/shCore.js" type="text/javascript"></script>
+
     <script src="sh/shBrushJScript.js" type="text/javascript"></script>
+
     <script src="sh/shBrushXml.js" type="text/javascript"></script>
+
     <script src="sh/shBrushCss.js" type="text/javascript"></script>
+
     <script type="text/javascript">
         SyntaxHighlighter.all()
     </script>
