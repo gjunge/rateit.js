@@ -1,7 +1,7 @@
 /*
     RateIt
-    version 0.96
-    11/23/2010
+    version 0.97
+    01/03/2011
     http://rateit.codeplex.com
     Twitter: @gjunge
 
@@ -119,6 +119,13 @@
             }
 
             var resetbtn = $("div.rateit-reset", item);
+
+            var calcRawScore = function (element, event) {
+                var offsetx = event.pageX - $(element).offset().left;
+                if (!ltr) offsetx = range.width() - offsetx;
+                return score = Math.ceil(offsetx / itemdata('starwidth') * (1 / itemdata('step')));
+            };
+
             if (!itemdata('readonly')) {
                 //if we are not read only, add all the events
 
@@ -137,39 +144,39 @@
                     resetbtn.hide();
                 }
 
+
+
                 //when the mouse goes over the range div, we set the "hover" stars.
                 range.mousemove(function (e) {
-                    var offsetx = e.pageX - $(this).offset().left;
-
-                    if (!ltr) offsetx = range.width() - offsetx;
-
-                    var w = Math.ceil(offsetx / itemdata('starwidth') * (1 / itemdata('step'))) * itemdata('starwidth') * itemdata('step');
+                    var score = calcRawScore(this, e);
+                    var w = score * itemdata('starwidth') * itemdata('step');
                     var h = $("div.rateit-hover", item);
                     if (h.data("width") != w) {
                         $("div.rateit-selected", item).hide();
                         h.width(w).show();
                         h.data("width", w);
+                        item.trigger('hover', [(score * itemdata('step')) + itemdata('min')]);
                     }
                 });
                 //when the mouse leaves the range, we have to hide the hover stars, and show the current value.
                 range.mouseleave(function (e) {
                     $("div.rateit-hover", item).hide().width(0).data('width', '');
+                    item.trigger('hover', [null]);
                     $("div.rateit-selected", item).show();
                 });
                 //when we click on the range, we have to set the value, hide the hover.
                 range.click(function (e) {
-                    var offsetx = e.pageX - $(this).offset().left;
-                    if (!ltr) offsetx = range.width() - offsetx;
-
-                    var score = Math.ceil(offsetx / itemdata('starwidth') * (1 / itemdata('step')));
-                    itemdata('value', (score * itemdata('step')) + itemdata('min'));
+                    var score = calcRawScore(this, e);
+                    var newvalue = (score * itemdata('step')) + itemdata('min');
+                    itemdata('value', newvalue);
                     if (itemdata('backingfld')) {
-                        $(itemdata('backingfld')).val((score * itemdata('step')) + itemdata('min'));
+                        $(itemdata('backingfld')).val(newvalue);
                     }
                     $("div.rateit-selected", item).width(score * itemdata('starwidth') * itemdata('step'));
                     $("div.rateit-hover", item).hide();
+                    item.trigger('hover', [null]);
                     $("div.rateit-selected", item).show();
-                    item.trigger('rated');
+                    item.trigger('rated', [newvalue]);
 
                 });
             }
@@ -177,8 +184,6 @@
                 resetbtn.hide();
             }
         });
-
-
     };
 
     //some default values.
