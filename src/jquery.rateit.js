@@ -1,7 +1,7 @@
 /*
     RateIt
-    version 0.97
-    01/03/2011
+    version 0.98
+    02/16/2011
     http://rateit.codeplex.com
     Twitter: @gjunge
 
@@ -27,7 +27,7 @@
         return this.each(function () {
             var item = $(this);
 
-            //shorten all the item('rateit-XXX'), will save space in closure compiler, will be like item.data('XXX') will become x('XXX')
+            //shorten all the item.data('rateit-XXX'), will save space in closure compiler, will be like item.data('XXX') will become x('XXX')
             var itemdata = function (key, value) { return item.data('rateit-' + key, value); };
 
             //add the rate it class.
@@ -37,12 +37,12 @@
 
             // set value mode
             if (mode == 'setvalue') {
-                if (!itemdata('init')) throw 'Can\'t set a value when plugin is not intialized';
+                if (!itemdata('init')) throw 'Can\'t set value before init';
 
 
                 //if readonly now and it wasn't readonly, remove the eventhandlers.
                 if (p1 == 'readonly' && !itemdata('readonly')) {
-                    $('div.rateit-range', item).unbind('mouseleave').unbind('mousemove').unbind('click');
+                    item.find('.rateit-range').unbind('mouseleave mousemove click');
 
                 }
 
@@ -95,30 +95,30 @@
                     }
                 }
 
-                //Create the needed tags.
+                //Create the necessart tags.
                 item.append('<div class="rateit-reset"></div><div class="rateit-range"><div class="rateit-selected" style="height:' + itemdata('starheight') + 'px"></div><div class="rateit-hover" style="height:' + itemdata('starheight') + 'px"></div></div>');
 
                 //if we are in RTL mode, we have to change the float of the "reset button"
                 if (!ltr) {
-                    $('div.rateit-reset', item).css('float', 'right');
-                    $('div.rateit-selected', item).addClass('rateit-selected-rtl');
-                    $('div.rateit-hover', item).addClass('rateit-hover-rtl');
+                    item.find('.rateit-reset').css('float', 'right');
+                    item.find('.rateit-selected').addClass('rateit-selected-rtl');
+                    item.find('.rateit-hover').addClass('rateit-hover-rtl');
                 }
                 itemdata('init', true);
             }
 
 
             //set the range element to fit all the stars.
-            var range = $('div.rateit-range', item);
+            var range = item.find('.rateit-range');
             range.width(itemdata('starwidth') * (itemdata('max') - itemdata('min'))).height(itemdata('starheight'));
 
             //set the value if we have it.
             if (itemdata('value')) {
                 var score = (itemdata('value') - itemdata('min')) * itemdata('starwidth');
-                item.find('div.rateit-selected').width(score);
+                item.find('.rateit-selected').width(score);
             }
 
-            var resetbtn = $("div.rateit-reset", item);
+            var resetbtn = item.find('.rateit-reset');
 
             var calcRawScore = function (element, event) {
                 var offsetx = event.pageX - $(element).offset().left;
@@ -133,8 +133,8 @@
                 if (itemdata('resetable')) {
                     resetbtn.click(function () {
                         itemdata('value', itemdata('min'));
-                        $("div.rateit-hover", item).hide().width(0);
-                        $("div.rateit-selected", item).width(0).show();
+                        range.find('.rateit-hover').hide().width(0);
+                        range.find('.rateit-selected').width(0).show();
                         if (itemdata('backingfld')) $(itemdata('backingfld')).val(itemdata('min'));
                         item.trigger('reset');
                     });
@@ -150,19 +150,18 @@
                 range.mousemove(function (e) {
                     var score = calcRawScore(this, e);
                     var w = score * itemdata('starwidth') * itemdata('step');
-                    var h = $("div.rateit-hover", item);
-                    if (h.data("width") != w) {
-                        $("div.rateit-selected", item).hide();
-                        h.width(w).show();
-                        h.data("width", w);
+                    var h = range.find('.rateit-hover');
+                    if (h.data('width') != w) {
+                        range.find('.rateit-selected').hide();
+                        h.width(w).show().data('width', w);
                         item.trigger('hover', [(score * itemdata('step')) + itemdata('min')]);
                     }
                 });
                 //when the mouse leaves the range, we have to hide the hover stars, and show the current value.
                 range.mouseleave(function (e) {
-                    $("div.rateit-hover", item).hide().width(0).data('width', '');
+                    range.find('.rateit-hover').hide().width(0).data('width', '');
                     item.trigger('hover', [null]);
-                    $("div.rateit-selected", item).show();
+                    range.find('.rateit-selected').show();
                 });
                 //when we click on the range, we have to set the value, hide the hover.
                 range.click(function (e) {
@@ -172,11 +171,9 @@
                     if (itemdata('backingfld')) {
                         $(itemdata('backingfld')).val(newvalue);
                     }
-                    $("div.rateit-selected", item).width(score * itemdata('starwidth') * itemdata('step'));
-                    $("div.rateit-hover", item).hide();
-                    item.trigger('hover', [null]);
-                    $("div.rateit-selected", item).show();
-                    item.trigger('rated', [newvalue]);
+                    range.find('.rateit-hover').hide();
+                    range.find('.rateit-selected').width(score * itemdata('starwidth') * itemdata('step')).show();
+                    item.trigger('hover', [null]).trigger('rated', [newvalue]);
 
                 });
             }
