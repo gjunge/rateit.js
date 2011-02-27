@@ -2,6 +2,13 @@ div.rateit
 {
     display: inline-block;
     position: relative;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    
 }
 
 div.rateit div.rateit-range
@@ -11,6 +18,7 @@ div.rateit div.rateit-range
     background: url(star.gif);
     height: 16px;
 }
+
 
 div.rateit div.rateit-hover, div.rateit div.rateit-selected
 {

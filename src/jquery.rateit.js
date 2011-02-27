@@ -1,7 +1,7 @@
 /*
     RateIt
-    version 0.98
-    02/16/2011
+    version 0.99
+    02/27/2011
     http://rateit.codeplex.com
     Twitter: @gjunge
 
@@ -42,8 +42,8 @@
 
                 //if readonly now and it wasn't readonly, remove the eventhandlers.
                 if (p1 == 'readonly' && !itemdata('readonly')) {
-                    item.find('.rateit-range').unbind('mouseleave mousemove click');
-
+                    item.find('.rateit-range').unbind('mouseleave mousemove click touchmove touchend');
+                    itemdata('wired', false);
                 }
 
                 if (itemdata('backingfld')) {
@@ -112,6 +112,7 @@
             var range = item.find('.rateit-range');
             range.width(itemdata('starwidth') * (itemdata('max') - itemdata('min'))).height(itemdata('starheight'));
 
+
             //set the value if we have it.
             if (itemdata('value')) {
                 var score = (itemdata('value') - itemdata('min')) * itemdata('starwidth');
@@ -121,10 +122,18 @@
             var resetbtn = item.find('.rateit-reset');
 
             var calcRawScore = function (element, event) {
-                var offsetx = event.pageX - $(element).offset().left;
+                var pageX = (event.changedTouches) ? event.changedTouches[0].pageX : event.pageX;
+
+                var offsetx = pageX - $(element).offset().left;
                 if (!ltr) offsetx = range.width() - offsetx;
+                if (offsetx > range.width()) offsetx = range.width();
+                if (offsetx < 0) offsetx = 0;
+
                 return score = Math.ceil(offsetx / itemdata('starwidth') * (1 / itemdata('step')));
             };
+
+
+            //
 
             if (!itemdata('readonly')) {
                 //if we are not read only, add all the events
@@ -147,35 +156,43 @@
 
 
                 //when the mouse goes over the range div, we set the "hover" stars.
-                range.mousemove(function (e) {
-                    var score = calcRawScore(this, e);
-                    var w = score * itemdata('starwidth') * itemdata('step');
-                    var h = range.find('.rateit-hover');
-                    if (h.data('width') != w) {
-                        range.find('.rateit-selected').hide();
-                        h.width(w).show().data('width', w);
-                        item.trigger('hover', [(score * itemdata('step')) + itemdata('min')]);
-                    }
-                });
-                //when the mouse leaves the range, we have to hide the hover stars, and show the current value.
-                range.mouseleave(function (e) {
-                    range.find('.rateit-hover').hide().width(0).data('width', '');
-                    item.trigger('hover', [null]);
-                    range.find('.rateit-selected').show();
-                });
-                //when we click on the range, we have to set the value, hide the hover.
-                range.click(function (e) {
-                    var score = calcRawScore(this, e);
-                    var newvalue = (score * itemdata('step')) + itemdata('min');
-                    itemdata('value', newvalue);
-                    if (itemdata('backingfld')) {
-                        $(itemdata('backingfld')).val(newvalue);
-                    }
-                    range.find('.rateit-hover').hide();
-                    range.find('.rateit-selected').width(score * itemdata('starwidth') * itemdata('step')).show();
-                    item.trigger('hover', [null]).trigger('rated', [newvalue]);
+                if (!itemdata('wired')) {
+                    range.bind('touchmove touchend', touchHandler); //bind touch events
+                    range.mousemove(function (e) {
+                        var score = calcRawScore(this, e);
+                        var w = score * itemdata('starwidth') * itemdata('step');
+                        var h = range.find('.rateit-hover');
+                        if (h.data('width') != w) {
+                            range.find('.rateit-selected').hide();
+                            h.width(w).show().data('width', w);
+                            item.trigger('hover', [(score * itemdata('step')) + itemdata('min')]);
+                        }
+                    });
+                    //when the mouse leaves the range, we have to hide the hover stars, and show the current value.
+                    range.mouseleave(function (e) {
+                        range.find('.rateit-hover').hide().width(0).data('width', '');
+                        item.trigger('hover', [null]);
+                        range.find('.rateit-selected').show();
+                    });
+                    //when we click on the range, we have to set the value, hide the hover.
+                    range.mouseup(function (e) {
+                        var score = calcRawScore(this, e);
 
-                });
+                        var newvalue = (score * itemdata('step')) + itemdata('min');
+                        itemdata('value', newvalue);
+                        if (itemdata('backingfld')) {
+                            $(itemdata('backingfld')).val(newvalue);
+                        }
+                        range.find('.rateit-hover').hide();
+                        range.find('.rateit-selected').width(score * itemdata('starwidth') * itemdata('step')).show();
+                        item.trigger('hover', [null]).trigger('rated', [newvalue]);
+                    });
+
+                    itemdata('wired', true);
+                }
+                if (itemdata('resetable')) {
+                    resetbtn.show();
+                }
             }
             else {
                 resetbtn.hide();
@@ -183,9 +200,32 @@
         });
     };
 
+    //touch converter http://ross.posterous.com/2008/08/19/iphone-touch-events-in-javascript/
+    function touchHandler(event) {
+
+        var touches = event.originalEvent.changedTouches,
+                first = touches[0],
+                type = "";
+        switch (event.type) {
+            case "touchmove": type = "mousemove"; break;
+            case "touchend": type = "mouseup"; break;
+            default: return;
+        }
+
+        var simulatedEvent = document.createEvent("MouseEvent");
+        simulatedEvent.initMouseEvent(type, true, true, window, 1,
+                              first.screenX, first.screenY,
+                              first.clientX, first.clientY, false,
+                              false, false, false, 0/*left*/, null);
+
+        first.target.dispatchEvent(simulatedEvent);
+        event.preventDefault();
+    };
+
     //some default values.
     $.fn.rateit.defaults = { min: 0, max: 5, step: 0.5, starwidth: 16, starheight: 16, readonly: false, resetable: true };
 
     //invoke it on all div.rateit elements. This could be removed if not wanted.
     $('div.rateit').rateit();
+
 })(jQuery);
