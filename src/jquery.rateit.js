@@ -1,7 +1,7 @@
 /*
     RateIt
-    version 0.99
-    02/27/2011
+    version 0.99.1
+    03/07/2011
     http://rateit.codeplex.com
     Twitter: @gjunge
 
@@ -89,9 +89,9 @@
                         }
                     }
                     if (fld[0].nodeName == 'SELECT' && fld[0].options.length > 1) {
-                        itemdata('min', parseInt(fld[0].options[0].value));
-                        itemdata('max', parseInt(fld[0].options[fld[0].length - 1].value));
-                        itemdata('step', parseInt(fld[0].options[1].value - fld[0].options[0].value));
+                        itemdata('min', Number(fld[0].options[0].value));
+                        itemdata('max', Number(fld[0].options[fld[0].length - 1].value));
+                        itemdata('step', Number(fld[0].options[1].value) - Number(fld[0].options[0].value));
                     }
                 }
 
