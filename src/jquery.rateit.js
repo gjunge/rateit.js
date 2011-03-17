@@ -42,7 +42,7 @@
 
                 //if readonly now and it wasn't readonly, remove the eventhandlers.
                 if (p1 == 'readonly' && !itemdata('readonly')) {
-                    item.find('.rateit-range').unbind('mouseleave mousemove click touchmove touchend');
+                    item.find('.rateit-range').unbind();
                     itemdata('wired', false);
                 }
 
