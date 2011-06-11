@@ -45,6 +45,15 @@ div.rateit div.rateit-selected-rtl
     background-position: right -16px;
 }
 
+div.rateit div.rateit-preset 
+{
+    background: url(star.gif) left -48px;
+}
+
+div.rateit div.rateit-preset-rtl
+{
+    background: url(star.gif) left -48px;
+}
 
 div.rateit div.rateit-reset
 {

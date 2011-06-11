@@ -1,7 +1,7 @@
 /*
     RateIt
-    version 0.99.2
-    03/07/2011
+    version 1.0
+    06/11/2011
     http://rateit.codeplex.com
     Twitter: @gjunge
 
@@ -73,6 +73,7 @@
                 itemdata('starwidth', itemdata('starwidth') || options.starwidth);
                 itemdata('starheight', itemdata('starheight') || options.starheight);
                 itemdata('value', itemdata('value') || options.min);
+                itemdata('ispreset', itemdata('ispreset') !== undefined ? itemdata('ispreset') : options.ispreset);
                 //are we LTR or RTL?
 
                 if (itemdata('backingfld')) {
@@ -95,7 +96,7 @@
                     }
                 }
 
-                //Create the necessart tags.
+                //Create the necessary tags.
                 item.append('<div class="rateit-reset"></div><div class="rateit-range"><div class="rateit-selected" style="height:' + itemdata('starheight') + 'px"></div><div class="rateit-hover" style="height:' + itemdata('starheight') + 'px"></div></div>');
 
                 //if we are in RTL mode, we have to change the float of the "reset button"
@@ -112,6 +113,12 @@
             var range = item.find('.rateit-range');
             range.width(itemdata('starwidth') * (itemdata('max') - itemdata('min'))).height(itemdata('starheight'));
 
+            //add/remove the preset class
+            var presetclass = 'rateit-preset' + ((ltr) ? '' : '-rtl');
+            if (itemdata('ispreset'))
+                item.find('.rateit-selected').addClass(presetclass);
+            else
+                item.find('.rateit-selected').removeClass(presetclass);
 
             //set the value if we have it.
             if (itemdata('value')) {
@@ -183,6 +190,10 @@
                         if (itemdata('backingfld')) {
                             $(itemdata('backingfld')).val(newvalue);
                         }
+                        if (itemdata('ispreset')) { //if it was a preset value, unset that.
+                            range.find('.rateit-selected').removeClass(presetclass);
+                            itemdata('ispreset', false);
+                        }
                         range.find('.rateit-hover').hide();
                         range.find('.rateit-selected').width(score * itemdata('starwidth') * itemdata('step')).show();
                         item.trigger('hover', [null]).trigger('rated', [newvalue]);
@@ -223,7 +234,7 @@
     };
 
     //some default values.
-    $.fn.rateit.defaults = { min: 0, max: 5, step: 0.5, starwidth: 16, starheight: 16, readonly: false, resetable: true };
+    $.fn.rateit.defaults = { min: 0, max: 5, step: 0.5, starwidth: 16, starheight: 16, readonly: false, resetable: true, ispreset: false };
 
     //invoke it on all div.rateit elements. This could be removed if not wanted.
     $('div.rateit').rateit();
