@@ -1,5 +1,6 @@
 div.rateit
 {
+    display: -moz-inline-box;
     display: inline-block;
     position: relative;
     -webkit-user-select: none;
@@ -8,17 +9,28 @@ div.rateit
     -o-user-select: none;
     user-select: none;
     -webkit-touch-callout: none;
-    
 }
 
 div.rateit div.rateit-range
 {
     position: relative;
+    display: -moz-inline-box;
     display: inline-block;
     background: url(star.gif);
     height: 16px;
 }
 
+/* for IE 6 */
+* html div.rateit, * html div.rateit div.rateit-range
+{
+    display: inline;
+}
+
+/* for IE 7 */
+* + html div.rateit, * + html div.rateit div.rateit-range
+{
+    display: inline;
+}
 
 div.rateit div.rateit-hover, div.rateit div.rateit-selected
 {
@@ -45,7 +57,7 @@ div.rateit div.rateit-selected-rtl
     background-position: right -16px;
 }
 
-div.rateit div.rateit-preset 
+div.rateit div.rateit-preset
 {
     background: url(star.gif) left -48px;
 }
@@ -60,6 +72,7 @@ div.rateit div.rateit-reset
     background: url(delete.gif) 0 0;
     width: 16px;
     height: 16px;
+    display: -moz-inline-box;
     display: inline-block;
     float: left;
 }
