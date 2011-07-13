@@ -1,7 +1,7 @@
 /*
     RateIt
-    version 1.0.1
-    07/02/2011
+    version 1.0.2
+    07/13/2011
     http://rateit.codeplex.com
     Twitter: @gjunge
 
@@ -10,6 +10,10 @@
     $.fn.rateit = function (p1, p2) {
         //quick way out.
         var options = {}; var mode = 'init';
+        var capitaliseFirstLetter = function (string) {
+            return string.charAt(0).toUpperCase() + string.substr(1);
+        };
+
         if (this.length == 0) return this;
 
 
@@ -18,7 +22,7 @@
             options = $.extend({}, $.fn.rateit.defaults, p1); //wants to init new rateit plugin(s).
         }
         else if (tp1 == 'string' && p2 === undefined) {
-            return this.data('rateit-' + p1); //wants to get a value.
+            return this.data('rateit' + capitaliseFirstLetter(p1)); //wants to get a value.
         }
         else if (tp1 == 'string') {
             mode = 'setvalue'
@@ -28,7 +32,7 @@
             var item = $(this);
 
             //shorten all the item.data('rateit-XXX'), will save space in closure compiler, will be like item.data('XXX') will become x('XXX')
-            var itemdata = function (key, value) { return item.data('rateit-' + key, value); };
+            var itemdata = function (key, value) { return item.data('rateit' + capitaliseFirstLetter(key), value); };
 
             //add the rate it class.
             if (!item.hasClass('rateit')) item.addClass('rateit');
