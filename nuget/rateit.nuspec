@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> 
+  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd"> 
+    <id>jQuery.RateIt</id> 
+    <version>1.0.2.11</version> 
+    <authors>Gidon Junge</authors>
+    <summary>A rating plugin for jQuery.</summary>
+    <description>A rating plugin for jQuery. 
+    
+Features: fast, progressive enhancement, touch support (*new), customizable (just swap out the images, or change some CSS), unobtrusive javaScript (using HTML5 data-* attributes), RTL support, supports as many stars as you'd like, and also any step size. 
+    
+Check out the examples link on the project page for implementation and examples.
+  </description>
+    <releaseNotes>==== CHANGE LOG ====
+      1.0.2.11
+      Corresponds with RateIt version 1.0.2.1
+      Fixed CSS bug, when container is in text-align: right mode. (thanks to DefconDotNet)
+
+      1.0.2.1 - NuGet Only
+      Corresponds with version 1.0.2. Fixed a bug in the nuget package, in which the files where not packed.
+
+      1.0.2
+      Compatible with jQuery 1.6.2 . Had to drop compatibility with anything older than 1.6.0
+
+      1.0.1
+      Updated CSS file, to include better support for IE6 &amp; 7 and FF 2
+
+      1.0
+      Added ispreset property
+
+    </releaseNotes>
+    <language>en-US</language>
+    <licenseUrl>http://rateit.codeplex.com/license</licenseUrl>
+    <projectUrl>http://rateit.codeplex.com</projectUrl>
+    <dependencies>
+      <dependency id="jQuery" version="1.6.2" />
+    </dependencies>
+  </metadata> 
+  <files>
+		<file src="..\src\*.js" target="content\scripts" />
+		<file src="..\src\*.gif" target="content\content" />
+		<file src="..\src\rateit.css" target="content\content" />
+  </files>
+</package>
