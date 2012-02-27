@@ -2,7 +2,7 @@
 <package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> 
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd"> 
     <id>jQuery.RateIt</id> 
-    <version>1.0.2.11</version> 
+    <version>1.0.3</version> 
     <authors>Gidon Junge</authors>
     <summary>A rating plugin for jQuery.</summary>
     <description>A rating plugin for jQuery. 
@@ -12,6 +12,9 @@ Features: fast, progressive enhancement, touch support (*new), customizable (jus
 Check out the examples link on the project page for implementation and examples.
   </description>
     <releaseNotes>==== CHANGE LOG ====
+      1.03
+      Minor change. Call to register all elements with .rateit class occurs now only on document.ready
+      
       1.0.2.11
       Corresponds with RateIt version 1.0.2.1
       Fixed CSS bug, when container is in text-align: right mode. (thanks to DefconDotNet)
