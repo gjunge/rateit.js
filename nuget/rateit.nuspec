@@ -1,21 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?> 
-<package xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> 
-  <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd"> 
-    <id>jQuery.RateIt</id> 
-    <version>1.0.4</version> 
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>jQuery.RateIt</id>
+    <version>1.0.4.1</version>
+    <title>jQuery.RateIt</title>
     <authors>Gidon Junge</authors>
-    <summary>A rating plugin for jQuery.</summary>
+    <owners>Gidon Junge</owners>
+    <licenseUrl>http://rateit.codeplex.com/license</licenseUrl>
+    <projectUrl>http://rateit.codeplex.com</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A rating plugin for jQuery. 
     
 Features: fast, progressive enhancement, touch support (*new), customizable (just swap out the images, or change some CSS), unobtrusive javaScript (using HTML5 data-* attributes), RTL support, supports as many stars as you'd like, and also any step size. 
     
-Check out the examples link on the project page for implementation and examples.
-  </description>
+Check out the examples link on the project page for implementation and examples.</description>
+    <summary>A rating plugin for jQuery.</summary>
     <releaseNotes>==== CHANGE LOG ====
       1.0.4
       Two bug fixes:
       1) #523 RateIt doesn't work in jQuery 1.7.2
-      2) #417 Bug for hover event with jQuery 1.7 -> The 'hover' event got an extra name: 'over' . Because the bug leading to this is not fixed yet in jQuery.
+      2) #417 Bug for hover event with jQuery 1.7 -&gt; The 'hover' event got an extra name: 'over' . Because the bug leading to this is not fixed yet in jQuery.
       
       1.0.3
       Minor change. Call to register all elements with .rateit class occurs now only on document.ready
@@ -34,19 +38,19 @@ Check out the examples link on the project page for implementation and examples.
       Updated CSS file, to include better support for IE6 &amp; 7 and FF 2
 
       1.0
-      Added ispreset property
-
-    </releaseNotes>
+      Added ispreset property</releaseNotes>
+    <copyright>http://rateit.codeplex.com/license</copyright>
     <language>en-US</language>
-    <licenseUrl>http://rateit.codeplex.com/license</licenseUrl>
-    <projectUrl>http://rateit.codeplex.com</projectUrl>
+    <tags>rating, jquery, unobtrusive, progressive enhancement, rateit</tags>
     <dependencies>
       <dependency id="jQuery" version="1.6.2" />
     </dependencies>
-  </metadata> 
+  </metadata>
   <files>
-		<file src="..\src\*.js" target="content\scripts" />
-		<file src="..\src\*.gif" target="content\content" />
-		<file src="..\src\rateit.css" target="content\content" />
+    <file src="content\content\delete.gif" target="content\content\delete.gif" />
+    <file src="content\content\rateit.css" target="content\content\rateit.css" />
+    <file src="content\content\star.gif" target="content\content\star.gif" />
+    <file src="content\scripts\jquery.rateit.js" target="content\scripts\jquery.rateit.js" />
+    <file src="content\scripts\jquery.rateit.min.js" target="content\scripts\jquery.rateit.min.js" />
   </files>
 </package>
