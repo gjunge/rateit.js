@@ -1,7 +1,7 @@
 /*
     RateIt
-    version 1.0.3
-    02/27/2012
+    version 1.0.4
+    03/31/2012
     http://rateit.codeplex.com
     Twitter: @gjunge
 
@@ -32,7 +32,10 @@
       var item = $(this);
 
       //shorten all the item.data('rateit-XXX'), will save space in closure compiler, will be like item.data('XXX') will become x('XXX')
-      var itemdata = function (key, value) { return item.data('rateit' + capitaliseFirstLetter(key), value); };
+      var itemdata = function (key, value) {
+          arguments[0] = 'rateit' + capitaliseFirstLetter(key); 
+          return item.data.apply(item, arguments); ////Fix for WI: 523
+      };
 
       //add the rate it class.
       if (!item.hasClass('rateit')) item.addClass('rateit');
@@ -176,13 +179,14 @@
             if (h.data('width') != w) {
               range.find('.rateit-selected').hide();
               h.width(w).show().data('width', w);
-              item.trigger('hover', [(score * itemdata('step')) + itemdata('min')]);
+              var data = [(score * itemdata('step')) + itemdata('min')];
+              item.trigger('hover', data).trigger('over', data);
             }
           });
           //when the mouse leaves the range, we have to hide the hover stars, and show the current value.
           range.mouseleave(function (e) {
             range.find('.rateit-hover').hide().width(0).data('width', '');
-            item.trigger('hover', [null]);
+            item.trigger('hover', [null]).trigger('over', [null]);
             range.find('.rateit-selected').show();
           });
           //when we click on the range, we have to set the value, hide the hover.
@@ -200,7 +204,7 @@
             }
             range.find('.rateit-hover').hide();
             range.find('.rateit-selected').width(score * itemdata('starwidth') * itemdata('step')).show();
-            item.trigger('hover', [null]).trigger('rated', [newvalue]);
+            item.trigger('hover', [null]).trigger('over', [null]).trigger('rated', [newvalue]);
           });
 
           itemdata('wired', true);

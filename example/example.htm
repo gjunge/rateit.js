@@ -4,7 +4,7 @@
     <title>RateIt</title>
     <link href="../src/rateit.css" rel="stylesheet" type="text/css">
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
 
     <style>
         body
@@ -148,7 +148,7 @@
             <script type="text/javascript">
                 $("#rateit5").bind('rated', function (event, value) { $('#value5').text('You\'ve rated it: ' + value); });
                 $("#rateit5").bind('reset', function () { $('#value5').text('Rating reset'); });
-                $("#rateit5").bind('hover', function (event, value) { $('#hover5').text('Hovering over: ' + value); });
+                $("#rateit5").bind('over', function (event, value) { $('#hover5').text('Hovering over: ' + value); });
             </script>
 
             <pre class="brush: xml">
@@ -162,7 +162,7 @@
             &lt;script type="text/javascript">
                 $("#rateit5").bind('rated', function (event, value) { $('#value5').text('You\'ve rated it: ' + value); });
                 $("#rateit5").bind('reset', function () { $('#value5').text('Rating reset'); });
-                $("#rateit5").bind('hover', function (event, value) { $('#hover5').text('Hovering over: ' + value); });
+                $("#rateit5").bind('over', function (event, value) { $('#hover5').text('Hovering over: ' + value); });
             &lt;/script>            
             </pre>
         </li>
@@ -357,7 +357,7 @@ div.antenna div.rateit-selected
             </div>
 
             <script type="text/javascript">
-                $("#rateit10").bind('hover', function (event, value) { $(this).attr('title', value); });
+                $("#rateit10").bind('over', function (event, value) { $(this).attr('title', value); });
             </script>
 
             <pre class="brush: xml">
@@ -365,7 +365,7 @@ div.antenna div.rateit-selected
             &lt;/div>
 
             &lt;script type="text/javascript">
-                $("#rateit10").bind('hover', function (event,value) { $(this).attr('title', value); });
+                $("#rateit10").bind('over', function (event,value) { $(this).attr('title', value); });
             &lt;/script>       
             </pre>
             <h4>
@@ -375,7 +375,7 @@ div.antenna div.rateit-selected
 
             <script type="text/javascript">
                 var tooltipvalues = ['bad', 'poor', 'ok', 'good', 'super'];
-                $("#rateit10b").bind('hover', function (event, value) { $(this).attr('title', tooltipvalues[value - 1]); });
+                $("#rateit10b").bind('over', function (event, value) { $(this).attr('title', tooltipvalues[value - 1]); });
             </script>
 
             <pre class="brush: xml">
@@ -384,7 +384,7 @@ div.antenna div.rateit-selected
 
             &lt;script type="text/javascript">
                 var tooltipvalues = ['bad', 'poor', 'ok', 'good', 'super'];
-                $("#rateit10b").bind('hover', function (event, value) { $(this).attr('title', tooltipvalues[value-1]); });
+                $("#rateit10b").bind('over', function (event, value) { $(this).attr('title', tooltipvalues[value-1]); });
             &lt;/script>
             </pre>
         </li>
