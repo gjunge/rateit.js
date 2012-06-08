@@ -52,10 +52,10 @@ Check out the examples link on the project page for implementation and examples.
     </dependencies>
   </metadata>
   <files>
-    <file src="content\content\delete.gif" target="content\content\delete.gif" />
-    <file src="content\content\rateit.css" target="content\content\rateit.css" />
-    <file src="content\content\star.gif" target="content\content\star.gif" />
-    <file src="content\scripts\jquery.rateit.js" target="content\scripts\jquery.rateit.js" />
-    <file src="content\scripts\jquery.rateit.min.js" target="content\scripts\jquery.rateit.min.js" />
+    <file src="..\src\delete.gif" target="content\content\delete.gif" />
+    <file src="..\src\rateit.css" target="content\content\rateit.css" />
+    <file src="..\src\star.gif" target="content\content\star.gif" />
+    <file src="..\src\jquery.rateit.js" target="content\scripts\jquery.rateit.js" />
+    <file src="..\src\jquery.rateit.min.js" target="content\scripts\jquery.rateit.min.js" />
   </files>
 </package>
