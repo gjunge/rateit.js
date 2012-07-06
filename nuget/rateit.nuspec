@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>jQuery.RateIt</id>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <title>jQuery.RateIt</title>
     <authors>Gidon Junge</authors>
     <owners>Gidon Junge</owners>
@@ -17,6 +17,9 @@ Check out the examples link on the project page for implementation and examples.
     <summary>A rating plugin for jQuery.</summary>
     <releaseNotes>
       ==== CHANGE LOG ====
+      1.0.6
+      Feature: if a backing field is disabled at instantiation, start RateIt as readonly, thanks to dgon!
+      
       1.0.5
       Bug fix: #634 Setting value to 0 doesn't work
       Feature: now you can reset the rating by $(SELECTOR).rateit('value', null) , thanks to jeffgman!

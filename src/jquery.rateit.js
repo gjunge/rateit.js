@@ -1,7 +1,7 @@
 /*
     RateIt
-    version 1.0.5
-    06/08/2012
+    version 1.0.6
+    07/06/2012
     http://rateit.codeplex.com
     Twitter: @gjunge
 
@@ -59,7 +59,7 @@
                     //In case of input[type=range], although we did read its attributes even in browsers that don't support it (using fld.attr())
                     //we only update it in browser that support it (&& fld[0].min only works in supporting browsers), not only does it save us from checking if it is range input type, it also is unnecessary.
                     var fld = $(itemdata('backingfld'));
-                    if (p1 == 'value') fld.val(p2); 
+                    if (p1 == 'value') fld.val(p2);
                     if (p1 == 'min' && fld[0].min) fld[0].min = p2;
                     if (p1 == 'max' && fld[0].max) fld[0].max = p2;
                     if (p1 == 'step' && fld[0].step) fld[0].step = p2;
@@ -88,6 +88,7 @@
                     //if we have a backing field, hide it, and get its value, and override defaults if range.
                     var fld = $(itemdata('backingfld'));
                     itemdata('value', fld.hide().val());
+                    itemdata('readonly', fld[0].disabled); //http://rateit.codeplex.com/discussions/362055 , if a backing field is disabled at instantiation, make rateit readonly.
 
                     if (fld[0].nodeName == 'INPUT') {
                         if (fld[0].type == 'range' || fld[0].type == 'text') { //in browsers not support the range type, it defaults to text
