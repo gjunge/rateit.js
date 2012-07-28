@@ -1,7 +1,7 @@
 /*
     RateIt
-    version 1.0.6
-    07/06/2012
+    version 1.0.7
+    07/28/2012
     http://rateit.codeplex.com
     Twitter: @gjunge
 
@@ -80,7 +80,7 @@
                 itemdata('backingfld', itemdata('backingfld') || options.backingfld);
                 itemdata('starwidth', itemdata('starwidth') || options.starwidth);
                 itemdata('starheight', itemdata('starheight') || options.starheight);
-                itemdata('value', itemdata('value') || options.min);
+                itemdata('value', itemdata('value') || options.value || options.min);
                 itemdata('ispreset', itemdata('ispreset') !== undefined ? itemdata('ispreset') : options.ispreset);
                 //are we LTR or RTL?
 
