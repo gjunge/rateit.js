@@ -1,7 +1,7 @@
 /*
     RateIt
-    version 1.0.7
-    07/28/2012
+    version 1.0.8
+    10/20/2012
     http://rateit.codeplex.com
     Twitter: @gjunge
 
@@ -88,7 +88,10 @@
                     //if we have a backing field, hide it, and get its value, and override defaults if range.
                     var fld = $(itemdata('backingfld'));
                     itemdata('value', fld.hide().val());
-                    itemdata('readonly', fld[0].disabled); //http://rateit.codeplex.com/discussions/362055 , if a backing field is disabled at instantiation, make rateit readonly.
+
+                    if (fld.attr('disabled') || fld.attr('readonly')) 
+                        itemdata('readonly', true); //http://rateit.codeplex.com/discussions/362055 , if a backing field is disabled or readonly at instantiation, make rateit readonly.
+
 
                     if (fld[0].nodeName == 'INPUT') {
                         if (fld[0].type == 'range' || fld[0].type == 'text') { //in browsers not support the range type, it defaults to text
