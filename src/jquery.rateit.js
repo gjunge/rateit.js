@@ -1,7 +1,7 @@
 /*
     RateIt
-    version 1.0.8
-    10/20/2012
+    version 1.0.9
+    10/31/2012
     http://rateit.codeplex.com
     Twitter: @gjunge
 
@@ -117,6 +117,7 @@
                     item.find('.rateit-selected').addClass('rateit-selected-rtl');
                     item.find('.rateit-hover').addClass('rateit-hover-rtl');
                 }
+
                 itemdata('init', true);
             }
 
@@ -139,6 +140,17 @@
             }
 
             var resetbtn = item.find('.rateit-reset');
+            if (resetbtn.data('wired') !== true) {
+                resetbtn.click(function () {
+                    itemdata('value', itemdata('min'));
+                    range.find('.rateit-hover').hide().width(0);
+                    range.find('.rateit-selected').width(0).show();
+                    if (itemdata('backingfld')) $(itemdata('backingfld')).val(itemdata('min'));
+                    item.trigger('reset');
+                }).data('wired', true);
+                
+            }
+            
 
             var calcRawScore = function (element, event) {
                 var pageX = (event.changedTouches) ? event.changedTouches[0].pageX : event.pageX;
@@ -158,21 +170,8 @@
                 //if we are not read only, add all the events
 
                 //if we have a reset button, set the event handler.
-                if (itemdata('resetable')) {
-                    resetbtn.click(function () {
-                        itemdata('value', itemdata('min'));
-                        range.find('.rateit-hover').hide().width(0);
-                        range.find('.rateit-selected').width(0).show();
-                        if (itemdata('backingfld')) $(itemdata('backingfld')).val(itemdata('min'));
-                        item.trigger('reset');
-                    });
-
-                }
-                else {
+                if (!itemdata('resetable')) 
                     resetbtn.hide();
-                }
-
-
 
                 //when the mouse goes over the range div, we set the "hover" stars.
                 if (!itemdata('wired')) {

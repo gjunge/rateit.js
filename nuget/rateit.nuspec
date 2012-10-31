@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>jQuery.RateIt</id>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <title>jQuery.RateIt</title>
     <authors>Gidon Junge</authors>
     <owners>Gidon Junge</owners>
@@ -17,9 +17,12 @@ Check out the examples link on the project page for implementation and examples.
     <summary>A rating plugin for jQuery.</summary>
     <releaseNotes>
       ==== CHANGE LOG ====
+      1.0.9
+      Bug fix: #1203 Dynamically changing a property causes events to be re-registered, thanks to WeyenDrote
+
       1.0.8
       Bug fix: #1142 backingfield and readonly is broken. thanks to mathletics
-      
+
       1.0.7
       Bug fix: #729 Setting initial value issue, thanks to fctown
 
