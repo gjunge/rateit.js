@@ -1,6 +1,6 @@
 /*
     RateIt
-    version 1.0.10
+    version 1.0.11
     06/04/2013
     http://rateit.codeplex.com
     Twitter: @gjunge
@@ -129,7 +129,7 @@
 
                 //Create the necessary tags. For ARIA purposes we need to give the items an ID. So we use an internal index to create unique ids
                 index++;
-                var html = '<div id="rateit-reset-{{index}}" class="rateit-reset" role="button" aria-label="' + $.rateit.aria.resetLabel + '" aria-controls="rateit-range-{{index}}" tabindex="0"></div><div id="rateit-range-{{index}}" class="rateit-range" tabindex="0" role="slider" aria-label="' + $.rateit.aria.ratingLabel + '" aria-owns="rateit-reset-{{index}}" aria-valuemin="' + itemdata('min') + '" aria-valuemax="' + itemdata('max') + '" aria-valuenow="' + itemdata('value') + '"><div class="rateit-selected" style="height:' + itemdata('starheight') + 'px"></div><div class="rateit-hover" style="height:' + itemdata('starheight') + 'px"></div></div>';
+                var html = '<button id="rateit-reset-{{index}}" class="rateit-reset" aria-label="' + $.rateit.aria.resetLabel + '" aria-controls="rateit-range-{{index}}"></button><div id="rateit-range-{{index}}" class="rateit-range" tabindex="0" role="slider" aria-label="' + $.rateit.aria.ratingLabel + '" aria-owns="rateit-reset-{{index}}" aria-valuemin="' + itemdata('min') + '" aria-valuemax="' + itemdata('max') + '" aria-valuenow="' + itemdata('value') + '"><div class="rateit-selected" style="height:' + itemdata('starheight') + 'px"></div><div class="rateit-hover" style="height:' + itemdata('starheight') + 'px"></div></div>';
                 item.append(html.replace(/{{index}}/gi, index));
 
                 //if we are in RTL mode, we have to change the float of the "reset button"
@@ -163,11 +163,9 @@
             //setup the reset button
             var resetbtn = item.find('.rateit-reset');
             if (resetbtn.data('wired') !== true) {
-                resetbtn.bind('click keypress', function (e) {
-
-                    if (e.type == 'keypress' && (e.which != 32 && e.which != 13)) return; //aria, when key press, only accept enter and space
-
+                resetbtn.bind('click', function (e) {
                     e.preventDefault();
+                    resetbtn.blur();
                     itemdata('value', itemdata('min'));
                     range.find('.rateit-hover').hide().width(0);
                     range.find('.rateit-selected').width(0).show();

@@ -75,7 +75,7 @@ div.rateit div.rateit-preset-rtl
     background: url(star.gif) left -48px;
 }
 
-div.rateit div.rateit-reset
+div.rateit button.rateit-reset
 {
     background: url(delete.gif) 0 0;
     width: 16px;
@@ -84,9 +84,11 @@ div.rateit div.rateit-reset
     display: inline-block;
     float: left;
     outline: none;
+    border:none;
+    padding: 0;
 }
 
-div.rateit div.rateit-reset:hover
+div.rateit button.rateit-reset:hover, div.rateit button.rateit-reset:focus
 {
     background-position: 0 -16px;
 }
