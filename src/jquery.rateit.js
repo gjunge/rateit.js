@@ -1,7 +1,7 @@
 /*
     RateIt
-    version 1.0.9
-    10/31/2012
+    version 1.0.10
+    06/04/2013
     http://rateit.codeplex.com
     Twitter: @gjunge
 
