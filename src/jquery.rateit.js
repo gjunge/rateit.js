@@ -7,8 +7,16 @@
 
 */
 (function ($) {
+    $.rateit = {
+        aria : {
+            resetLabel: 'reset rating',
+            ratingLabel: 'rating'
+        }
+    }
+
     $.fn.rateit = function (p1, p2) {
         //quick way out.
+        var index = 1;
         var options = {}; var mode = 'init';
         var capitaliseFirstLetter = function (string) {
             return string.charAt(0).toUpperCase() + string.substr(1);
@@ -33,6 +41,17 @@
 
             //shorten all the item.data('rateit-XXX'), will save space in closure compiler, will be like item.data('XXX') will become x('XXX')
             var itemdata = function (key, value) {
+
+                if (value != null) {
+                    //update aria values
+                    var ariakey = 'aria-value' + ((key == 'value') ? 'now' : key);
+                    var range = item.find('.rateit-range');
+                    if (range.attr(ariakey) != undefined) {
+                        range.attr(ariakey, value);
+                    }
+
+                }
+
                 arguments[0] = 'rateit' + capitaliseFirstLetter(key);
                 return item.data.apply(item, arguments); ////Fix for WI: 523
             };
@@ -48,7 +67,7 @@
 
 
                 //if readonly now and it wasn't readonly, remove the eventhandlers.
-                if (p1 == 'readonly' && !itemdata('readonly')) {
+                if (p1 == 'readonly' && p2 == true && !itemdata('readonly')) {
                     item.find('.rateit-range').unbind();
                     itemdata('wired', false);
                 }
@@ -108,8 +127,10 @@
                     }
                 }
 
-                //Create the necessary tags.
-                item.append('<div class="rateit-reset"></div><div class="rateit-range"><div class="rateit-selected" style="height:' + itemdata('starheight') + 'px"></div><div class="rateit-hover" style="height:' + itemdata('starheight') + 'px"></div></div>');
+                //Create the necessary tags. For ARIA purposes we need to give the items an ID. So we use an internal index to create unique ids
+                index++;
+                var html = '<div id="rateit-reset-{{index}}" class="rateit-reset" role="button" aria-label="' + $.rateit.aria.resetLabel + '" aria-controls="rateit-range-{{index}}" tabindex="0"></div><div id="rateit-range-{{index}}" class="rateit-range" tabindex="0" role="slider" aria-label="' + $.rateit.aria.ratingLabel + '" aria-owns="rateit-reset-{{index}}" aria-valuemin="' + itemdata('min') + '" aria-valuemax="' + itemdata('max') + '" aria-valuenow="' + itemdata('value') + '"><div class="rateit-selected" style="height:' + itemdata('starheight') + 'px"></div><div class="rateit-hover" style="height:' + itemdata('starheight') + 'px"></div></div>';
+                item.append(html.replace(/{{index}}/gi, index));
 
                 //if we are in RTL mode, we have to change the float of the "reset button"
                 if (!ltr) {
@@ -139,9 +160,14 @@
                 item.find('.rateit-selected').width(score);
             }
 
+            //setup the reset button
             var resetbtn = item.find('.rateit-reset');
             if (resetbtn.data('wired') !== true) {
-                resetbtn.click(function () {
+                resetbtn.bind('click keypress', function (e) {
+
+                    if (e.type == 'keypress' && (e.which != 32 && e.which != 13)) return; //aria, when key press, only accept enter and space
+
+                    e.preventDefault();
                     itemdata('value', itemdata('min'));
                     range.find('.rateit-hover').hide().width(0);
                     range.find('.rateit-selected').width(0).show();
@@ -151,7 +177,7 @@
                 
             }
             
-
+            //this function calculates the score based on the current position of the mouse.
             var calcRawScore = function (element, event) {
                 var pageX = (event.changedTouches) ? event.changedTouches[0].pageX : event.pageX;
 
@@ -163,8 +189,31 @@
                 return score = Math.ceil(offsetx / itemdata('starwidth') * (1 / itemdata('step')));
             };
 
+            //sets the hover div based on the score.
+            var setHover = function (score) {
+                var w = score * itemdata('starwidth') * itemdata('step');
+                var h = range.find('.rateit-hover');
+                if (h.data('width') != w) {
+                    range.find('.rateit-selected').hide();
+                    h.width(w).show().data('width', w);
+                    var data = [(score * itemdata('step')) + itemdata('min')];
+                    item.trigger('hover', data).trigger('over', data);
+                }
+            };
 
-            //
+            var setSelection = function (value) {
+                itemdata('value', value);
+                if (itemdata('backingfld')) {
+                    $(itemdata('backingfld')).val(value);
+                }
+                if (itemdata('ispreset')) { //if it was a preset value, unset that.
+                    range.find('.rateit-selected').removeClass(presetclass);
+                    itemdata('ispreset', false);
+                }
+                range.find('.rateit-hover').hide();
+                range.find('.rateit-selected').width(value * itemdata('starwidth') - (itemdata('min') * itemdata('starwidth'))).show();
+                item.trigger('hover', [null]).trigger('over', [null]).trigger('rated', [value]);
+            };
 
             if (!itemdata('readonly')) {
                 //if we are not read only, add all the events
@@ -178,14 +227,7 @@
                     range.bind('touchmove touchend', touchHandler); //bind touch events
                     range.mousemove(function (e) {
                         var score = calcRawScore(this, e);
-                        var w = score * itemdata('starwidth') * itemdata('step');
-                        var h = range.find('.rateit-hover');
-                        if (h.data('width') != w) {
-                            range.find('.rateit-selected').hide();
-                            h.width(w).show().data('width', w);
-                            var data = [(score * itemdata('step')) + itemdata('min')];
-                            item.trigger('hover', data).trigger('over', data);
-                        }
+                        setHover(score);
                     });
                     //when the mouse leaves the range, we have to hide the hover stars, and show the current value.
                     range.mouseleave(function (e) {
@@ -196,21 +238,20 @@
                     //when we click on the range, we have to set the value, hide the hover.
                     range.mouseup(function (e) {
                         var score = calcRawScore(this, e);
-
-                        var newvalue = (score * itemdata('step')) + itemdata('min');
-                        itemdata('value', newvalue);
-                        if (itemdata('backingfld')) {
-                            $(itemdata('backingfld')).val(newvalue);
-                        }
-                        if (itemdata('ispreset')) { //if it was a preset value, unset that.
-                            range.find('.rateit-selected').removeClass(presetclass);
-                            itemdata('ispreset', false);
-                        }
-                        range.find('.rateit-hover').hide();
-                        range.find('.rateit-selected').width(score * itemdata('starwidth') * itemdata('step')).show();
-                        item.trigger('hover', [null]).trigger('over', [null]).trigger('rated', [newvalue]);
+                        var value = (score * itemdata('step')) + itemdata('min');
+                        setSelection(value);
                     });
 
+                    //support key nav
+                    range.keyup( function (e) {
+                        if (e.which == 38 || e.which == (ltr ? 39 : 37)) {
+                            setSelection(Math.min(itemdata('value') + itemdata('step'), itemdata('max')));
+                        }
+                        if (e.which == 40 || e.which == (ltr ? 37 : 39)) {
+                            setSelection(Math.max(itemdata('value') - itemdata('step'), itemdata('min')));
+                        }
+                    });
+                  
                     itemdata('wired', true);
                 }
                 if (itemdata('resetable')) {
@@ -220,6 +261,8 @@
             else {
                 resetbtn.hide();
             }
+
+            range.attr('aria-readonly', itemdata('readonly'));
         });
     };
 

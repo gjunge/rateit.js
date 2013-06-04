@@ -18,6 +18,7 @@ div.rateit div.rateit-range
     display: inline-block;
     background: url(star.gif);
     height: 16px;
+    outline: none;
 }
 
 /* for IE 6 */
@@ -82,6 +83,7 @@ div.rateit div.rateit-reset
     display: -moz-inline-box;
     display: inline-block;
     float: left;
+    outline: none;
 }
 
 div.rateit div.rateit-reset:hover
