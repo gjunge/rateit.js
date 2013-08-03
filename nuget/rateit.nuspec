@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>jQuery.RateIt</id>
-    <version>1.0.9</version>
+    <version>1.0.12</version>
     <title>jQuery.RateIt</title>
     <authors>Gidon Junge</authors>
     <owners>Gidon Junge</owners>
@@ -11,12 +11,18 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A rating plugin for jQuery. 
     
-Features: fast, progressive enhancement, touch support (*new), customizable (just swap out the images, or change some CSS), unobtrusive javaScript (using HTML5 data-* attributes), RTL support, supports as many stars as you'd like, and also any step size. 
+Features: fast, progressive enhancement, touch support, customizable (just swap out the images, or change some CSS), unobtrusive javaScript (using HTML5 data-* attributes), RTL support, ARIA and Keyboard support  (*new). Use as many stars as you'd like, and also any step size. 
     
 Check out the examples link on the project page for implementation and examples.</description>
     <summary>A rating plugin for jQuery.</summary>
     <releaseNotes>
       ==== CHANGE LOG ====
+      1.12
+      Feature: ARIA support. Added basic ARIA support including keyboard navigation.
+      Feature: Suggestion: use span instead of div.
+      Bug fix:#1639 Firefox showing too many stars
+
+
       1.0.9
       Bug fix: #1203 Dynamically changing a property causes events to be re-registered, thanks to WeyenDrote
 
