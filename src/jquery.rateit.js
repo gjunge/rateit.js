@@ -71,8 +71,9 @@
                     item.find('.rateit-range').unbind();
                     itemdata('wired', false);
                 }
-                if (p1 == 'value' && p2 == null) p2 = itemdata('min'); //when we receive a null value, reset the score to its min value.
-
+                //when we receive a null value, reset the score to its min value.
+                if (p1 == 'value')
+                    p2 = (p2 == null) ? itemdata('min') : Math.max(itemdata('min'), Math.min(itemdata('max'), p2));
                 if (itemdata('backingfld')) {
                     //if we have a backing field, check which fields we should update. 
                     //In case of input[type=range], although we did read its attributes even in browsers that don't support it (using fld.attr())
@@ -99,7 +100,8 @@
                 itemdata('backingfld', itemdata('backingfld') || options.backingfld);
                 itemdata('starwidth', itemdata('starwidth') || options.starwidth);
                 itemdata('starheight', itemdata('starheight') || options.starheight);
-                itemdata('value', itemdata('value') || options.value || options.min);
+                
+                itemdata('value', Math.max(itemdata('min'), Math.min(itemdata('max'), (itemdata('value') || options.value || options.min) )));
                 itemdata('ispreset', itemdata('ispreset') !== undefined ? itemdata('ispreset') : options.ispreset);
                 //are we LTR or RTL?
 
@@ -128,9 +130,11 @@
                 }
 
                 //Create the necessary tags. For ARIA purposes we need to give the items an ID. So we use an internal index to create unique ids
+                var element = item[0].nodeName == 'DIV' ? 'div' : 'span';
+                console.log(item[0].nodeName)
                 index++;
-                var html = '<button id="rateit-reset-{{index}}" class="rateit-reset" aria-label="' + $.rateit.aria.resetLabel + '" aria-controls="rateit-range-{{index}}"></button><div id="rateit-range-{{index}}" class="rateit-range" tabindex="0" role="slider" aria-label="' + $.rateit.aria.ratingLabel + '" aria-owns="rateit-reset-{{index}}" aria-valuemin="' + itemdata('min') + '" aria-valuemax="' + itemdata('max') + '" aria-valuenow="' + itemdata('value') + '"><div class="rateit-selected" style="height:' + itemdata('starheight') + 'px"></div><div class="rateit-hover" style="height:' + itemdata('starheight') + 'px"></div></div>';
-                item.append(html.replace(/{{index}}/gi, index));
+                var html = '<button id="rateit-reset-{{index}}" class="rateit-reset" aria-label="' + $.rateit.aria.resetLabel + '" aria-controls="rateit-range-{{index}}"></button><{{element}} id="rateit-range-{{index}}" class="rateit-range" tabindex="0" role="slider" aria-label="' + $.rateit.aria.ratingLabel + '" aria-owns="rateit-reset-{{index}}" aria-valuemin="' + itemdata('min') + '" aria-valuemax="' + itemdata('max') + '" aria-valuenow="' + itemdata('value') + '"><{{element}} class="rateit-selected" style="height:' + itemdata('starheight') + 'px"></{{element}}><{{element}} class="rateit-hover" style="height:' + itemdata('starheight') + 'px"></{{element}}></{{element}}>';
+                item.append(html.replace(/{{index}}/gi, index).replace(/{{element}}/gi, element));
 
                 //if we are in RTL mode, we have to change the float of the "reset button"
                 if (!ltr) {
@@ -187,7 +191,7 @@
                 return score = Math.ceil(offsetx / itemdata('starwidth') * (1 / itemdata('step')));
             };
 
-            //sets the hover div based on the score.
+            //sets the hover element based on the score.
             var setHover = function (score) {
                 var w = score * itemdata('starwidth') * itemdata('step');
                 var h = range.find('.rateit-hover');
@@ -220,7 +224,7 @@
                 if (!itemdata('resetable')) 
                     resetbtn.hide();
 
-                //when the mouse goes over the range div, we set the "hover" stars.
+                //when the mouse goes over the range element, we set the "hover" stars.
                 if (!itemdata('wired')) {
                     range.bind('touchmove touchend', touchHandler); //bind touch events
                     range.mousemove(function (e) {
@@ -287,9 +291,9 @@
     };
 
     //some default values.
-    $.fn.rateit.defaults = { min: 0, max: 5, step: 0.5, starwidth: 16, starheight: 16, readonly: false, resetable: true, ispreset: false };
+    $.fn.rateit.defaults = { min: 0, max: 5, step: 0.5, starwidth: 16, starheight: 16, readonly: false, resetable: true, ispreset: false};
 
-    //invoke it on all div.rateit elements. This could be removed if not wanted.
-    $(function () { $('div.rateit').rateit(); });
+    //invoke it on all .rateit elements. This could be removed if not wanted.
+    $(function () { $('div.rateit, span.rateit').rateit(); });
 
 })(jQuery);
