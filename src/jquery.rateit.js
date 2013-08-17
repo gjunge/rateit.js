@@ -1,7 +1,7 @@
 /*
     RateIt
-    version 1.0.12
-    08/03/2013
+    version 1.0.13
+    08/17/2013
     http://rateit.codeplex.com
     Twitter: @gjunge
 
@@ -131,7 +131,6 @@
 
                 //Create the necessary tags. For ARIA purposes we need to give the items an ID. So we use an internal index to create unique ids
                 var element = item[0].nodeName == 'DIV' ? 'div' : 'span';
-                console.log(item[0].nodeName)
                 index++;
                 var html = '<button id="rateit-reset-{{index}}" class="rateit-reset" aria-label="' + $.rateit.aria.resetLabel + '" aria-controls="rateit-range-{{index}}"></button><{{element}} id="rateit-range-{{index}}" class="rateit-range" tabindex="0" role="slider" aria-label="' + $.rateit.aria.ratingLabel + '" aria-owns="rateit-reset-{{index}}" aria-valuemin="' + itemdata('min') + '" aria-valuemax="' + itemdata('max') + '" aria-valuenow="' + itemdata('value') + '"><{{element}} class="rateit-selected" style="height:' + itemdata('starheight') + 'px"></{{element}}><{{element}} class="rateit-hover" style="height:' + itemdata('starheight') + 'px"></{{element}}></{{element}}>';
                 item.append(html.replace(/{{index}}/gi, index).replace(/{{element}}/gi, element));

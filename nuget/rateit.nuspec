@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>jQuery.RateIt</id>
-    <version>1.0.12</version>
+    <version>1.0.13</version>
     <title>jQuery.RateIt</title>
     <authors>Gidon Junge</authors>
     <owners>Gidon Junge</owners>
@@ -17,10 +17,13 @@ Check out the examples link on the project page for implementation and examples.
     <summary>A rating plugin for jQuery.</summary>
     <releaseNotes>
       ==== CHANGE LOG ====
+      1.13
+      Bug fix: #1648 Removed console.log 
+      
       1.12
       Feature: ARIA support. Added basic ARIA support including keyboard navigation.
       Feature: Suggestion: use span instead of div.
-      Bug fix:#1639 Firefox showing too many stars
+      Bug fix: #1639 Firefox showing too many stars
 
 
       1.0.9
