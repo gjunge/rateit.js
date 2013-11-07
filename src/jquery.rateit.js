@@ -1,10 +1,5 @@
-/*
-    RateIt
-    version 1.0.13
-    08/17/2013
-    http://rateit.codeplex.com
-    Twitter: @gjunge
-
+/*! RateIt | v1.0.14 / 11/07/2013 | https://rateit.codeplex.com/license
+    http://rateit.codeplex.com | Twitter: @gjunge
 */
 (function ($) {
     $.rateit = {
@@ -144,11 +139,13 @@
 
                 itemdata('init', true);
             }
-
+            //resize the height of all elements, 
+            item.find('.rateit-selected, .rateit-hover').height(itemdata('starheight'));
 
             //set the range element to fit all the stars.
             var range = item.find('.rateit-range');
             range.width(itemdata('starwidth') * (itemdata('max') - itemdata('min'))).height(itemdata('starheight'));
+             
 
             //add/remove the preset class
             var presetclass = 'rateit-preset' + ((ltr) ? '' : '-rtl');
