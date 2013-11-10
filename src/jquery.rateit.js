@@ -1,4 +1,4 @@
-/*! RateIt | v1.0.14 / 11/07/2013 | https://rateit.codeplex.com/license
+/*! RateIt | v1.0.14 / 11/10/2013 | https://rateit.codeplex.com/license
     http://rateit.codeplex.com | Twitter: @gjunge
 */
 (function ($) {
@@ -24,7 +24,7 @@
         if (tp1 == 'object' || p1 === undefined || p1 == null) {
             options = $.extend({}, $.fn.rateit.defaults, p1); //wants to init new rateit plugin(s).
         }
-        else if (tp1 == 'string' && p2 === undefined) {
+        else if (tp1 == 'string' && p1 !== 'reset' && p2 === undefined) {
             return this.data('rateit' + capitaliseFirstLetter(p1)); //wants to get a value.
         }
         else if (tp1 == 'string') {
@@ -33,6 +33,7 @@
 
         return this.each(function () {
             var item = $(this);
+         
 
             //shorten all the item.data('rateit-XXX'), will save space in closure compiler, will be like item.data('XXX') will become x('XXX')
             var itemdata = function (key, value) {
@@ -50,6 +51,23 @@
                 arguments[0] = 'rateit' + capitaliseFirstLetter(key);
                 return item.data.apply(item, arguments); ////Fix for WI: 523
             };
+
+            //handle programmatic reset
+            if (p1 == 'reset') {
+              var setup = itemdata('init'); //get initial value
+              for (var prop in setup) {
+                item.data(prop, setup[prop]);
+              }
+
+              if (itemdata('backingfld')) { //reset also backingfield
+                var fld = $(itemdata('backingfld'));
+                fld.val(itemdata('value'));
+                if (fld[0].min) fld[0].min = itemdata('min');
+                if (fld[0].max) fld[0].max = itemdata('max');
+                if (fld[0].step) fld[0].step = itemdata('step');
+              }
+              item.trigger('reset');
+            }
 
             //add the rate it class.
             if (!item.hasClass('rateit')) item.addClass('rateit');
@@ -136,8 +154,8 @@
                     item.find('.rateit-selected').addClass('rateit-selected-rtl');
                     item.find('.rateit-hover').addClass('rateit-hover-rtl');
                 }
-
-                itemdata('init', true);
+                
+                itemdata('init', JSON.parse(JSON.stringify(item.data()))); //cheap way to create a clone
             }
             //resize the height of all elements, 
             item.find('.rateit-selected, .rateit-hover').height(itemdata('starheight'));
@@ -166,10 +184,7 @@
                 resetbtn.bind('click', function (e) {
                     e.preventDefault();
                     resetbtn.blur();
-                    itemdata('value', itemdata('min'));
-                    range.find('.rateit-hover').hide().width(0);
-                    range.find('.rateit-selected').width(0).show();
-                    if (itemdata('backingfld')) $(itemdata('backingfld')).val(itemdata('min'));
+                    item.rateit('value', null);
                     item.trigger('reset');
                 }).data('wired', true);
                 
