@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>jQuery.RateIt</id>
-    <version>1.0.14</version>
+    <version>1.0.15</version>
     <title>jQuery.RateIt</title>
     <authors>Gidon Junge</authors>
     <owners>Gidon Junge</owners>
@@ -17,6 +17,9 @@ Check out the examples link on the project page for implementation and examples.
     <summary>A rating plugin for jQuery.</summary>
     <releaseNotes>
       ==== CHANGE LOG ====
+      1.0.15
+      Bug fix: #1728 Compatibility with jQuery mobile
+      
       1.0.14
       Feature: #1712 Added a programmatic reset method which reverts to initial settings. 
       Bug fix: #1711 On changing starheight/width some artifacts show up. (Thanks to JoeyBradshaw)
