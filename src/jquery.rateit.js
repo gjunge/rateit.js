@@ -1,4 +1,4 @@
-/*! RateIt | v1.0.15 / 11/13/2013 | https://rateit.codeplex.com/license
+/*! RateIt | v1.0.16 / 11/24/2013 | https://rateit.codeplex.com/license
     http://rateit.codeplex.com | Twitter: @gjunge
 */
 (function ($) {
@@ -253,6 +253,7 @@
                         var score = calcRawScore(this, e);
                         var value = (score * itemdata('step')) + itemdata('min');
                         setSelection(value);
+                        range.blur();
                     });
 
                     //support key nav

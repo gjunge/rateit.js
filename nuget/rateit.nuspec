@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>jQuery.RateIt</id>
-    <version>1.0.15</version>
+    <version>1.0.16</version>
     <title>jQuery.RateIt</title>
     <authors>Gidon Junge</authors>
     <owners>Gidon Junge</owners>
@@ -17,6 +17,9 @@ Check out the examples link on the project page for implementation and examples.
     <summary>A rating plugin for jQuery.</summary>
     <releaseNotes>
       ==== CHANGE LOG ====
+      1.0.16
+      Bug fix: #1741 Using arrow keys after a rating changes rating.
+            
       1.0.15
       Bug fix: #1728 Compatibility with jQuery mobile
       
@@ -31,7 +34,6 @@ Check out the examples link on the project page for implementation and examples.
       Feature: ARIA support. Added basic ARIA support including keyboard navigation.
       Feature: Suggestion: use span instead of div.
       Bug fix: #1639 Firefox showing too many stars
-
 
       1.0.9
       Bug fix: #1203 Dynamically changing a property causes events to be re-registered, thanks to WeyenDrote
