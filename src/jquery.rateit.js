@@ -1,4 +1,4 @@
-/*! RateIt | v1.0.16 / 11/24/2013 | https://rateit.codeplex.com/license
+/*! RateIt | v1.0.17 / 12/15/2013 | https://rateit.codeplex.com/license
     http://rateit.codeplex.com | Twitter: @gjunge
 */
 (function ($) {
@@ -105,16 +105,15 @@
             if (!itemdata('init')) {
 
                 //get our values, either from the data-* html5 attribute or from the options.
-                itemdata('min', itemdata('min') || options.min);
-                itemdata('max', itemdata('max') || options.max);
+                itemdata('min', isNaN(itemdata('min')) ? itemdata('min') : options.min);
+                itemdata('max', isNaN(itemdata('max')) ? itemdata('max') : options.max);
                 itemdata('step', itemdata('step') || options.step);
                 itemdata('readonly', itemdata('readonly') !== undefined ? itemdata('readonly') : options.readonly);
                 itemdata('resetable', itemdata('resetable') !== undefined ? itemdata('resetable') : options.resetable);
                 itemdata('backingfld', itemdata('backingfld') || options.backingfld);
                 itemdata('starwidth', itemdata('starwidth') || options.starwidth);
                 itemdata('starheight', itemdata('starheight') || options.starheight);
-                
-                itemdata('value', Math.max(itemdata('min'), Math.min(itemdata('max'), (itemdata('value') || options.value || options.min) )));
+                itemdata('value', Math.max(itemdata('min'), Math.min(itemdata('max'), (!isNaN(itemdata('value')) ? itemdata('value') : (!isNaN(options.value) ? options.value : options.min) ))));
                 itemdata('ispreset', itemdata('ispreset') !== undefined ? itemdata('ispreset') : options.ispreset);
                 //are we LTR or RTL?
 
