@@ -1,4 +1,4 @@
-/*! RateIt | v1.0.17 / 12/15/2013 | https://rateit.codeplex.com/license
+/*! RateIt | v1.0.18 / 12/22/2013 | https://rateit.codeplex.com/license
     http://rateit.codeplex.com | Twitter: @gjunge
 */
 (function ($) {
@@ -105,8 +105,8 @@
             if (!itemdata('init')) {
 
                 //get our values, either from the data-* html5 attribute or from the options.
-                itemdata('min', isNaN(itemdata('min')) ? itemdata('min') : options.min);
-                itemdata('max', isNaN(itemdata('max')) ? itemdata('max') : options.max);
+                itemdata('min', isNaN(itemdata('min')) ? options.min : itemdata('min'));
+                itemdata('max', isNaN(itemdata('max')) ? options.max : itemdata('max'));
                 itemdata('step', itemdata('step') || options.step);
                 itemdata('readonly', itemdata('readonly') !== undefined ? itemdata('readonly') : options.readonly);
                 itemdata('resetable', itemdata('resetable') !== undefined ? itemdata('resetable') : options.resetable);
