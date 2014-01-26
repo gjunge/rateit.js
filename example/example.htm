@@ -641,6 +641,49 @@ div.svg div.rateit-preset {
         &lt;/script&gt;  
 </pre>
       </li>
+        <li id="ex_13">
+            <h3>
+                13) Resizing
+            </h3>
+            <p>
+                test
+            </p>
+
+            <div class="rateit" id="rateit13">
+            </div>
+
+            <script type="text/javascript">
+                $('#rateit13').on('beforerated', function (e, value) {
+                    if (!confirm('Are you sure you want to rate this item: ' +  value + ' stars?')) {
+                        e.preventDefault();
+                    }
+                });
+
+                $('#rateit13').on('beforereset', function (e) {
+                    if (!confirm('Are you sure you want to reset the rating?')) {
+                        e.preventDefault();
+                    }
+                });
+            </script>
+            <pre class="brush: xml">
+          &lt;div class=&quot;rateit&quot; id=&quot;rateit12&quot;&gt;&lt;/div&gt;
+          &lt;p&gt;Pick a size: 
+            &lt;select id=&quot;size_12&quot;&gt;
+                &lt;option data-class=&quot;&quot; data-size=&quot;16&quot; selected&gt;normal&lt;/option&gt;
+                &lt;option data-class=&quot;bigstars&quot; data-size=&quot;32&quot;&gt;big&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/p&gt;
+          &lt;script type=&quot;text/javascript&quot;&gt;
+            $(&#39;#size_12&#39;).change(function () {
+              var option = $(this.options[this.selectedIndex]);
+              $(&#39;#rateit12&#39;).removeClass(&#39;bigstars&#39;) //remove old class
+                            .addClass(option.data(&#39;class&#39;))  //add new class
+                            .rateit(&#39;starwidth&#39;, option.data(&#39;size&#39;)) //change width
+                            .rateit(&#39;starheight&#39;, option.data(&#39;size&#39;)); //change height
+            });
+        &lt;/script&gt;  
+</pre>
+        </li>
     </ul>
 
     <script src="../src/jquery.rateit.js" type="text/javascript"></script>
