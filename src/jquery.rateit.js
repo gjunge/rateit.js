@@ -1,4 +1,4 @@
-/*! RateIt | v1.0.18 / 12/22/2013 | https://rateit.codeplex.com/license
+/*! RateIt | v1.0.19 / 01/26/2014 | https://rateit.codeplex.com/license
     http://rateit.codeplex.com | Twitter: @gjunge
 */
 (function ($) {
