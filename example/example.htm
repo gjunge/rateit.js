@@ -32,6 +32,13 @@
         {
             margin-left: -20px;
         }
+
+        #toc {
+            -moz-column-count: 3;
+            -webkit-column-count: 3;
+            column-count: 3;
+            max-width: 1100px;
+        }
     </style>
     <!-- alternative styles -->
     <link href="content/bigstars.css" rel="stylesheet" type="text/css">
@@ -64,7 +71,7 @@
     <h2>
         Examples</h2>
     <div style="font-weight: bold">
-        <span id="toc"></span>
+        <ul id="toc"></ul>
     </div>
     <ul class="nostyle" id="examples">
         <li id="ex_a1">
@@ -89,7 +96,7 @@
         </li>
         <li id="ex_2a">
             <h3>
-                2a) Progressive enhancement (using HTML5 range input type)
+                2a) Progressive enhancement (using input[type=range])
             </h3>
             <input type="range" min="0" max="7" value="0" step="0.5" id="backing2">
             <div class="rateit" data-rateit-backingfld="#backing2">
@@ -643,10 +650,11 @@ div.svg div.rateit-preset {
       </li>
         <li id="ex_13">
             <h3>
-                13) Resizing
+                13) Confirmation before rating or resetting
             </h3>
             <p>
-                test
+                Sometimes we would like to ask the user to confirm his/her action, or to show some dialog box before the rating is submitted.<br />
+                We can now bind to the "beforerated" and "beforereset" events. Both events occur before the actual rating/resetting. Both events might also be cancelled, by using the <code>e.preventDefault()</code> method.
             </p>
 
             <div class="rateit" id="rateit13">
@@ -666,22 +674,20 @@ div.svg div.rateit-preset {
                 });
             </script>
             <pre class="brush: xml">
-          &lt;div class=&quot;rateit&quot; id=&quot;rateit12&quot;&gt;&lt;/div&gt;
-          &lt;p&gt;Pick a size: 
-            &lt;select id=&quot;size_12&quot;&gt;
-                &lt;option data-class=&quot;&quot; data-size=&quot;16&quot; selected&gt;normal&lt;/option&gt;
-                &lt;option data-class=&quot;bigstars&quot; data-size=&quot;32&quot;&gt;big&lt;/option&gt;
-            &lt;/select&gt;
-          &lt;/p&gt;
+          &lt;div class=&quot;rateit&quot; id=&quot;rateit3&quot;&gt;&lt;/div&gt;
+       
           &lt;script type=&quot;text/javascript&quot;&gt;
-            $(&#39;#size_12&#39;).change(function () {
-              var option = $(this.options[this.selectedIndex]);
-              $(&#39;#rateit12&#39;).removeClass(&#39;bigstars&#39;) //remove old class
-                            .addClass(option.data(&#39;class&#39;))  //add new class
-                            .rateit(&#39;starwidth&#39;, option.data(&#39;size&#39;)) //change width
-                            .rateit(&#39;starheight&#39;, option.data(&#39;size&#39;)); //change height
-            });
-        &lt;/script&gt;  
+                $('#rateit13').on('beforerated', function (e, value) {
+                    if (!confirm('Are you sure you want to rate this item: ' +  value + ' stars?')) {
+                        e.preventDefault();
+                    }
+                });
+                $('#rateit13').on('beforereset', function (e) {
+                    if (!confirm('Are you sure you want to reset the rating?')) {
+                        e.preventDefault();
+                    }
+                });        
+           &lt;/script&gt;  
 </pre>
         </li>
     </ul>
@@ -693,16 +699,11 @@ div.svg div.rateit-preset {
         var toc = [];
         $('#examples > li').each(function (i, e) {
 
-
-            if (i > 0)
-                toc.push(', ');
-            toc.push('<a href="#')
+            toc.push('<li><a href="#')
             toc.push(e.id)
             toc.push('">')
-            var title = $(e).find('h3:first').text();
-            title = title.substring(title.indexOf(')') + 2);
-            toc.push(title);
-            toc.push('</a>');
+            toc.push($(e).find('h3:first').text());
+            toc.push('</a></li>');
 
         });
 
