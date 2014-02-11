@@ -1,4 +1,4 @@
-/*! RateIt | v1.0.19 / 01/26/2014 | https://rateit.codeplex.com/license
+/*! RateIt | v1.0.20 / 01/26/2014 | https://rateit.codeplex.com/license
     http://rateit.codeplex.com | Twitter: @gjunge
 */
 (function ($) {
@@ -7,7 +7,7 @@
             resetLabel: 'reset rating',
             ratingLabel: 'rating'
         }
-    }
+    };
 
     $.fn.rateit = function (p1, p2) {
         //quick way out.
@@ -17,18 +17,18 @@
             return string.charAt(0).toUpperCase() + string.substr(1);
         };
 
-        if (this.length == 0) return this;
+        if (this.length === 0) { return this; }
 
 
         var tp1 = $.type(p1);
-        if (tp1 == 'object' || p1 === undefined || p1 == null) {
+        if (tp1 == 'object' || p1 === undefined || p1 === null) {
             options = $.extend({}, $.fn.rateit.defaults, p1); //wants to init new rateit plugin(s).
         }
         else if (tp1 == 'string' && p1 !== 'reset' && p2 === undefined) {
             return this.data('rateit' + capitaliseFirstLetter(p1)); //wants to get a value.
         }
         else if (tp1 == 'string') {
-            mode = 'setvalue'
+            mode = 'setvalue';
         }
 
         return this.each(function () {
@@ -62,21 +62,22 @@
                 if (itemdata('backingfld')) { //reset also backingfield
                     var fld = $(itemdata('backingfld'));
                     fld.val(itemdata('value'));
-                    if (fld[0].min) fld[0].min = itemdata('min');
-                    if (fld[0].max) fld[0].max = itemdata('max');
-                    if (fld[0].step) fld[0].step = itemdata('step');
+                    fld.trigger('change');
+                    if (fld[0].min) { fld[0].min = itemdata('min'); }
+                    if (fld[0].max) { fld[0].max = itemdata('max'); }
+                    if (fld[0].step) { fld[0].step = itemdata('step'); }
                 }
                 item.trigger('reset');
             }
 
             //add the rate it class.
-            if (!item.hasClass('rateit')) item.addClass('rateit');
+            if (!item.hasClass('rateit')) { item.addClass('rateit'); }
 
             var ltr = item.css('direction') != 'rtl';
 
             // set value mode
             if (mode == 'setvalue') {
-                if (!itemdata('init')) throw 'Can\'t set value before init';
+                if (!itemdata('init')) { throw 'Can\'t set value before init'; }
 
 
                 //if readonly now and it wasn't readonly, remove the eventhandlers.
@@ -85,17 +86,18 @@
                     itemdata('wired', false);
                 }
                 //when we receive a null value, reset the score to its min value.
-                if (p1 == 'value')
+                if (p1 == 'value') {
                     p2 = (p2 == null) ? itemdata('min') : Math.max(itemdata('min'), Math.min(itemdata('max'), p2));
+                }
                 if (itemdata('backingfld')) {
                     //if we have a backing field, check which fields we should update. 
                     //In case of input[type=range], although we did read its attributes even in browsers that don't support it (using fld.attr())
                     //we only update it in browser that support it (&& fld[0].min only works in supporting browsers), not only does it save us from checking if it is range input type, it also is unnecessary.
                     var fld = $(itemdata('backingfld'));
-                    if (p1 == 'value') fld.val(p2);
-                    if (p1 == 'min' && fld[0].min) fld[0].min = p2;
-                    if (p1 == 'max' && fld[0].max) fld[0].max = p2;
-                    if (p1 == 'step' && fld[0].step) fld[0].step = p2;
+                    if (p1 == 'value') { fld.val(p2); }
+                    if (p1 == 'min' && fld[0].min) { fld[0].min = p2; }
+                    if (p1 == 'max' && fld[0].max) { fld[0].max = p2;}
+                    if (p1 == 'step' && fld[0].step) { fld[0].step = p2; }
                 }
 
                 itemdata(p1, p2);
@@ -122,9 +124,9 @@
                     var fld = $(itemdata('backingfld'));
                     itemdata('value', fld.hide().val());
 
-                    if (fld.attr('disabled') || fld.attr('readonly'))
+                    if (fld.attr('disabled') || fld.attr('readonly')) {
                         itemdata('readonly', true); //http://rateit.codeplex.com/discussions/362055 , if a backing field is disabled or readonly at instantiation, make rateit readonly.
-
+                    }
 
                     if (fld[0].nodeName == 'INPUT') {
                         if (fld[0].type == 'range' || fld[0].type == 'text') { //in browsers not support the range type, it defaults to text
@@ -166,10 +168,12 @@
 
             //add/remove the preset class
             var presetclass = 'rateit-preset' + ((ltr) ? '' : '-rtl');
-            if (itemdata('ispreset'))
+            if (itemdata('ispreset')) {
                 item.find('.rateit-selected').addClass(presetclass);
-            else
+            }
+            else {
                 item.find('.rateit-selected').removeClass(presetclass);
+            }
 
             //set the value if we have it.
             if (itemdata('value') != null) {
@@ -202,9 +206,9 @@
                 var pageX = (event.changedTouches) ? event.changedTouches[0].pageX : event.pageX;
 
                 var offsetx = pageX - $(element).offset().left;
-                if (!ltr) offsetx = range.width() - offsetx;
-                if (offsetx > range.width()) offsetx = range.width();
-                if (offsetx < 0) offsetx = 0;
+                if (!ltr) { offsetx = range.width() - offsetx };
+                if (offsetx > range.width()) { offsetx = range.width(); }
+                if (offsetx < 0) { offsetx = 0; }
 
                 return score = Math.ceil(offsetx / itemdata('starwidth') * (1 / itemdata('step')));
             };
@@ -230,7 +234,7 @@
 
                 itemdata('value', value);
                 if (itemdata('backingfld')) {
-                    $(itemdata('backingfld')).val(value);
+                    $(itemdata('backingfld')).val(value).trigger('change');
                 }
                 if (itemdata('ispreset')) { //if it was a preset value, unset that.
                     range.find('.rateit-selected').removeClass(presetclass);
@@ -246,8 +250,9 @@
                 //if we are not read only, add all the events
 
                 //if we have a reset button, set the event handler.
-                if (!itemdata('resetable'))
+                if (!itemdata('resetable')) {
                     resetbtn.hide();
+                }
 
                 //when the mouse goes over the range element, we set the "hover" stars.
                 if (!itemdata('wired')) {
