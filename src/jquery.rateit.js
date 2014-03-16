@@ -1,4 +1,4 @@
-/*! RateIt | v1.0.20 / 01/26/2014 | https://rateit.codeplex.com/license
+﻿/*! RateIt | v1.0.21 / 03/16/2014 | https://rateit.codeplex.com/license
     http://rateit.codeplex.com | Twitter: @gjunge
 */
 (function ($) {
@@ -120,9 +120,8 @@
                 //are we LTR or RTL?
 
                 if (itemdata('backingfld')) {
-                    //if we have a backing field, hide it, and get its value, and override defaults if range.
-                    var fld = $(itemdata('backingfld'));
-                    itemdata('value', fld.hide().val());
+                    //if we have a backing field, hide it, override defaults if range or select.
+                    var fld = $(itemdata('backingfld')).hide();
 
                     if (fld.attr('disabled') || fld.attr('readonly')) {
                         itemdata('readonly', true); //http://rateit.codeplex.com/discussions/362055 , if a backing field is disabled or readonly at instantiation, make rateit readonly.
@@ -137,9 +136,19 @@
                         }
                     }
                     if (fld[0].nodeName == 'SELECT' && fld[0].options.length > 1) {
-                        itemdata('min', Number(fld[0].options[0].value));
+                        itemdata('min', (!isNaN(itemdata('min')) ? itemdata('min') : Number(fld[0].options[0].value)));
                         itemdata('max', Number(fld[0].options[fld[0].length - 1].value));
                         itemdata('step', Number(fld[0].options[1].value) - Number(fld[0].options[0].value));
+                        //see if we have a option that as explicity been selected
+                        var selectedOption = fld.find('option[selected]');
+                        if (selectedOption.length == 1) {
+                            itemdata('value', selectedOption.val());
+                        }
+                    }
+                    else {
+                        //if it is not a select box, we can get's it's value using the val function. 
+                        //If it is a selectbox, we always get a value (the first one of the list), even if it was not explicity set.
+                        itemdata('value', fld.val());
                     }
                 }
 

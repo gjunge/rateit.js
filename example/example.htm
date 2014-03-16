@@ -115,7 +115,7 @@
             </h3>
             <select id="backing2b">
                 <option value="0">Bad</option>
-                <option value="1">OK</option>
+                <option value="1" selected="selected">OK</option>
                 <option value="2">Great</option>
                 <option value="3">Excellent</option>
             </select>
@@ -124,11 +124,33 @@
             <pre class="brush: xml">
             &lt;select id="backing2b">
                 &lt;option value="0">Bad&lt;/option>
-                &lt;option value="1">OK&lt;/option>
+                &lt;option value="1" selected="selected">OK&lt;/option>
                 &lt;option value="2">Great&lt;/option>
                 &lt;option value="3">Excellent&lt;/option>
             &lt;/select>
             &lt;div class="rateit" data-rateit-backingfld="#backing2b">&lt;/div>
+            </pre>
+        </li>
+        <li id="ex_2c">
+            <h3>
+                2c) Progressive enhancement (using select), and overriding min value
+            </h3>
+            <select id="backing2c">
+                <option value="1">Bad</option>
+                <option value="2">OK</option>
+                <option value="3">Great</option>
+                <option value="4">Excellent</option>
+            </select>
+            <div class="rateit" data-rateit-backingfld="#backing2c" data-rateit-min="0">
+            </div>
+            <pre class="brush: xml">
+            &lt;select id="backing2c">
+                &lt;option value="1">Bad&lt;/option>
+                &lt;option value="2">OK&lt;/option>
+                &lt;option value="3">Great&lt;/option>
+                &lt;option value="4">Excellent&lt;/option>
+            &lt;/select>
+            &lt;div class="rateit" data-rateit-backingfld="#backing2c" data-rateit-min="0">&lt;/div>
             </pre>
         </li>
         <li id="ex_3">
