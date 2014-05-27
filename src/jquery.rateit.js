@@ -1,4 +1,4 @@
-﻿/*! RateIt | v1.0.21 / 03/16/2014 | https://rateit.codeplex.com/license
+﻿/*! RateIt | v1.0.22 / 05/27/2014 | https://rateit.codeplex.com/license
     http://rateit.codeplex.com | Twitter: @gjunge
 */
 (function ($) {
@@ -155,7 +155,7 @@
                 //Create the necessary tags. For ARIA purposes we need to give the items an ID. So we use an internal index to create unique ids
                 var element = item[0].nodeName == 'DIV' ? 'div' : 'span';
                 index++;
-                var html = '<button id="rateit-reset-{{index}}" data-role="none" class="rateit-reset" aria-label="' + $.rateit.aria.resetLabel + '" aria-controls="rateit-range-{{index}}"></button><{{element}} id="rateit-range-{{index}}" class="rateit-range" tabindex="0" role="slider" aria-label="' + $.rateit.aria.ratingLabel + '" aria-owns="rateit-reset-{{index}}" aria-valuemin="' + itemdata('min') + '" aria-valuemax="' + itemdata('max') + '" aria-valuenow="' + itemdata('value') + '"><{{element}} class="rateit-selected" style="height:' + itemdata('starheight') + 'px"></{{element}}><{{element}} class="rateit-hover" style="height:' + itemdata('starheight') + 'px"></{{element}}></{{element}}>';
+                var html = '<button id="rateit-reset-{{index}}" type="button" data-role="none" class="rateit-reset" aria-label="' + $.rateit.aria.resetLabel + '" aria-controls="rateit-range-{{index}}"></button><{{element}} id="rateit-range-{{index}}" class="rateit-range" tabindex="0" role="slider" aria-label="' + $.rateit.aria.ratingLabel + '" aria-owns="rateit-reset-{{index}}" aria-valuemin="' + itemdata('min') + '" aria-valuemax="' + itemdata('max') + '" aria-valuenow="' + itemdata('value') + '"><{{element}} class="rateit-selected" style="height:' + itemdata('starheight') + 'px"></{{element}}><{{element}} class="rateit-hover" style="height:' + itemdata('starheight') + 'px"></{{element}}></{{element}}>';
                 item.append(html.replace(/{{index}}/gi, index).replace(/{{element}}/gi, element));
 
                 //if we are in RTL mode, we have to change the float of the "reset button"
