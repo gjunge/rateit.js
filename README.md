@@ -12,7 +12,7 @@ Examples are included in the download, or go to the [online examples] [samples].
 
 Your feedback is more than welcome!
 
-[samples]: http://www.radioactivethinking.com/rateit/example/example.htm
+[samples]: http://gjunge.github.io/rateit.js/examples/
 
 Why is RateIt different
 -------

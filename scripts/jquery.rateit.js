@@ -1,5 +1,5 @@
-﻿/*! RateIt | v1.0.22 / 05/27/2014 | https://rateit.codeplex.com/license
-    http://rateit.codeplex.com | Twitter: @gjunge
+﻿/*! RateIt | v1.0.23 / 04/04/2016
+    https://github.com/gjunge/rateit.js | Twitter: @gjunge
 */
 (function ($) {
     $.rateit = {
