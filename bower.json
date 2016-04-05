@@ -1,0 +1,22 @@
+{
+  "name": "jquery.rateit",
+  "authors": [
+    "Gideon Junge"
+  ],
+  "description": "Rating plugin for jQuery.",
+  "main": [
+    "scripts/jquery.rateit.js",
+    "scripts/rateit.css"
+  ],
+  "dependencies": {
+    "jquery": ">=1.6"
+  },
+  "keywords": [
+    "jQuery",
+    "RateIt",
+    "rating",
+    "stars"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/gjunge/rateit.js"
+}
