@@ -1,0 +1,23 @@
+{
+  "name": "jquery.rateit",
+  "version": "1.0.23",
+  "description": "Rating plugin for jQuery.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gjunge/rateit.js.git"
+  },
+  "keywords": [
+    "rateit",
+    "npm"
+  ],
+  "author": "Gidon Junge (https://twitter.com/gjunge)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gjunge/rateit.js/issues"
+  },
+  "homepage": "https://github.com/gjunge/rateit.js#readme"
+}
