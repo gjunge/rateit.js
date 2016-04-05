@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/gjunge/rateit.js/issues"
   },
-  "homepage": "https://github.com/gjunge/rateit.js#readme"
+  "homepage": "https://github.com/gjunge/rateit.js#readme",
+  "dependencies": {
+      "jquery": ">=1.6"
+  }
 }
