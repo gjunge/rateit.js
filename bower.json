@@ -18,5 +18,12 @@
     "stars"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/gjunge/rateit.js"
+  "homepage": "https://github.com/gjunge/rateit.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
 }
