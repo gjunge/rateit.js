@@ -1,6 +1,6 @@
 {
   "name": "jquery.rateit",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "Rating plugin for jQuery.",
   "main": "scripts/jquery.rateit.js",
   "scripts": {

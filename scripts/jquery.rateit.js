@@ -1,4 +1,4 @@
-﻿/*! RateIt | v1.0.23 / 04/04/2016
+﻿/*! RateIt | v1.0.24 / 06/14/2016
     https://github.com/gjunge/rateit.js | Twitter: @gjunge
 */
 (function ($) {
