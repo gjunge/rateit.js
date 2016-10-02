@@ -61,7 +61,12 @@
 
                 if (itemdata('backingfld')) { //reset also backingfield
                     var fld = $(itemdata('backingfld'));
-                    fld.val(itemdata('value'));
+                    if (fld[0].nodeName == 'SELECT' && itemdata('isassorted')) {
+                      fld.prop('selectedIndex', itemdata('value'));
+                    }
+                    else {
+                      fld.val(itemdata('value'));
+                    }
                     fld.trigger('change');
                     if (fld[0].min) { fld[0].min = itemdata('min'); }
                     if (fld[0].max) { fld[0].max = itemdata('max'); }
@@ -94,7 +99,12 @@
                     //In case of input[type=range], although we did read its attributes even in browsers that don't support it (using fld.attr())
                     //we only update it in browser that support it (&& fld[0].min only works in supporting browsers), not only does it save us from checking if it is range input type, it also is unnecessary.
                     var fld = $(itemdata('backingfld'));
-                    if (p1 == 'value') { fld.val(p2); }
+                    if (fld[0].nodeName == 'SELECT' && itemdata('isassorted')) {
+                        if (p1 == 'value') { fld.prop('selectedIndex', p2); }
+                    }
+                    else {
+                        if (p1 == 'value') { fld.val(p2); }
+                    }
                     if (p1 == 'min' && fld[0].min) { fld[0].min = p2; }
                     if (p1 == 'max' && fld[0].max) { fld[0].max = p2;}
                     if (p1 == 'step' && fld[0].step) { fld[0].step = p2; }
@@ -136,13 +146,25 @@
                         }
                     }
                     if (fld[0].nodeName == 'SELECT' && fld[0].options.length > 1) {
-                        itemdata('min', (!isNaN(itemdata('min')) ? itemdata('min') : Number(fld[0].options[0].value)));
-                        itemdata('max', Number(fld[0].options[fld[0].length - 1].value));
-                        itemdata('step', Number(fld[0].options[1].value) - Number(fld[0].options[0].value));
+                        if (itemdata('isassorted')) {
+                            itemdata('min', (!isNaN(itemdata('min')) ? itemdata('min') : Number(fld[0].options[0].index)));
+                            itemdata('max', Number(fld[0].options[fld[0].length - 1].index));
+                            itemdata('step', Number(fld[0].options[1].index) - Number(fld[0].options[0].index));
+                        }
+                        else {
+                            itemdata('min', (!isNaN(itemdata('min')) ? itemdata('min') : Number(fld[0].options[0].value)));
+                            itemdata('max', Number(fld[0].options[fld[0].length - 1].value));
+                            itemdata('step', Number(fld[0].options[1].value) - Number(fld[0].options[0].value));
+                        }
                         //see if we have a option that as explicity been selected
                         var selectedOption = fld.find('option[selected]');
                         if (selectedOption.length == 1) {
-                            itemdata('value', selectedOption.val());
+                            if (itemdata('isassorted')) {
+                                itemdata('value', selectedOption[0].index);
+                            }
+                            else {
+                                itemdata('value', selectedOption.val());
+                            }
                         }
                     }
                     else {
@@ -243,7 +265,12 @@
 
                 itemdata('value', value);
                 if (itemdata('backingfld')) {
-                    $(itemdata('backingfld')).val(value).trigger('change');
+                    if (fld[0].nodeName == 'SELECT' && itemdata('isassorted')) {
+                        $(itemdata('backingfld')).prop('selectedIndex', value).trigger('change');
+                    }
+                    else {
+                        $(itemdata('backingfld')).val(value).trigger('change');
+                    }
                 }
                 if (itemdata('ispreset')) { //if it was a preset value, unset that.
                     range.find('.rateit-selected').removeClass(presetclass);
