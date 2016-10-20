@@ -61,6 +61,7 @@
 
                 if (itemdata('backingfld')) { //reset also backingfield
                     var fld = $(itemdata('backingfld'));
+                    // If backing field is a select box with valuesrc option set to "index", reset its selectedIndex property; otherwise, reset its value.
                     if (fld[0].nodeName == 'SELECT' && fld.attr('data-rateit-valuesrc') === 'index') {
                         fld.prop('selectedIndex', itemdata('value'));
                     }
@@ -99,6 +100,7 @@
                     //In case of input[type=range], although we did read its attributes even in browsers that don't support it (using fld.attr())
                     //we only update it in browser that support it (&& fld[0].min only works in supporting browsers), not only does it save us from checking if it is range input type, it also is unnecessary.
                     var fld = $(itemdata('backingfld'));
+                    // If backing field is a select box with valuesrc option set to "index", update its selectedIndex property; otherwise, update its value.
                     if (fld[0].nodeName == 'SELECT' && fld.attr('data-rateit-valuesrc') === 'index') {
                         if (p1 == 'value') { fld.prop('selectedIndex', p2); }
                     }
@@ -146,6 +148,7 @@
                         }
                     }
                     if (fld[0].nodeName == 'SELECT' && fld[0].options.length > 1) {
+                        // If backing field is a select box with valuesrc option set to "index", use the indexes of its options; otherwise, use the values.
                         if (fld.attr('data-rateit-valuesrc') === 'index') {
                             itemdata('min', (!isNaN(itemdata('min')) ? itemdata('min') : Number(fld[0].options[0].index)));
                             itemdata('max', Number(fld[0].options[fld[0].length - 1].index));
@@ -159,6 +162,7 @@
                         //see if we have a option that as explicity been selected
                         var selectedOption = fld.find('option[selected]');
                         if (selectedOption.length == 1) {
+                            // If backing field is a select box with valuesrc option set to "index", use the index of selected option; otherwise, use the value.
                             if (fld.attr('data-rateit-valuesrc') === 'index') {
                                 itemdata('value', selectedOption[0].index);
                             }
@@ -265,6 +269,7 @@
 
                 itemdata('value', value);
                 if (itemdata('backingfld')) {
+                    // If backing field is a select box with valuesrc option set to "index", update its selectedIndex property; otherwise, update its value.
                     if (fld[0].nodeName == 'SELECT' && fld.attr('data-rateit-valuesrc') === 'index') {
                         $(itemdata('backingfld')).prop('selectedIndex', value).trigger('change');
                     }
