@@ -5,6 +5,7 @@
     <title>Rateit.js by gjunge</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
     <link href="https://rawgit.com/gjunge/rateit.js/master/scripts/rateit.css" rel="stylesheet" type="text/css">
      <style>
         body
@@ -94,142 +95,257 @@
             &lt;/span>
             </pre>
         </li>
+
         <li id="ex_2a">
             <h3>
-                2a) Progressive enhancement (using input[type=range])
+                2a) Icon Font Basic usage
             </h3>
-            <input type="range" min="0" max="7" value="0" step="0.5" id="backing2">
-            <div class="rateit" data-rateit-backingfld="#backing2">
+            <div class="rateit" data-rateit-mode="font">
             </div>
             <pre class="brush: xml">
-            &lt;input type="range" min="0" max="7" value="0" step="0.5" id="backing2">
-            &lt;div class="rateit" data-rateit-backingfld="#backing2">&lt;/div>
+            &lt;div class="rateit" data-rateit-mode="font">
+            &lt;/div>
             </pre>
-            <button onclick="$('#backing2').toggle()">
-                Toggle Backing Field visibility</button>
         </li>
+
         <li id="ex_2b">
             <h3>
-                2b) Progressive enhancement (using select)
+                2b) Icon Font - Change icon
             </h3>
-            <select id="backing2b">
+            <div class="rateit" data-rateit-icon="@" data-rateit-mode="font">
+            </div>
+            <pre class="brush: xml">
+            &lt;div class="rateit"  data-rateit-icon="@" data-rateit-mode="font">
+            &lt;/div>
+            </pre>
+        </li>
+
+        <li id="ex_2c">
+            <h3>
+                2c) Icon Font - Sizing
+            </h3>
+            <div class="rateit" data-rateit-mode="font" style="font-size:50px">
+            </div>
+            <pre class="brush: xml">
+            &lt;div class="rateit" data-rateit-mode="font"  style="font-size:50px">
+            &lt;/div>
+            </pre>
+        </li>
+
+        <li id="ex_2d">
+            <h3>
+                2d) Icon Font - Font Awesome
+            </h3>
+            <p>Due to the fact that webfonts take a while to be loaded, we cannot measure the size correctly of each step. That is why we have to use a web font loader, and hook onto the font-ready event before showing the control.</p>
+            <div class="rateit-fa" data-rateit-mode="font" data-rateit-icon="" style="font-family:fontawesome">
+            </div>
+            <script>
+                var configFontAwesome = {
+                    custom: {
+                        families: ['fontawesome'],
+                        urls: ['https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css']
+                    },
+                    fontactive: function () {
+                        $('.rateit-fa').rateit();
+                    }
+                };
+                WebFont.load(configFontAwesome);
+            </script>
+            <pre class="brush: xml">
+            &lt;div class="rateit" data-rateit-mode="font" data-rateit-icon="" style="font-family:fontawesome">
+            &lt;/div>
+            &lt;script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js">&lt;/script>
+            &lt;script type="text/javascript">
+                 var configFontAwesome = {
+            custom: {
+                families: ['fontawesome'],
+                urls: ['https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css']
+                },
+                fontactive: function () {
+                    $('.rateit-fa').rateit();
+                }
+            };
+           WebFont.load(configFontAwesome);
+            &lt;/script>      
+
+            </pre>
+        </li>
+        <li id="ex_2e">
+            <h3>
+                2e) Icon Font - Material Icons
+            </h3>
+            <p>Due to the fact that webfonts take a while to be loaded, we cannot measure the size correctly of each step. That is why we have to use a web font loader, and hook onto the font-ready event before showing the control.</p>
+            <div class="rateit-material" data-rateit-mode="font" data-rateit-icon="stars" style="font-family:'Material Icons'">
+            </div>
+            <script>
+                var configMaterial = {
+                    custom: {
+                        families: ['Material Icons'],
+                        urls: ['https://fonts.googleapis.com/icon?family=Material+Icons']
+                    },
+                    fontactive: function () {
+                        $('.rateit-material').rateit();
+
+                    }
+                };
+
+                WebFont.load(configMaterial);
+            </script>
+            <pre class="brush: xml">
+            &lt;div class="rateit" data-rateit-mode="font" data-rateit-icon="" style="font-family:fontawesome">
+            &lt;/div>
+            &lt;script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js">&lt;/script>
+            &lt;script type="text/javascript">
+            var configMaterial = {
+                custom: {
+                    families: ['Material Icons'],
+                    urls: ['https://fonts.googleapis.com/icon?family=Material+Icons']
+                },
+                fontactive: function () {
+                    $('.rateit-material').rateit();
+                }
+            };
+            WebFont.load(configMaterial);
+            &lt;/script>      
+            </pre>
+        </li>
+
+        <li id="ex_3a">
+            <h3>
+                3a) Progressive enhancement (using input[type=range])
+            </h3>
+            <input type="range" min="0" max="7" value="0" step="0.5" id="backing3">
+            <div class="rateit" data-rateit-backingfld="#backing3">
+            </div>
+            <pre class="brush: xml">
+            &lt;input type="range" min="0" max="7" value="0" step="0.5" id="backing3">
+            &lt;div class="rateit" data-rateit-backingfld="#backing3">&lt;/div>
+            </pre>
+            <button onclick="$('#backing3').toggle()">
+                Toggle Backing Field visibility</button>
+        </li>
+        <li id="ex_3b">
+            <h3>
+                3b) Progressive enhancement (using select)
+            </h3>
+            <select id="backing3b">
                 <option value="0">Bad</option>
                 <option value="1" selected="selected">OK</option>
                 <option value="2">Great</option>
                 <option value="3">Excellent</option>
             </select>
-            <div class="rateit" data-rateit-backingfld="#backing2b">
+            <div class="rateit" data-rateit-backingfld="#backing3b">
             </div>
             <pre class="brush: xml">
-            &lt;select id="backing2b">
+            &lt;select id="backing3b">
                 &lt;option value="0">Bad&lt;/option>
                 &lt;option value="1" selected="selected">OK&lt;/option>
                 &lt;option value="2">Great&lt;/option>
                 &lt;option value="3">Excellent&lt;/option>
             &lt;/select>
-            &lt;div class="rateit" data-rateit-backingfld="#backing2b">&lt;/div>
+            &lt;div class="rateit" data-rateit-backingfld="#backing3b">&lt;/div>
             </pre>
         </li>
-        <li id="ex_2c">
+        <li id="ex_3c">
             <h3>
-                2c) Progressive enhancement (using select), and overriding min value
+                3c) Progressive enhancement (using select), and overriding min value
             </h3>
-            <select id="backing2c">
+            <select id="backing3c">
                 <option value="1">Bad</option>
                 <option value="2">OK</option>
                 <option value="3">Great</option>
                 <option value="4">Excellent</option>
             </select>
-            <div class="rateit" data-rateit-backingfld="#backing2c" data-rateit-min="0">
+            <div class="rateit" data-rateit-backingfld="#backing3c" data-rateit-min="0">
             </div>
             <pre class="brush: xml">
-            &lt;select id="backing2c">
+            &lt;select id="backing3c">
                 &lt;option value="1">Bad&lt;/option>
                 &lt;option value="2">OK&lt;/option>
                 &lt;option value="3">Great&lt;/option>
                 &lt;option value="4">Excellent&lt;/option>
             &lt;/select>
-            &lt;div class="rateit" data-rateit-backingfld="#backing2c" data-rateit-min="0">&lt;/div>
+            &lt;div class="rateit" data-rateit-backingfld="#backing3c" data-rateit-min="0">&lt;/div>
             </pre>
         </li>
-        <li id="ex_3">
-            <h3>
-                3) Readonly and preset value</h3>
+        <li id="ex_4">
+            <h4>
+                4) Readonly and preset value</h4>
             <div class="rateit" data-rateit-value="2.5" data-rateit-ispreset="true" data-rateit-readonly="true">
             </div>
             <pre class="brush: xml">
                 &lt;div class="rateit" data-rateit-value="2.5" data-rateit-ispreset="true" data-rateit-readonly="true">&lt;/div>
             </pre>
         </li>
-        <li id="ex_4">
-            <h3>
-                4) More settings</h3>
-            <input type="range" value="4" step="0.25" id="backing4">
-            <div class="rateit" data-rateit-backingfld="#backing4" data-rateit-resetable="false" data-rateit-ispreset="true"
-                data-rateit-min="0" data-rateit-max="10">
-            </div>
-            <pre class="brush: xml">
-            &lt;input type="range" value="4" step="0.25" id="backing4">
-            &lt;div class="rateit" data-rateit-backingfld="#backing4" data-rateit-resetable="false"  data-rateit-ispreset="true"
-                data-rateit-min="0" data-rateit-max="10">
-            &lt;/div>
-
-            </pre>
-        </li>
         <li id="ex_5">
             <h3>
-                5) Javascript interaction</h3>
-            <div class="rateit" id="rateit5" data-rateit-min="2">
+                5) More settings</h3>
+            <input type="range" value="5" step="0.25" id="backing5">
+            <div class="rateit" data-rateit-backingfld="#backing5" data-rateit-resetable="false" data-rateit-ispreset="true"
+                data-rateit-min="0" data-rateit-max="10">
             </div>
-            <div>
-                <span id="value5"></span><span id="hover5"></span>
-            </div>
-
-            <script type="text/javascript">
-                $("#rateit5").bind('rated', function (event, value) { $('#value5').text('You\'ve rated it: ' + value); });
-                $("#rateit5").bind('reset', function () { $('#value5').text('Rating reset'); });
-                $("#rateit5").bind('over', function (event, value) { $('#hover5').text('Hovering over: ' + value); });
-            </script>
-
             <pre class="brush: xml">
-            &lt;div class="rateit" id="rateit5" data-rateit-min="2">
-            &lt;/div>
-            &lt;div>
-                &lt;span id="value5">&lt;/span>
-                &lt;span id="hover5">&lt;/span>
+            &lt;input type="range" value="5" step="0.25" id="backing5">
+            &lt;div class="rateit" data-rateit-backingfld="#backing5" data-rateit-resetable="false"  data-rateit-ispreset="true"
+                data-rateit-min="0" data-rateit-max="10">
             &lt;/div>
 
-            &lt;script type="text/javascript">
-                $("#rateit5").bind('rated', function (event, value) { $('#value5').text('You\'ve rated it: ' + value); });
-                $("#rateit5").bind('reset', function () { $('#value5').text('Rating reset'); });
-                $("#rateit5").bind('over', function (event, value) { $('#hover5').text('Hovering over: ' + value); });
-            &lt;/script>            
             </pre>
         </li>
         <li id="ex_6">
             <h3>
-                6) Javascript invocation</h3>
-            <input type="hidden" id="backing6">
-            <div id="rateit6">
+                6) Javascript interaction</h3>
+            <div class="rateit" id="rateit6" data-rateit-min="2">
+            </div>
+            <div>
+                <span id="value6"></span><span id="hover6"></span>
             </div>
 
             <script type="text/javascript">
-                $(function () { $('#rateit6').rateit({ max: 20, step: 2, backingfld: '#backing6' }); });
+                $("#rateit6").bind('rated', function (event, value) { $('#value6').text('You\'ve rated it: ' + value); });
+                $("#rateit6").bind('reset', function () { $('#value6').text('Rating reset'); });
+                $("#rateit6").bind('over', function (event, value) { $('#hover6').text('Hovering over: ' + value); });
             </script>
 
             <pre class="brush: xml">
-            &lt;input type="hidden" id="backing6">
-            &lt;div id="rateit6">
+            &lt;div class="rateit" id="rateit6" data-rateit-min="2">
+            &lt;/div>
+            &lt;div>
+                &lt;span id="value6">&lt;/span>
+                &lt;span id="hover6">&lt;/span>
             &lt;/div>
 
             &lt;script type="text/javascript">
-                $(function () { $('#rateit6').rateit({ max: 20, step: 2, backingfld: '#backing6' }); });
+                $("#rateit6").bind('rated', function (event, value) { $('#value6').text('You\'ve rated it: ' + value); });
+                $("#rateit6").bind('reset', function () { $('#value6').text('Rating reset'); });
+                $("#rateit6").bind('over', function (event, value) { $('#hover6').text('Hovering over: ' + value); });
+            &lt;/script>            
+            </pre>
+        </li>
+        <li id="ex_7">
+            <h3>
+                7) Javascript invocation</h3>
+            <input type="hidden" id="backing7">
+            <div id="rateit7">
+            </div>
+
+            <script type="text/javascript">
+                $(function () { $('#rateit7').rateit({ max: 20, step: 2, backingfld: '#backing7' }); });
+            </script>
+
+            <pre class="brush: xml">
+            &lt;input type="hidden" id="backing7">
+            &lt;div id="rateit7">
+            &lt;/div>
+
+            &lt;script type="text/javascript">
+                $(function () { $('#rateit7').rateit({ max: 20, step: 2, backingfld: '#backing7' }); });
             &lt;/script>
             </pre>
         </li>
-        <li id="ex_7a">
+        <li id="ex_8a">
             <h3>
-                7a) Styling</h3>
+                8a) Styling</h3>
             <p>
                 You can change the styles of the plugin in a two ways.
                 <ul>
@@ -279,9 +395,9 @@
             }
             </pre>
         </li>
-        <li id="ex_7b">
+        <li id="ex_8b">
             <h3>
-                7b) More styling</h3>
+                8b) More styling</h3>
             <p>
                 Here we use one big image (actually 3), with different dimensions. Not very pretty,
                 but it conveys the message I hope.</p>
@@ -312,9 +428,9 @@ div.antenna div.rateit-selected
 }            
             </pre>
         </li>
-      <li id="ex_7c">
+      <li id="ex_8c">
         <h3>
-          7c) SVG icons
+          8c) SVG icons
         </h3>
         <p>
         Since SVG can be set as a background image (either through setting the URL to an svg file or by using the Data URI scheme), we can use it as an image inside our RateIt plugin.<br />
@@ -359,139 +475,139 @@ div.svg div.rateit-preset {
 &lt;/svg>
 </pre>
       </li>
-        <li id="ex_8">
+        <li id="ex_9">
             <h3>
-                8) RTL support</h3>
+                9) RTL support</h3>
             <div style="direction: rtl">
                 Now we are in RTL mode. No changes needed to make this work.
                 <div class="rateit">
                 </div>
             </div>
         </li>
-        <li id="ex_9">
+        <li id="ex_10">
             <h3>
-                9) Setting and Getting values</h3>
+                10) Setting and Getting values</h3>
             <p>
                 All properties can also be set on the fly. Here are a few examples:</p>
-            <div class="rateit" id="rateit9">
+            <div class="rateit" id="rateit10">
             </div>
             <div>
-                <button onclick="alert($('#rateit9').rateit('value'))">
+                <button onclick="alert($('#rateit10').rateit('value'))">
                     Get value</button>
-                <button onclick="$('#rateit9').rateit('value', prompt('Input numerical value'))">
+                <button onclick="$('#rateit10').rateit('value', prompt('Input numerical value'))">
                     Set value</button>
             </div>
             <div>
-                <button onclick="alert($('#rateit9').rateit('max'))">
+                <button onclick="alert($('#rateit10').rateit('max'))">
                     Get max value</button>
-                <button onclick="$('#rateit9').rateit('max', prompt('Input numerical value'))">
+                <button onclick="$('#rateit10').rateit('max', prompt('Input numerical value'))">
                     Set max value</button>
             </div>
              <div>
-                <button onclick="alert($('#rateit9').rateit('min'))">
+                <button onclick="alert($('#rateit10').rateit('min'))">
                     Get min value</button>
-                <button onclick="$('#rateit9').rateit('min', prompt('Input numerical value'))">
+                <button onclick="$('#rateit10').rateit('min', prompt('Input numerical value'))">
                     Set min value</button>
             </div>
             <div>
-                <button onclick="alert($('#rateit9').rateit('step'))">
+                <button onclick="alert($('#rateit10').rateit('step'))">
                     Get step size</button>
-                <button onclick="$('#rateit9').rateit('step', prompt('Input numerical value'))">
+                <button onclick="$('#rateit10').rateit('step', prompt('Input numerical value'))">
                     Set step size</button>
             </div>
             <div>
-                <button onclick="alert($('#rateit9').rateit('readonly'))">
+                <button onclick="alert($('#rateit10').rateit('readonly'))">
                     Get readonly value</button>
-                <button onclick="$('#rateit9').rateit('readonly',!$('#rateit9').rateit('readonly'))">
+                <button onclick="$('#rateit10').rateit('readonly',!$('#rateit10').rateit('readonly'))">
                     Toggle readonly</button>
             </div>
             <div>
-                <button onclick="alert($('#rateit9').rateit('ispreset'))">
+                <button onclick="alert($('#rateit10').rateit('ispreset'))">
                     Get ispreset value</button>
-                <button onclick="$('#rateit9').rateit('ispreset',!$('#rateit9').rateit('ispreset'))">
+                <button onclick="$('#rateit10').rateit('ispreset',!$('#rateit10').rateit('ispreset'))">
                     Toggle ispreset</button>
             </div>
           <div>
-            <button onclick="$('#rateit9').rateit('reset')">
+            <button onclick="$('#rateit10').rateit('reset')">
               Reset
             </button>
           </div>
 
 
             <pre class="brush: xml">
-	            &lt;div class="rateit" id="rateit9">
+	            &lt;div class="rateit" id="rateit10">
                 &lt;/div>
                 &lt;div>
-                    &lt;button onclick="alert($('#rateit9').rateit('value'))">Get value&lt;/button>
-                    &lt;button onclick="$('#rateit9').rateit('value', prompt('Input numerical value'))">Set value&lt;/button>
+                    &lt;button onclick="alert($('#rateit10').rateit('value'))">Get value&lt;/button>
+                    &lt;button onclick="$('#rateit10').rateit('value', prompt('Input numerical value'))">Set value&lt;/button>
                 &lt;/div>
                 &lt;div>
-                    &lt;button onclick="alert($('#rateit9').rateit('max'))">Get max value&lt;/button>
-                    &lt;button onclick="$('#rateit9').rateit('max', prompt('Input numerical value'))">Set max value&lt;/button>
+                    &lt;button onclick="alert($('#rateit10').rateit('max'))">Get max value&lt;/button>
+                    &lt;button onclick="$('#rateit10').rateit('max', prompt('Input numerical value'))">Set max value&lt;/button>
                 &lt;/div>
                 &lt;div>
-                    &lt;button onclick="alert($('#rateit9').rateit('step'))">Get step size&lt;/button>
-                    &lt;button onclick="$('#rateit9').rateit('step', prompt('Input numerical value'))">Set step size&lt;/button>
+                    &lt;button onclick="alert($('#rateit10').rateit('step'))">Get step size&lt;/button>
+                    &lt;button onclick="$('#rateit10').rateit('step', prompt('Input numerical value'))">Set step size&lt;/button>
                 &lt;/div>
                 &lt;div>
-                    &lt;button onclick="alert($('#rateit9').rateit('readonly'))">Get readonly value&lt;/button>
-                    &lt;button onclick="$('#rateit9').rateit('readonly',!$('#rateit9').rateit('readonly'))">Toggle readonly&lt;/button>
+                    &lt;button onclick="alert($('#rateit10').rateit('readonly'))">Get readonly value&lt;/button>
+                    &lt;button onclick="$('#rateit10').rateit('readonly',!$('#rateit10').rateit('readonly'))">Toggle readonly&lt;/button>
                 &lt;/div>   
                 &lt;div>
-                    &lt;button onclick="alert($('#rateit9').rateit('ispreset'))">Get ispreset value&lt;/button>
-                    &lt;button onclick="$('#rateit9').rateit('ispreset',!$('#rateit9').rateit('ispreset'))">Toggle ispreset&lt;/button>
+                    &lt;button onclick="alert($('#rateit10').rateit('ispreset'))">Get ispreset value&lt;/button>
+                    &lt;button onclick="$('#rateit10').rateit('ispreset',!$('#rateit10').rateit('ispreset'))">Toggle ispreset&lt;/button>
                 &lt;/div>   
                 &lt;div>
-                    &lt;button onclick="$('#rateit9').rateit('reset')">Reset&lt;/button>
+                    &lt;button onclick="$('#rateit10').rateit('reset')">Reset&lt;/button>
                 &lt;/div>                           
             </pre>
         </li>
-        <li id="ex_10">
+        <li id="ex_11">
             <h3>
-                10) Tooltip example</h3>
+                11) Tooltip example</h3>
             <p>
                 Using tooltips is easy. Just bind to the hover event, and do your thing. Shown here
                 is the basic tooltip, but of course you can use any tooltip you'd like.</p>
             <h4>
                 Basic numbers</h4>
-            <div class="rateit" id="rateit10">
+            <div class="rateit" id="rateit11">
             </div>
 
             <script type="text/javascript">
-                $("#rateit10").bind('over', function (event, value) { $(this).attr('title', value); });
+                $("#rateit11").bind('over', function (event, value) { $(this).attr('title', value); });
             </script>
 
             <pre class="brush: xml">
-            &lt;div class="rateit" id="rateit10">
+            &lt;div class="rateit" id="rateit11">
             &lt;/div>
 
             &lt;script type="text/javascript">
-                $("#rateit10").bind('over', function (event,value) { $(this).attr('title', value); });
+                $("#rateit11").bind('over', function (event,value) { $(this).attr('title', value); });
             &lt;/script>       
             </pre>
             <h4>
                 Custom text</h4>
-            <div class="rateit" id="rateit10b" data-rateit-step="1">
+            <div class="rateit" id="rateit11b" data-rateit-step="1">
             </div>
 
             <script type="text/javascript">
                 var tooltipvalues = ['bad', 'poor', 'ok', 'good', 'super'];
-                $("#rateit10b").bind('over', function (event, value) { $(this).attr('title', tooltipvalues[value - 1]); });
+                $("#rateit11b").bind('over', function (event, value) { $(this).attr('title', tooltipvalues[value - 1]); });
             </script>
 
             <pre class="brush: xml">
-            &lt;div class="rateit" id="rateit10b" data-rateit-step="1">
+            &lt;div class="rateit" id="rateit11b" data-rateit-step="1">
             &lt;/div>
 
             &lt;script type="text/javascript">
                 var tooltipvalues = ['bad', 'poor', 'ok', 'good', 'super'];
-                $("#rateit10b").bind('over', function (event, value) { $(this).attr('title', tooltipvalues[value-1]); });
+                $("#rateit11b").bind('over', function (event, value) { $(this).attr('title', tooltipvalues[value-1]); });
             &lt;/script>
             </pre>
         </li>
-        <li id="ex_11">
+        <li id="ex_12">
             <h3>
-                11) AJAX example</h3>
+                12) AJAX example</h3>
             <p>
                 Most times RateIt will be used using some Ajax. There are different ways of implementing
                 it (with/without backing field, using data-* attributes etc.)</p>
@@ -622,9 +738,9 @@ div.svg div.rateit-preset {
              </pre>
         </li>
 
-      <li id="ex_12">
+      <li id="ex_13">
         <h3>
-          12) Resizing
+          13) Resizing
         </h3>
         <p>
           Sometimes we would like to resize the rating controls (perhaps based on screen size). <br />
@@ -635,14 +751,14 @@ div.svg div.rateit-preset {
           The alternative styling is taken from example <a href="#ex_7a">7a) styling</a>.
         </p>
 
-        <div class="rateit" id="rateit12">
+        <div class="rateit" id="rateit13">
         </div>
-        <p>Pick a size: <select id="size_12"><option data-class="" data-size="16" selected>normal</option><option data-class="bigstars" data-size="32">big</option></select></p>
+        <p>Pick a size: <select id="size_13"><option data-class="" data-size="16" selected>normal</option><option data-class="bigstars" data-size="32">big</option></select></p>
 
         <script type="text/javascript">
-          $('#size_12').change(function () {
+          $('#size_13').change(function () {
             var option = $(this.options[this.selectedIndex]);
-            $('#rateit12').removeClass('bigstars')
+            $('#rateit13').removeClass('bigstars')
                           .addClass(option.data('class'))
                           .rateit('starwidth', option.data('size'))
                           .rateit('starheight', option.data('size'));
@@ -650,18 +766,18 @@ div.svg div.rateit-preset {
           });
         </script>  
         <pre class="brush: xml">
-          &lt;div class=&quot;rateit&quot; id=&quot;rateit12&quot;&gt;&lt;/div&gt;
+          &lt;div class=&quot;rateit&quot; id=&quot;rateit13&quot;&gt;&lt;/div&gt;
           &lt;p&gt;Pick a size: 
-            &lt;select id=&quot;size_12&quot;&gt;
+            &lt;select id=&quot;size_13&quot;&gt;
                 &lt;option data-class=&quot;&quot; data-size=&quot;16&quot; selected&gt;normal&lt;/option&gt;
                 &lt;option data-class=&quot;bigstars&quot; data-size=&quot;32&quot;&gt;big&lt;/option&gt;
             &lt;/select&gt;
           &lt;/p&gt;
 
           &lt;script type=&quot;text/javascript&quot;&gt;
-            $(&#39;#size_12&#39;).change(function () {
+            $(&#39;#size_13&#39;).change(function () {
               var option = $(this.options[this.selectedIndex]);
-              $(&#39;#rateit12&#39;).removeClass(&#39;bigstars&#39;) //remove old class
+              $(&#39;#rateit13&#39;).removeClass(&#39;bigstars&#39;) //remove old class
                             .addClass(option.data(&#39;class&#39;))  //add new class
                             .rateit(&#39;starwidth&#39;, option.data(&#39;size&#39;)) //change width
                             .rateit(&#39;starheight&#39;, option.data(&#39;size&#39;)); //change height
@@ -670,26 +786,26 @@ div.svg div.rateit-preset {
         &lt;/script&gt;  
 </pre>
       </li>
-        <li id="ex_13">
+        <li id="ex_14">
             <h3>
-                13) Confirmation before rating or resetting
+                14) Confirmation before rating or resetting
             </h3>
             <p>
                 Sometimes we would like to ask the user to confirm his/her action, or to show some dialog box before the rating is submitted.<br />
                 We can now bind to the "beforerated" and "beforereset" events. Both events occur before the actual rating/resetting. Both events might also be cancelled, by using the <code>e.preventDefault()</code> method.
             </p>
 
-            <div class="rateit" id="rateit13">
+            <div class="rateit" id="rateit14">
             </div>
 
             <script type="text/javascript">
-                $('#rateit13').on('beforerated', function (e, value) {
+                $('#rateit14').on('beforerated', function (e, value) {
                     if (!confirm('Are you sure you want to rate this item: ' +  value + ' stars?')) {
                         e.preventDefault();
                     }
                 });
 
-                $('#rateit13').on('beforereset', function (e) {
+                $('#rateit14').on('beforereset', function (e) {
                     if (!confirm('Are you sure you want to reset the rating?')) {
                         e.preventDefault();
                     }
@@ -699,12 +815,12 @@ div.svg div.rateit-preset {
           &lt;div class=&quot;rateit&quot; id=&quot;rateit3&quot;&gt;&lt;/div&gt;
        
           &lt;script type=&quot;text/javascript&quot;&gt;
-                $('#rateit13').on('beforerated', function (e, value) {
+                $('#rateit14').on('beforerated', function (e, value) {
                     if (!confirm('Are you sure you want to rate this item: ' +  value + ' stars?')) {
                         e.preventDefault();
                     }
                 });
-                $('#rateit13').on('beforereset', function (e) {
+                $('#rateit14').on('beforereset', function (e) {
                     if (!confirm('Are you sure you want to reset the rating?')) {
                         e.preventDefault();
                     }
@@ -714,49 +830,49 @@ div.svg div.rateit-preset {
         </li>
 
 
-          <li id="ex_14">
-            <h3>) SELECT backingfield: valuesrc = value</h3>
+          <li id="ex_15">
+            <h3>15a) SELECT backingfield: valuesrc = value</h3>
             <p>This is the default value. Used when the value of the option elements correlate with  the  amount of stars.</p>
-            <select id="backing14" data-rateit-valuesrc="value">
+            <select id="backing15" data-rateit-valuesrc="value">
                 <option value="0">Bad</option>
                 <option value="1" selected="selected">OK</option>
                 <option value="2">Great</option>
                 <option value="3">Excellent</option>
             </select>
-            <div class="rateit" data-rateit-backingfld="#backing14">
+            <div class="rateit" data-rateit-backingfld="#backing15">
             </div>
             <pre class="brush: xml">
-            &lt;select id="backing14"  data-rateit-valuesrc="value">
+            &lt;select id="backing15"  data-rateit-valuesrc="value">
                 &lt;option value="0">Bad&lt;/option>
                 &lt;option value="1" selected="selected">OK&lt;/option>
                 &lt;option value="2">Great&lt;/option>
                 &lt;option value="3">Excellent&lt;/option>
             &lt;/select>
-            &lt;div class="rateit" data-rateit-backingfld="#backing14">&lt;/div>
+            &lt;div class="rateit" data-rateit-backingfld="#backing15">&lt;/div>
             </pre>
         </li>
-          <li id="ex_14b">
+          <li id="ex_15b">
             <h3>
-                14b) SELECT backingfield: valuesrc = index</h3>
+                15b) SELECT backingfield: valuesrc = index</h3>
                 <p>If you just want the amount of stars based on the number of items in the select list, regardless of their value.</p>
-              <select id="backing14b" data-rateit-valuesrc="index">
+              <select id="backing15b" data-rateit-valuesrc="index">
                   <option value="">None</option>
                   <option value="8254">Bad</option>
                   <option value="700" selected="selected">OK</option>
                   <option value="22">Great</option>
                   <option value="9000">Excellent</option>
               </select>
-            <div class="rateit" data-rateit-backingfld="#backing14b">
+            <div class="rateit" data-rateit-backingfld="#backing15b">
             </div>
             <pre class="brush: xml">
-            &lt;select id="backing14b  data-rateit-valuesrc="index">
+            &lt;select id="backing15b  data-rateit-valuesrc="index">
                 &lt;option value="">none&lt;/option>
                 &lt;option value="8254">Bad&lt;/option>
                 &lt;option value="700" selected="selected">OK&lt;/option>
                 &lt;option value="22">Great&lt;/option>
                 &lt;option value="9000">Excellent&lt;/option>
             &lt;/select>
-            &lt;div class="rateit" data-rateit-backingfld="#backing14b">&lt;/div>
+            &lt;div class="rateit" data-rateit-backingfld="#backing15b">&lt;/div>
             </pre>
         </li>
 
