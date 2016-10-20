@@ -85,9 +85,13 @@
                 padding: 0;
             }
 
-                .rateit button.rateit-reset:hover, .rateit button.rateit-reset:focus {
-                    background-position: 0 -16px;
-                }
+            .rateit .rateit-reset span {
+                display: none;
+            }
+
+            .rateit button.rateit-reset:hover, .rateit button.rateit-reset:focus {
+                background-position: 0 -16px;
+            }
 
 
 .rateit-font {
@@ -111,38 +115,31 @@
     }
 
 .rateit.rateit-font .rateit-reset {
+    font-size: inherit;
     background: none;
-    color: red;
-    height: auto; /* fixes IE rendering */
-    width:auto; /* fixes some IE rendering */
-}
-
-
-.rateit-font .rateit-reset:before {
-    content: "\2013";
-    font-weight: bold;
-    border-radius: 50%;
-    display: inline-block;
-    font-size: 14px;
-    color: white;
+    width: 0.6em;
+    height: 0.6em;
+    margin-top: 0.2em;
     background: gray;
-    width: 1em;
-    height: 1em;
-    line-height: 0.86em;
-    text-align: center;
-    margin-right: 4px;
-    overflow: hidden;
-    margin-top: 4px;
+    border-radius: 50%;
+    position: relative;
 }
 
-.rateit-font[dir=rtl] {
-    margin-right:0;
-    margin-left:4px;
-}
+    .rateit.rateit-font .rateit-reset span {
+        display: block;
+        font-weight: bold;
+        color: white;
+        height: calc(50% - 0.045em);
+        top: 0;
+        position: absolute;
+        border-bottom: 0.09em solid white;
+        width: 72%;
+        margin-left: 14%;
+    }
 
 
-
-.rateit-font .rateit-reset:hover:before {
+.rateit.rateit-font .rateit-reset:hover, .rateit.rateit-font button.rateit-reset:focus {
     background: #e6574b; /* Old browsers */
     background: radial-gradient(ellipse at center, #e6574b 55%,#f6836b 77%,#f9d3cc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    background-position: 0 0;
 }
