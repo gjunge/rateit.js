@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.js"></script>
+    
+    <link href="scripts/rateit.css" rel="stylesheet" />
+    
+    <script src="https://use.fontawesome.com/bbfd51dd83.js"></script>
+
+    <style>
+
+        .rateit.fontawesome {
+            font-family: FontAwesome;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        Normal:
+        <div class="rateit"></div>
+    </p>
+    <p>
+        Font:
+        <div class="rateit" data-rateit-mode="font"></div>
+    </p>
+
+    <p>
+        Font:
+        <div class="rateit" id="foo" data-rateit-mode="font" data-rateit-icon="★"></div>
+        
+       
+    </p>
+
+
+    <p>
+        Font Awesome:
+        <div class="rateit fontawesome" data-rateit-value="4" data-rateit-mode="font" data-rateit-icon=""></div>
+
+    </p>
+  
+    <script src="scripts/jquery.rateit.js"></script>
+</body>
+</html>
