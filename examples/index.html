@@ -712,6 +712,55 @@ div.svg div.rateit-preset {
            &lt;/script&gt;  
 </pre>
         </li>
+
+
+          <li id="ex_14">
+            <h3>) SELECT backingfield: valuesrc = value</h3>
+            <p>This is the default value. Used when the value of the option elements correlate with  the  amount of stars.</p>
+            <select id="backing14" data-rateit-valuesrc="value">
+                <option value="0">Bad</option>
+                <option value="1" selected="selected">OK</option>
+                <option value="2">Great</option>
+                <option value="3">Excellent</option>
+            </select>
+            <div class="rateit" data-rateit-backingfld="#backing14">
+            </div>
+            <pre class="brush: xml">
+            &lt;select id="backing14"  data-rateit-valuesrc="value">
+                &lt;option value="0">Bad&lt;/option>
+                &lt;option value="1" selected="selected">OK&lt;/option>
+                &lt;option value="2">Great&lt;/option>
+                &lt;option value="3">Excellent&lt;/option>
+            &lt;/select>
+            &lt;div class="rateit" data-rateit-backingfld="#backing14">&lt;/div>
+            </pre>
+        </li>
+          <li id="ex_14b">
+            <h3>
+                14b) SELECT backingfield: valuesrc = index</h3>
+                <p>If you just want the amount of stars based on the number of items in the select list, regardless of their value.</p>
+              <select id="backing14b" data-rateit-valuesrc="index">
+                  <option value="">None</option>
+                  <option value="8254">Bad</option>
+                  <option value="700" selected="selected">OK</option>
+                  <option value="22">Great</option>
+                  <option value="9000">Excellent</option>
+              </select>
+            <div class="rateit" data-rateit-backingfld="#backing14b">
+            </div>
+            <pre class="brush: xml">
+            &lt;select id="backing14b  data-rateit-valuesrc="index">
+                &lt;option value="">none&lt;/option>
+                &lt;option value="8254">Bad&lt;/option>
+                &lt;option value="700" selected="selected">OK&lt;/option>
+                &lt;option value="22">Great&lt;/option>
+                &lt;option value="9000">Excellent&lt;/option>
+            &lt;/select>
+            &lt;div class="rateit" data-rateit-backingfld="#backing14b">&lt;/div>
+            </pre>
+        </li>
+
+
     </ul>
 
     <script src="https://rawgit.com/gjunge/rateit.js/master/scripts/jquery.rateit.js" type="text/javascript"></script>
