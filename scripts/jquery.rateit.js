@@ -115,10 +115,13 @@
                 itemdata(p1, p2);
             }
 
+
             //init rateit plugin
             if (!itemdata('init')) {
 
                 //get our values, either from the data-* html5 attribute or from the options.
+                itemdata('mode', itemdata('mode') || options.mode)
+                itemdata('icon', itemdata('icon') || options.icon)
                 itemdata('min', isNaN(itemdata('min')) ? options.min : itemdata('min'));
                 itemdata('max', isNaN(itemdata('max')) ? options.max : itemdata('max'));
                 itemdata('step', itemdata('step') || options.step);
@@ -176,12 +179,17 @@
                         //If it is a selectbox, we always get a value (the first one of the list), even if it was not explicity set.
                         itemdata('value', fld.val());
                     }
+
+                   
                 }
+
+              
 
                 //Create the necessary tags. For ARIA purposes we need to give the items an ID. So we use an internal index to create unique ids
                 var element = item[0].nodeName == 'DIV' ? 'div' : 'span';
                 index++;
-                var html = '<button id="rateit-reset-{{index}}" type="button" data-role="none" class="rateit-reset" aria-label="' + $.rateit.aria.resetLabel + '" aria-controls="rateit-range-{{index}}"></button><{{element}} id="rateit-range-{{index}}" class="rateit-range" tabindex="0" role="slider" aria-label="' + $.rateit.aria.ratingLabel + '" aria-owns="rateit-reset-{{index}}" aria-valuemin="' + itemdata('min') + '" aria-valuemax="' + itemdata('max') + '" aria-valuenow="' + itemdata('value') + '"><{{element}} class="rateit-selected" style="height:' + itemdata('starheight') + 'px"></{{element}}><{{element}} class="rateit-hover" style="height:' + itemdata('starheight') + 'px"></{{element}}></{{element}}>';
+
+                var html = '<button id="rateit-reset-{{index}}" type="button" data-role="none" class="rateit-reset" aria-label="' + $.rateit.aria.resetLabel + '" aria-controls="rateit-range-{{index}}"></button><{{element}} id="rateit-range-{{index}}" class="rateit-range" tabindex="0" role="slider" aria-label="' + $.rateit.aria.ratingLabel + '" aria-owns="rateit-reset-{{index}}" aria-valuemin="' + itemdata('min') + '" aria-valuemax="' + itemdata('max') + '" aria-valuenow="' + itemdata('value') + '"><{{element}} class="rateit-empty"></{{element}}><{{element}} class="rateit-selected"></{{element}}><{{element}} class="rateit-hover"></{{element}}></{{element}}>';
                 item.append(html.replace(/{{index}}/gi, index).replace(/{{element}}/gi, element));
 
                 //if we are in RTL mode, we have to change the float of the "reset button"
@@ -191,14 +199,47 @@
                     item.find('.rateit-hover').addClass('rateit-hover-rtl');
                 }
 
+                if (itemdata('mode') == 'font') {
+                    item.addClass('rateit-font').removeClass('rateit-bg');
+                }
+                else {
+                    item.addClass('rateit-bg').removeClass('rateit-font');
+                }
+
                 itemdata('init', JSON.parse(JSON.stringify(item.data()))); //cheap way to create a clone
             }
-            //resize the height of all elements, 
-            item.find('.rateit-selected, .rateit-hover').height(itemdata('starheight'));
 
-            //set the range element to fit all the stars.
+            var isfont = itemdata('mode') == 'font';
+
+            
+
+
+            //resize the height of all elements, 
+            if (!isfont) {
+                item.find('.rateit-selected, .rateit-hover').height(itemdata('starheight'));
+            }
+
+
             var range = item.find('.rateit-range');
-            range.width(itemdata('starwidth') * (itemdata('max') - itemdata('min'))).height(itemdata('starheight'));
+            if (isfont) {
+                //fill the ranges with the icons
+                var icon = itemdata('icon');
+                var stars = itemdata('max') - itemdata('min');
+
+                var txt = '';
+                for(var i = 0; i< stars; i++){
+                    txt += icon;
+                }
+                
+                range.find('> *').text(txt);
+                
+
+                itemdata('starwidth', range.width() / (itemdata('max') - itemdata('min')))
+            }
+            else {
+                //set the range element to fit all the stars.
+                range.width(itemdata('starwidth') * (itemdata('max') - itemdata('min'))).height(itemdata('starheight'));
+            }
 
 
             //add/remove the preset class
@@ -363,7 +404,7 @@
     };
 
     //some default values.
-    $.fn.rateit.defaults = { min: 0, max: 5, step: 0.5, starwidth: 16, starheight: 16, readonly: false, resetable: true, ispreset: false };
+    $.fn.rateit.defaults = { min: 0, max: 5, step: 0.5, mode: 'bg', icon: '★', starwidth: 16, starheight: 16, readonly: false, resetable: true, ispreset: false };
 
     //invoke it on all .rateit elements. This could be removed if not wanted.
     $(function () { $('div.rateit, span.rateit').rateit(); });
