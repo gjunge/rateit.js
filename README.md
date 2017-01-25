@@ -11,8 +11,8 @@ Several quick start options are available:
 
 * [Download the latest release](https://github.com/gjunge/rateit.js/archive/master.zip).
 * Clone the repo: `git clone https://github.com/gjunge/rateit.js.git`.
-* Install with [Bower](http://bower.io): `bower install jquery.rateit`.
 * Install with [npm](https://www.npmjs.com): `npm install jquery.rateit`.
+* Install with [Bower](http://bower.io): `bower install jquery.rateit`.
 * Install with [NuGet](https://www.nuget.org): `Install-Package jQuery.RateIt`.
 
 Read the [Wiki documentation](https://github.com/gjunge/rateit.js/wiki) or look at the [examples page](http://gjunge.github.io/rateit.js/examples/).
