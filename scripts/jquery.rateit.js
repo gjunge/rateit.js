@@ -217,6 +217,9 @@
             //resize the height of all elements, 
             if (!isfont) {
                 item.find('.rateit-selected, .rateit-hover').height(itemdata('starheight'));
+                 //added to adjust background image size. added to provide compatibility with IE. IE will not properly 
+                //repeat items unless the background-size is set.
+                item.find('.rateit-selected, .rateit-hover').css('background-size', itemdata('starwidth') + "px " + itemdata('starheight') + "px");
             }
 
 
@@ -239,6 +242,9 @@
             else {
                 //set the range element to fit all the stars.
                 range.width(itemdata('starwidth') * (itemdata('max') - itemdata('min'))).height(itemdata('starheight'));
+                 //added to adjust background image size. added to provide compatibility with IE. IE will not properly 
+                //repeat items unless the background-size is set.
+                range.css('background-size', itemdata('starwidth') + "px " + itemdata('starheight') + "px");
             }
 
 
