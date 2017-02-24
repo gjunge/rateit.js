@@ -1,4 +1,4 @@
-﻿/*! RateIt | v1.1.0 / 10/20/2016
+/*! RateIt | v1.1.0 / 10/20/2016
     https://github.com/gjunge/rateit.js | Twitter: @gjunge
 */
 (function ($) {
@@ -217,9 +217,15 @@
             //resize the height of all elements, 
             if (!isfont) {
                 item.find('.rateit-selected, .rateit-hover').height(itemdata('starheight'));
-                 //added to adjust background image size. added to provide compatibility with IE. IE will not properly 
+                //added to adjust background image size. added to provide compatibility with IE. IE will not properly 
                 //repeat items unless the background-size is set.
-                item.find('.rateit-selected, .rateit-hover').css('background-size', itemdata('starwidth') + "px " + itemdata('starheight') + "px");
+                item.find('.rateit-selected, .rateit-hover').each(function () {
+                   if (backgroundImageIsSVG($(this))) {
+                       explicitBackgroundSize($(this));
+                   }
+                });
+
+
             }
 
 
@@ -242,10 +248,25 @@
             else {
                 //set the range element to fit all the stars.
                 range.width(itemdata('starwidth') * (itemdata('max') - itemdata('min'))).height(itemdata('starheight'));
-                 //added to adjust background image size. added to provide compatibility with IE. IE will not properly 
+                //added to adjust background image size. added to provide compatibility with IE. IE will not properly 
                 //repeat items unless the background-size is set.
-                range.css('background-size', itemdata('starwidth') + "px " + itemdata('starheight') + "px");
+                if (backgroundImageIsSVG(range)) {
+                    explicitBackgroundSize(range);
+                }
+               
             }
+
+            function backgroundImageIsSVG (element) {
+                var bi = element.css("background-image");
+                var extension = bi.slice(bi.lastIndexOf(".")+1,  -2);
+
+                return extension.toLowerCase() == "svg";
+            };
+
+            function explicitBackgroundSize (element) {
+                element.css('background-size', itemdata('starwidth') + "px " + itemdata('starheight') + "px");
+            }
+
 
 
             //add/remove the preset class
