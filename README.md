@@ -1,5 +1,5 @@
 # RateIt
-####Rating plugin for jQuery.
+#### Rating plugin for jQuery.
 
 [![npm version](https://img.shields.io/npm/v/jquery.rateit.svg)](https://www.npmjs.com/package/jquery.rateit)
 [![NuGet](https://img.shields.io/nuget/v/jQuery.RateIt.svg)](https://www.nuget.org/packages/jQuery.RateIt)
@@ -23,7 +23,7 @@ Fast, Progressive enhancement, touch support, customizable (just swap out the im
 
 Your feedback is more than welcome!
 
-##Why is RateIt different
+## Why is RateIt different
 
 Although it does the same job as the rest of the jQuery star rating plugins, the main difference is its simplicity. 
 Most plugins create an element for each (partial) star, be it a div with a star background, or an img tag. 
@@ -36,6 +36,6 @@ One background (the inactive state), and two divs on top (the hover, and selecte
 Each of these divs has a x-repeating background, enabling as many stars as you want (or a big image with for example 5 different smilies one next to the other)  without adding more elements or event handlers. 
 Based on the position of the mouse, or the selected value, a certain width is applied to the selection div or the hover div.
 
-##Credits
+## Credits
 * Thanks to http://www.fyneworks.com/jquery/star-rating/ for the idea and layout. 
 * Thanks to http://famfamfam.com for the icon set.
