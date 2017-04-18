@@ -15,11 +15,41 @@ export interface RateItOptions {
     icon?: string;
 }
 
-type RateItItemDataTypes = "init" | "value" | "min" | "max" | "step" | "backingfld" | "readonly" | "ispreset" | "resetable" | "starwidth" | "starheight"| "mode"|"icon";
+export class DateSetWrapper {
+    _item: HTMLElement;
+    // constructor(item: HTMLElement) {
+    //     this._item = item;
+    // }
+
+    public getItemNumber = (key: RateItItemDataTypes): number => Number(this._item.dataset[key]);
+    public getItemBoolean = (key: RateItItemDataTypes): boolean => Boolean(this._item.dataset[key]);
+    public getItemString = (key: RateItItemDataTypes): string => this._item.dataset[key];
+    public setItem = (key: RateItItemDataTypes, value: any) => this._item.dataset[key] = value.toString();
+}
+
+interface DataSetWrapper {
+
+    getNumber(key: RateItItemDataTypes): number;
+    getBoolean(key: RateItItemDataTypes): boolean;
+    getString(key: RateItItemDataTypes): string;
+    set(key: RateItItemDataTypes, value: any): void;
+}
+
+function getDataSetWrapper(item: HTMLElement): DataSetWrapper {
+    return {
+
+        getNumber: (key: RateItItemDataTypes): number => Number(this._item.dataset[key]),
+        getBoolean: (key: RateItItemDataTypes): boolean => Boolean(this._item.dataset[key]),
+        getString: (key: RateItItemDataTypes): string => this._item.dataset[key],
+        set: (key: RateItItemDataTypes, value: any) => this._item.dataset[key] = value.toString()
+    };
+}
+
+type RateItItemDataTypes = "init" | "value" | "min" | "max" | "step" | "backingfld" | "readonly" | "ispreset" | "resetable" | "starwidth" | "starheight" | "mode" | "icon";
 export class rateit {
 
-    private index : number = 0;
-    
+    private index: number = 0;
+
     private defaultOptions: RateItOptions = {
         min: 0,
         max: 5,
@@ -48,42 +78,41 @@ export class rateit {
 
         for (var i = 0; i < items.length; i++) {
             let item = <HTMLElement>items[i];
-            let getItemNumber = (key: RateItItemDataTypes): number => Number(item.dataset[key]);
-            let getItemBoolean = (key: RateItItemDataTypes): boolean => Boolean(item.dataset[key]);
-            let getItemString = (key: RateItItemDataTypes): string => item.dataset[key];
-            let setItem = (key: RateItItemDataTypes, value: any) => item.dataset[key] = value.toString();
+            //let dataSet = new DataSetWrapper(item);
+            let dataset: DataSetWrapper = getDataSetWrapper(item);
+           
             item.classList.add('rateit');
 
             let ltr = item.style.direction === 'ltr';
 
-            setItem('mode',         getItemNumber('mode') || options.mode)
-            setItem('icon',         getItemNumber('icon') || options.icon)
-            setItem('min',          isNaN(getItemNumber('min')) ? options.min : getItemNumber('min'))
-            setItem('max',          isNaN(getItemNumber('max')) ? options.max : getItemNumber('max'))
-            setItem('step',         item.dataset['step'] || options.step)
-            setItem('resetable',    item.dataset['resetable'] !== undefined ? item.dataset['resetable'] : options.resetable)
-            setItem('readonly',     item.dataset['readonly'] !== undefined ? item.dataset['readonly'] : options.readonly)
-            setItem('ispreset',     item.dataset['ispreset'] !== undefined ? item.dataset['ispreset'] : options.ispreset)
-            setItem('backingfld',   item.dataset['backingfld'] || options.backingfld)
-            setItem('starwidth',    getItemNumber('starwidth') || options.starwidth)
-            setItem('starheight',   getItemNumber('starheight') || options.starheight)
-            setItem('value',        Math.max(getItemNumber('min'), Math.min(getItemNumber('max'), (!isNaN(getItemNumber('value')) ? getItemNumber('value') : options.value == null ? options.min : options.value))))
+            dataset.set('mode', dataset.getNumber('mode') || options.mode)
+            dataset.set('icon', dataset.getNumber('icon') || options.icon)
+            dataset.set('min', isNaN(dataset.getNumber('min')) ? options.min : dataset.getNumber('min'))
+            dataset.set('max', isNaN(dataset.getNumber('max')) ? options.max : dataset.getNumber('max'))
+            dataset.set('step', item.dataset['step'] || options.step)
+            dataset.set('resetable', item.dataset['resetable'] !== undefined ? item.dataset['resetable'] : options.resetable)
+            dataset.set('readonly', item.dataset['readonly'] !== undefined ? item.dataset['readonly'] : options.readonly)
+            dataset.set('ispreset', item.dataset['ispreset'] !== undefined ? item.dataset['ispreset'] : options.ispreset)
+            dataset.set('backingfld', item.dataset['backingfld'] || options.backingfld)
+            dataset.set('starwidth', dataset.getNumber('starwidth') || options.starwidth)
+            dataset.set('starheight', dataset.getNumber('starheight') || options.starheight)
+            dataset.set('value', Math.max(dataset.getNumber('min'), Math.min(dataset.getNumber('max'), (!isNaN(dataset.getNumber('value')) ? dataset.getNumber('value') : options.value == null ? options.min : options.value))))
 
-            if (getItemString('backingfld')) {
+            if (dataset.getString('backingfld')) {
                 //if we have a backing field, hide it, override defaults if range or select.
-                const el = document.querySelector(getItemString('backingfld'));
+                const el = document.querySelector(dataset.getString('backingfld'));
                 const fld = <HTMLInputElement>el;
                 fld.style.display = 'none';
                 if (fld.disabled || fld.readOnly) {
-                    setItem('readonly', true);
+                    dataset.set('readonly', true);
                 }
 
                 if (el.nodeName === 'INPUT') {
                     if (fld.type === 'range' || fld.type === 'text') { //in browsers not support the range type, it defaults to text
 
-                        setItem('min', parseInt(fld.getAttribute('min')) || getItemNumber('min')); //if we would have done fld.min it wouldn't have worked in browsers not supporting the range type.
-                        setItem('max', parseInt(fld.getAttribute('max')) || getItemNumber('max'));
-                        setItem('step', parseInt(fld.getAttribute('step')) || getItemNumber('step'));
+                        dataset.set('min', parseInt(fld.getAttribute('min')) || dataset.getNumber('min')); //if we would have done fld.min it wouldn't have worked in browsers not supporting the range type.
+                        dataset.set('max', parseInt(fld.getAttribute('max')) || dataset.getNumber('max'));
+                        dataset.set('step', parseInt(fld.getAttribute('step')) || dataset.getNumber('step'));
                     }
                 }
 
@@ -91,31 +120,31 @@ export class rateit {
                     let select = <HTMLSelectElement>el;
                     // If backing field is a select box with valuesrc option set to "index", use the indexes of its options; otherwise, use the values.
                     if (select.getAttribute('data-rateit-valuesrc') === 'index') {
-                        setItem('min', (!isNaN(getItemNumber('min')) ? getItemNumber('min') : 0));
-                        setItem('max', select.options[select.length - 1].index);
-                        setItem('step', 1);
+                        dataset.set('min', (!isNaN(dataset.getNumber('min')) ? dataset.getNumber('min') : 0));
+                        dataset.set('max', select.length - 1);
+                        dataset.set('step', 1);
                     }
                     else {
-                        setItem('min', (!isNaN(getItemNumber('min')) ? getItemNumber('min') : 0));
-                        setItem('max', Number(select.options[select.length - 1].value));
-                        setItem('step', Number(select.options[1].value) - Number(select.options[0].value));
+                        dataset.set('min', (!isNaN(dataset.getNumber('min')) ? dataset.getNumber('min') : 0));
+                        dataset.set('max', Number(select.options[select.length - 1].value));
+                        dataset.set('step', Number(select.options[1].value) - Number(select.options[0].value));
                     }
                     //see if we have a option that as explicity been selected
-                    var selectedOption = <HTMLOptionElement> select.querySelector('option[selected]');
+                    var selectedOption = <HTMLOptionElement>select.querySelector('option[selected]');
                     if (selectedOption != null) {
                         // If backing field is a select box with valuesrc option set to "index", use the index of selected option; otherwise, use the value.
                         if (select.getAttribute('data-rateit-valuesrc') === 'index') {
-                            setItem('value', selectedOption.index);
+                            dataset.set('value', selectedOption.index);
                         }
                         else {
-                            setItem('value', selectedOption.value);
+                            dataset.set('value', selectedOption.value);
                         }
                     }
                 }
                 else {
                     //if it is not a select box, we can get's it's value using the val function. 
                     //If it is a selectbox, we always get a value (the first one of the list), even if it was not explicity set.
-                    setItem('value', fld.value);
+                    dataset.set('value', fld.value);
                 }
             }
 
@@ -127,12 +156,12 @@ export class rateit {
             item.insertAdjacentHTML('beforeend', html);
 
             if (!ltr) {
-                (<HTMLElement>item.querySelector('.rateit-reset')).style.cssFloat  = 'right';
+                (<HTMLElement>item.querySelector('.rateit-reset')).style.cssFloat = 'right';
                 (<HTMLElement>item.querySelector('.rateit-selected')).classList.add('rateit-selected-rtl');
                 (<HTMLElement>item.querySelector('.rateit-hover')).classList.add('rateit-hover-rtl');
             }
 
-            if (getItemString('mode') == 'font') {
+            if (dataset.getString('mode') == 'font') {
                 item.classList.add('rateit-font');
                 item.classList.remove('rateit-bg');
             }
@@ -141,23 +170,37 @@ export class rateit {
                 item.classList.remove('rateit-font');
             }
 
-            setItem('init', JSON.stringify(item.dataset));//cheap way to create a clone
+            dataset.set('init', JSON.stringify(item.dataset));//cheap way to create a clone
+
+            this.redraw(item);
         }
+
 
 
     }
 
+    private redraw(item: HTMLElement) {
+        var dataset = getDataSetWrapper(item);
+        
+    }
 
-    public reset(selector: string): void {
+    public reset(element: HTMLElement): void
+    public reset(selector: string): void
+    public reset(selectorOrElement: any): void {
+        let element: HTMLElement;
+        if (typeof (selectorOrElement) === 'string') {
+            element = <HTMLElement>document.querySelector(selectorOrElement);
+        } else {
+            element = selectorOrElement;
+        }
 
 
+        
     }
 
 
 
 }
-
-
 
 
 
