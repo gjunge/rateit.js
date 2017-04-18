@@ -8,11 +8,15 @@ var uglify = require('gulp-uglify');
 var plumber = require('gulp-plumber');
 var rename = require('gulp-rename');
 var sourcemaps = require('gulp-sourcemaps');
+var typescript = require('gulp-tsc');
+gulp.task('compile', function(){
+  gulp.src(['scripts/*.ts'])
+    .pipe(typescript())
+    .pipe(gulp.dest('scripts/'))
+});
 
-
-
-gulp.task('default', function () {
-    return gulp.src('scripts/jquery.rateit.js')
+gulp.task('minify', function () {
+    return gulp.src('scripts/*rateit.js')
        .pipe(sourcemaps.init())
        .pipe(plumber())
        .pipe(uglify({ preserveComments: 'license' }))
@@ -20,3 +24,5 @@ gulp.task('default', function () {
        .pipe(sourcemaps.write(''))
        .pipe(gulp.dest('scripts')) // save .min.js
 });
+
+gulp.task('default', ['compile', 'minify']);
