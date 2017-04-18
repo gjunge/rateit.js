@@ -15,18 +15,6 @@ export interface RateItOptions {
     icon?: string;
 }
 
-export class DateSetWrapper {
-    _item: HTMLElement;
-    // constructor(item: HTMLElement) {
-    //     this._item = item;
-    // }
-
-    public getItemNumber = (key: RateItItemDataTypes): number => Number(this._item.dataset[key]);
-    public getItemBoolean = (key: RateItItemDataTypes): boolean => Boolean(this._item.dataset[key]);
-    public getItemString = (key: RateItItemDataTypes): string => this._item.dataset[key];
-    public setItem = (key: RateItItemDataTypes, value: any) => this._item.dataset[key] = value.toString();
-}
-
 interface DataSetWrapper {
 
     getNumber(key: RateItItemDataTypes): number;
@@ -37,7 +25,6 @@ interface DataSetWrapper {
 
 function getDataSetWrapper(item: HTMLElement): DataSetWrapper {
     return {
-
         getNumber: (key: RateItItemDataTypes): number => Number(this._item.dataset[key]),
         getBoolean: (key: RateItItemDataTypes): boolean => Boolean(this._item.dataset[key]),
         getString: (key: RateItItemDataTypes): string => this._item.dataset[key],
@@ -46,6 +33,7 @@ function getDataSetWrapper(item: HTMLElement): DataSetWrapper {
 }
 
 type RateItItemDataTypes = "init" | "value" | "min" | "max" | "step" | "backingfld" | "readonly" | "ispreset" | "resetable" | "starwidth" | "starheight" | "mode" | "icon";
+
 export class rateit {
 
     private index: number = 0;
@@ -80,7 +68,7 @@ export class rateit {
             let item = <HTMLElement>items[i];
             //let dataSet = new DataSetWrapper(item);
             let dataset: DataSetWrapper = getDataSetWrapper(item);
-           
+
             item.classList.add('rateit');
 
             let ltr = item.style.direction === 'ltr';
@@ -126,8 +114,8 @@ export class rateit {
                     }
                     else {
                         dataset.set('min', (!isNaN(dataset.getNumber('min')) ? dataset.getNumber('min') : 0));
-                        dataset.set('max', Number(select.options[select.length - 1].value));
-                        dataset.set('step', Number(select.options[1].value) - Number(select.options[0].value));
+                        dataset.set('max', Number(select.options.item(select.length - 1).value));
+                        dataset.set('step', Number(select.options.item(1).value) - Number(select.options.item(0).value));
                     }
                     //see if we have a option that as explicity been selected
                     var selectedOption = <HTMLOptionElement>select.querySelector('option[selected]');
@@ -179,9 +167,23 @@ export class rateit {
 
     }
 
-    private redraw(item: HTMLElement) {
-        var dataset = getDataSetWrapper(item);
-        
+    private redraw(element: HTMLElement) {
+        var dataset = getDataSetWrapper(element);
+
+        var isfont = dataset.getString('mode') === 'font';
+
+
+        //resize the height of all elements, 
+        if (!isfont) {
+            Array.prototype.forEach.call(element.querySelectorAll('.rateit-selected, .rateit-hover'), function (item : HTMLElement) {
+                item.style.height = `${dataset.getNumber('starheight')}px`;
+            });
+
+        }
+
+
+
+
     }
 
     public reset(element: HTMLElement): void
@@ -194,8 +196,12 @@ export class rateit {
             element = selectorOrElement;
         }
 
+        let dataset: DataSetWrapper = getDataSetWrapper(element);
 
-        
+
+
+
+
     }
 
 
