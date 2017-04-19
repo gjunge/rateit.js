@@ -24,16 +24,19 @@ interface DataSetWrapper {
 }
 
 function getDataSetWrapper(item: HTMLElement): DataSetWrapper {
+     const createKey = function (key: string) {
+            return 'rateit' + key.charAt(0).toUpperCase() + key.substr(1);
+        };
     return {
-        getNumber: (key: RateItItemDataTypes): number => Number(item.dataset[key]),
-        getBoolean: (key: RateItItemDataTypes): boolean => item.dataset[key] === 'true',
-        getString: (key: RateItItemDataTypes): string => item.dataset[key],
+        getNumber: (key: RateItItemDataTypes): number => Number(item.dataset[createKey(key)]),
+        getBoolean: (key: RateItItemDataTypes): boolean => item.dataset[createKey(key)] === 'true',
+        getString: (key: RateItItemDataTypes): string => item.dataset[createKey(key)],
         set: (key: RateItItemDataTypes, value: any) => {
             if (value == null) {
-                delete item.dataset[key]; //might not work in safari http://stackoverflow.com/questions/9200712/how-to-remove-data-attributes-using-html5-dataset
+                delete item.dataset[createKey(key)]; //might not work in safari http://stackoverflow.com/questions/9200712/how-to-remove-data-attributes-using-html5-dataset
             }
             else {
-                item.dataset[key] = value.toString();
+                item.dataset[createKey(key)] = value.toString();
             }
         }
     };
@@ -80,8 +83,8 @@ export default class rateit {
 
             let ltr = window.getComputedStyle(item).direction === 'ltr';
 
-            dataset.set('mode', dataset.getNumber('mode') || options.mode)
-            dataset.set('icon', dataset.getNumber('icon') || options.icon)
+            dataset.set('mode', dataset.getString('mode') || options.mode)
+            dataset.set('icon', dataset.getString('icon') || options.icon)
             dataset.set('min', isNaN(dataset.getNumber('min')) ? options.min : dataset.getNumber('min'))
             dataset.set('max', isNaN(dataset.getNumber('max')) ? options.max : dataset.getNumber('max'))
             dataset.set('step', item.dataset['step'] || options.step)
@@ -286,10 +289,7 @@ export default class rateit {
             Array.prototype.forEach.call(element.querySelectorAll('.rateit-selected, .rateit-hover'), function (item: HTMLElement) {
                 item.style.height = `${dataset.getNumber('starheight')}px`;
             });
-
         }
-
-
 
         if (isfont) {
             //fill the ranges with the icons
@@ -301,7 +301,7 @@ export default class rateit {
                 txt += icon;
             }
 
-            Array.prototype.forEach.call(range.querySelectorAll('> *'), function (item: HTMLElement) {
+            Array.prototype.forEach.call(range.children, function (item: HTMLElement) {
                 item.innerText = txt;
             });
 
@@ -430,6 +430,7 @@ export default class rateit {
     public reset(selectorOrElement: any): void {
         const element: HTMLElement = rateit.getElementFromSelectorOrElement(selectorOrElement);
         const dataset: DataSetWrapper = getDataSetWrapper(element);
+
 
     }
 
