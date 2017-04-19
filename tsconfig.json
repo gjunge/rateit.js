@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
+	
 		"noImplicitAny": true,
 		"removeComments": true,
 		"preserveConstEnums": true,
@@ -10,6 +11,6 @@
 	},
 	"compileOnSave": true,
 	"files": [
-		"rateit.ts"
+		"./scripts/rateit.ts"
 	]
 }

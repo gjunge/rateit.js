@@ -11,7 +11,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var typescript = require('gulp-tsc');
 gulp.task('compile', function(){
   gulp.src(['scripts/*.ts'])
-    .pipe(typescript())
+    .pipe(typescript({ target: 'es5'}))
     .pipe(gulp.dest('scripts/'))
 });
 
