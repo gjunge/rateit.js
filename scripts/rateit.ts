@@ -13,6 +13,7 @@ export interface RateItOptions {
     starheight?: number;
     mode?: RateItMode;
     icon?: string;
+    [key: string]: any;
 }
 
 interface DataSetWrapper {
@@ -24,9 +25,9 @@ interface DataSetWrapper {
 }
 
 function getDataSetWrapper(item: HTMLElement): DataSetWrapper {
-     const createKey = function (key: string) {
-            return 'rateit' + key.charAt(0).toUpperCase() + key.substr(1);
-        };
+    const createKey = function (key: string) {
+        return 'rateit' + key.charAt(0).toUpperCase() + key.substr(1);
+    };
     return {
         getNumber: (key: RateItItemDataTypes): number => Number(item.dataset[createKey(key)]),
         getBoolean: (key: RateItItemDataTypes): boolean => item.dataset[createKey(key)] === 'true',
@@ -42,7 +43,7 @@ function getDataSetWrapper(item: HTMLElement): DataSetWrapper {
     };
 }
 
-type RateItItemDataTypes = "init" | "value" | "min" | "max" | "step" | "backingfld" | "readonly" | "ispreset" | "resetable" | "starwidth" | "starheight" | "mode" | "icon" | "wired";
+type RateItItemDataTypes = "init" | "value" | "min" | "max" | "step" | "backingfld" | "readonly" | "ispreset" | "resetable" | "starwidth" | "starheight" | "mode" | "icon";
 
 export default class rateit {
 
@@ -59,6 +60,7 @@ export default class rateit {
         readonly: false,
         resetable: true,
         ispreset: false
+
     };
 
     public get resetLabel(): string { return 'reset rating' };
@@ -159,15 +161,6 @@ export default class rateit {
                 (<HTMLElement>item.querySelector('.rateit-hover')).classList.add('rateit-hover-rtl');
             }
 
-            if (dataset.getString('mode') == 'font') {
-                item.classList.add('rateit-font');
-                item.classList.remove('rateit-bg');
-            }
-            else {
-                item.classList.add('rateit-bg');
-                item.classList.remove('rateit-font');
-            }
-
             //setup the reset button
             const resetbtn = <HTMLElement>item.querySelector('.rateit-reset');
             resetbtn.addEventListener('click', (ev) => {
@@ -236,128 +229,33 @@ export default class rateit {
         }
     }
 
-    private setHover(element : HTMLElement, score: number): void {
+    public options(selector: string, options: RateItOptions): void
+    public options(element: HTMLElement, options: RateItOptions): void
+    public options(selector: string): RateItOptions
+    public options(element: HTMLElement): RateItOptions
+    public options(selectorOrElement: any, options?: RateItOptions): any {
+        const element: HTMLElement = rateit.getElementFromSelectorOrElement(selectorOrElement);
         const dataset = getDataSetWrapper(element);
-        const range = <HTMLElement>element.querySelector('.rateit-range');
-        
-        var w = score * dataset.getNumber('starwidth') * dataset.getNumber('step');
-        var h = <HTMLElement>range.querySelector('.rateit-hover');
-        if (h.dataset['width'] != w.toString()) {
-            (<HTMLElement>(range.querySelector('.rateit-selected'))).style.display = 'none';
-            h.style.width = `${w}px`;
-            h.style.display = 'block';
-            h.dataset['width'] = w.toString();
-            const value = [(score * dataset.getNumber('step')) + dataset.getNumber('min')];
-            var ev = new CustomEvent('hover', {
-                detail: {
-                    value: (score * dataset.getNumber('step')) + dataset.getNumber('min')
+        if (typeof (options) === 'undefined') {
+            let opts: any = {};
+            for (var property in element.dataset) {
+                if (element.dataset.hasOwnProperty(property) && property !== 'rateitInit') {
+                    opts[property.substring('rateit'.length).toLowerCase()] = element.dataset[property];
                 }
-            })
-            element.dispatchEvent(new CustomEvent('hover', { detail: { value: value } }));
-            element.dispatchEvent(new CustomEvent('over', { detail: { value: value } }));
-        }
-    }
-
-    private calcRawScore(el: HTMLElement, ev: UIEvent): number {
-        const pageX: number = (event.type.substring(0, 5) === 'touch')
-            ? (<TouchEvent>ev).changedTouches[0].pageX
-            : (<MouseEvent>ev).pageX;
-        const dataset = getDataSetWrapper(el);
-        const range = <HTMLElement>el.querySelector('.rateit-range');
-        const rangeComputedStyle = window.getComputedStyle(range);
-
-        const offsetLeft = range.getBoundingClientRect().left + document.body.scrollLeft;
-        const rangeWidth = parseInt(rangeComputedStyle.width);
-        let offsetx = pageX - offsetLeft;
-        if (rangeComputedStyle.direction === 'rtl') { offsetx = parseInt(rangeComputedStyle.width) - offsetx };
-        if (offsetx > rangeWidth) { offsetx = rangeWidth; }
-        if (offsetx < 0) { offsetx = 0; }
-
-        return Math.ceil(offsetx / dataset.getNumber('starwidth') * (1 / dataset.getNumber('step')));
-    }
-
-    private redraw(element: HTMLElement) {
-        const dataset = getDataSetWrapper(element);
-
-        const isfont = dataset.getString('mode') === 'font';
-        const range = <HTMLElement>element.querySelector('.rateit-range');
-        let rangeComputedStyle = window.getComputedStyle(range);
-        const ltr = rangeComputedStyle.direction === 'ltr';
-
-        //resize the height of all elements, 
-        if (!isfont) {
-            Array.prototype.forEach.call(element.querySelectorAll('.rateit-selected, .rateit-hover'), function (item: HTMLElement) {
-                item.style.height = `${dataset.getNumber('starheight')}px`;
-            });
-        }
-
-        if (isfont) {
-            //fill the ranges with the icons
-            const icon = dataset.getString('icon');
-            const stars = dataset.getNumber('max') - dataset.getNumber('min');
-
-            let txt = '';
-            for (let i = 0; i < stars; i++) {
-                txt += icon;
             }
-
-            Array.prototype.forEach.call(range.children, function (item: HTMLElement) {
-                item.innerText = txt;
-            });
-
-            dataset.set('starwidth', parseInt(rangeComputedStyle.width) / (dataset.getNumber('max') - dataset.getNumber('min')));
-
-        }
-        else {
-            //set the range element to fit all the stars.
-            range.style.width = `${dataset.getNumber('starwidth') * (dataset.getNumber('max') - dataset.getNumber('min'))}px`;
-            range.style.height = `${dataset.getNumber('starheight')}px`;
+            return opts;
         }
 
-
-        //add/remove the preset class
-        const presetclass = `rateit-preset${(ltr) ? '' : '-rtl'}`;
-        if (dataset.getBoolean('ispreset')) {
-            element.querySelector('.rateit-selected').classList.add(presetclass);
-        }
-        else {
-            element.querySelector('.rateit-selected').classList.remove(presetclass);
-        }
-
-        //set the value if we have it.
-        if (dataset.getNumber('value') != null) {
-            var score = (dataset.getNumber('value') - dataset.getNumber('min')) * dataset.getNumber('starwidth');
-            (<HTMLElement>(element.querySelector('.rateit-selected'))).style.width = `${score}px`;
-        }
-
-
-
-
-
-
-        //sets the hover element based on the score.
-
-
-        const resetbtn = <HTMLElement>element.querySelector('.rateit-reset');
-        if (!dataset.getBoolean('readonly')) {
-            //if we are not read only, add all the events
-
-            //if we have a reset button, set the event handler.
-            if (!dataset.getBoolean('resetable')) {
-                resetbtn.style.display = 'none';
-            }
-
-            if (dataset.getBoolean('resetable')) {
-                resetbtn.style.display = 'block';
+        for (var property in options) {
+            if (options.hasOwnProperty(property) && property !== 'init') {
+                dataset.set(<RateItItemDataTypes>property, options[property]);
             }
         }
-        else {
-            resetbtn.style.display = 'none';
-        }
 
-        range.setAttribute('aria-readonly', dataset.getString('readonly'));
+        this.redraw(element);
 
     }
+
 
     public value(element: HTMLElement): Number
     public value(selector: HTMLElement): Number
@@ -431,6 +329,145 @@ export default class rateit {
         const element: HTMLElement = rateit.getElementFromSelectorOrElement(selectorOrElement);
         const dataset: DataSetWrapper = getDataSetWrapper(element);
 
+
+    }
+
+
+    private setHover(element: HTMLElement, score: number): void {
+        const dataset = getDataSetWrapper(element);
+        const range = <HTMLElement>element.querySelector('.rateit-range');
+
+        var w = score * dataset.getNumber('starwidth') * dataset.getNumber('step');
+        var h = <HTMLElement>range.querySelector('.rateit-hover');
+        if (h.dataset['width'] != w.toString()) {
+            (<HTMLElement>(range.querySelector('.rateit-selected'))).style.display = 'none';
+            h.style.width = `${w}px`;
+            h.style.display = 'block';
+            h.dataset['width'] = w.toString();
+            const value = [(score * dataset.getNumber('step')) + dataset.getNumber('min')];
+            var ev = new CustomEvent('hover', {
+                detail: {
+                    value: (score * dataset.getNumber('step')) + dataset.getNumber('min')
+                }
+            })
+            element.dispatchEvent(new CustomEvent('hover', { detail: { value: value } }));
+            element.dispatchEvent(new CustomEvent('over', { detail: { value: value } }));
+        }
+    }
+
+    private calcRawScore(el: HTMLElement, ev: UIEvent): number {
+        const pageX: number = (event.type.substring(0, 5) === 'touch')
+            ? (<TouchEvent>ev).changedTouches[0].pageX
+            : (<MouseEvent>ev).pageX;
+        const dataset = getDataSetWrapper(el);
+        const range = <HTMLElement>el.querySelector('.rateit-range');
+        const rangeComputedStyle = window.getComputedStyle(range);
+
+        const offsetLeft = range.getBoundingClientRect().left + document.body.scrollLeft;
+        const rangeWidth = parseInt(rangeComputedStyle.width);
+        let offsetx = pageX - offsetLeft;
+        if (rangeComputedStyle.direction === 'rtl') { offsetx = parseInt(rangeComputedStyle.width) - offsetx };
+        if (offsetx > rangeWidth) { offsetx = rangeWidth; }
+        if (offsetx < 0) { offsetx = 0; }
+
+        return Math.ceil(offsetx / dataset.getNumber('starwidth') * (1 / dataset.getNumber('step')));
+    }
+
+
+    private redraw(element: HTMLElement) {
+        const dataset = getDataSetWrapper(element);
+
+        const isfont = dataset.getString('mode') === 'font';
+        const range = <HTMLElement>element.querySelector('.rateit-range');
+        let rangeComputedStyle = window.getComputedStyle(range);
+        const ltr = rangeComputedStyle.direction === 'ltr';
+
+        //resize the height of all elements, 
+        if (!isfont) {
+            Array.prototype.forEach.call(element.querySelectorAll('.rateit-selected, .rateit-hover'), function (item: HTMLElement) {
+                item.style.height = `${dataset.getNumber('starheight')}px`;
+            });
+        }
+
+        if (isfont) {
+
+            element.classList.add('rateit-font');
+            element.classList.remove('rateit-bg');
+
+            //fill the ranges with the icons
+            const icon = dataset.getString('icon');
+            const stars = dataset.getNumber('max') - dataset.getNumber('min');
+
+            let txt = '';
+            for (let i = 0; i < stars; i++) {
+                txt += icon;
+            }
+
+            Array.prototype.forEach.call(range.children, function (item: HTMLElement) {
+                item.innerText = txt;
+            });
+
+            dataset.set('starwidth', parseInt(rangeComputedStyle.width) / (dataset.getNumber('max') - dataset.getNumber('min')));
+
+        }
+        else {
+
+            element.classList.add('rateit-bg');
+            element.classList.remove('rateit-font');
+
+            Array.prototype.forEach.call(range.children, function (item: HTMLElement) {
+                item.innerText = '';
+            });
+
+            //set the range element to fit all the stars.
+            range.style.width = `${dataset.getNumber('starwidth') * (dataset.getNumber('max') - dataset.getNumber('min'))}px`;
+            range.style.height = `${dataset.getNumber('starheight')}px`;
+        }
+
+
+
+
+        //add/remove the preset class
+        const presetclass = `rateit-preset${(ltr) ? '' : '-rtl'}`;
+        if (dataset.getBoolean('ispreset')) {
+            element.querySelector('.rateit-selected').classList.add(presetclass);
+        }
+        else {
+            element.querySelector('.rateit-selected').classList.remove(presetclass);
+        }
+
+        //set the value if we have it.
+        if (dataset.getNumber('value') != null) {
+            var score = (dataset.getNumber('value') - dataset.getNumber('min')) * dataset.getNumber('starwidth');
+            (<HTMLElement>(element.querySelector('.rateit-selected'))).style.width = `${score}px`;
+        }
+
+
+
+
+
+
+        //sets the hover element based on the score.
+
+
+        const resetbtn = <HTMLElement>element.querySelector('.rateit-reset');
+        if (!dataset.getBoolean('readonly')) {
+            //if we are not read only, add all the events
+
+            //if we have a reset button, set the event handler.
+            if (!dataset.getBoolean('resetable')) {
+                resetbtn.style.display = 'none';
+            }
+
+            if (dataset.getBoolean('resetable')) {
+                resetbtn.style.display = 'block';
+            }
+        }
+        else {
+            resetbtn.style.display = 'none';
+        }
+
+        range.setAttribute('aria-readonly', dataset.getString('readonly'));
 
     }
 
