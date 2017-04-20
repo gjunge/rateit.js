@@ -1,4 +1,5 @@
 export type RateItMode = "bg" | "font";
+type RateItItemDataTypes = "init" | "value" | "min" | "max" | "step" | "backingfld" | "readonly" | "ispreset" | "resetable" | "starwidth" | "starheight" | "mode" | "icon";
 
 export interface RateItOptions {
     value?: number;
@@ -15,35 +16,6 @@ export interface RateItOptions {
     icon?: string;
     [key: string]: any;
 }
-
-interface DataSetWrapper {
-
-    getNumber(key: RateItItemDataTypes): number;
-    getBoolean(key: RateItItemDataTypes): boolean;
-    getString(key: RateItItemDataTypes): string;
-    set(key: RateItItemDataTypes, value: any): void;
-}
-
-function getDataSetWrapper(item: HTMLElement): DataSetWrapper {
-    const createKey = function (key: string) {
-        return 'rateit' + key.charAt(0).toUpperCase() + key.substr(1);
-    };
-    return {
-        getNumber: (key: RateItItemDataTypes): number => Number(item.dataset[createKey(key)]),
-        getBoolean: (key: RateItItemDataTypes): boolean => item.dataset[createKey(key)] === 'true',
-        getString: (key: RateItItemDataTypes): string => item.dataset[createKey(key)],
-        set: (key: RateItItemDataTypes, value: any) => {
-            if (value == null) {
-                delete item.dataset[createKey(key)]; //might not work in safari http://stackoverflow.com/questions/9200712/how-to-remove-data-attributes-using-html5-dataset
-            }
-            else {
-                item.dataset[createKey(key)] = value.toString();
-            }
-        }
-    };
-}
-
-type RateItItemDataTypes = "init" | "value" | "min" | "max" | "step" | "backingfld" | "readonly" | "ispreset" | "resetable" | "starwidth" | "starheight" | "mode" | "icon";
 
 export default class rateit {
 
@@ -79,24 +51,24 @@ export default class rateit {
         for (var i = 0; i < items.length; i++) {
             let item = <HTMLElement>items[i];
             //let dataSet = new DataSetWrapper(item);
-            let dataset: DataSetWrapper = getDataSetWrapper(item);
+            let dataset: DataSetWrapper = rateit.getDataSetWrapper(item);
 
             item.classList.add('rateit');
 
             let ltr = window.getComputedStyle(item).direction === 'ltr';
 
-            dataset.set('mode', dataset.getString('mode') || options.mode)
-            dataset.set('icon', dataset.getString('icon') || options.icon)
-            dataset.set('min', isNaN(dataset.getNumber('min')) ? options.min : dataset.getNumber('min'))
-            dataset.set('max', isNaN(dataset.getNumber('max')) ? options.max : dataset.getNumber('max'))
-            dataset.set('step', item.dataset['step'] || options.step)
-            dataset.set('resetable', item.dataset['resetable'] !== undefined ? item.dataset['resetable'] : options.resetable)
-            dataset.set('readonly', item.dataset['readonly'] !== undefined ? item.dataset['readonly'] : options.readonly)
-            dataset.set('ispreset', item.dataset['ispreset'] !== undefined ? item.dataset['ispreset'] : options.ispreset)
-            dataset.set('backingfld', item.dataset['backingfld'] || options.backingfld)
-            dataset.set('starwidth', dataset.getNumber('starwidth') || options.starwidth)
-            dataset.set('starheight', dataset.getNumber('starheight') || options.starheight)
-            dataset.set('value', Math.max(dataset.getNumber('min'), Math.min(dataset.getNumber('max'), (!isNaN(dataset.getNumber('value')) ? dataset.getNumber('value') : options.value == null ? options.min : options.value))))
+            dataset.set('mode', dataset.getString('mode') || options.mode);
+            dataset.set('icon', dataset.getString('icon') || options.icon);
+            dataset.set('min', isNaN(dataset.getNumber('min')) ? options.min : dataset.getNumber('min')); //since 0 is a valid entry, we check for isNaN
+            dataset.set('max', isNaN(dataset.getNumber('max')) ? options.max : dataset.getNumber('max'));//since 0 is a valid entry, we check for isNaN
+            dataset.set('step', dataset.getNumber('step') || options.step);
+            dataset.set('resetable', dataset.getString('resetable') !== undefined ? dataset.getBoolean('resetable') : options.resetable);
+            dataset.set('readonly', dataset.getString('readonly') !== undefined ? dataset.getBoolean('readonly') : options.readonly);
+            dataset.set('ispreset', dataset.getString('ispreset') !== undefined ? dataset.getBoolean('ispreset') : options.ispreset);
+            dataset.set('backingfld', dataset.getString('backingfld') || options.backingfld);
+            dataset.set('starwidth', dataset.getNumber('starwidth') || options.starwidth);
+            dataset.set('starheight', dataset.getNumber('starheight') || options.starheight);
+            dataset.set('value', Math.max(dataset.getNumber('min'), Math.min(dataset.getNumber('max'), (!isNaN(dataset.getNumber('value')) ? dataset.getNumber('value') : options.value == null ? options.min : options.value))));
 
             if (dataset.getString('backingfld')) {
                 //if we have a backing field, hide it, override defaults if range or select.
@@ -173,7 +145,14 @@ export default class rateit {
                     return false;
                 }
 
-                this.value(item, null);
+                const initialOptions = <RateItOptions>JSON.parse(dataset.getString('init'));
+                if (initialOptions.ispreset) {
+                    this.options(item, { ispreset: true, value: initialOptions.value });
+                }
+                else {
+                    this.value(item, null);
+                }
+
                 item.dispatchEvent(new Event('reset'));
 
 
@@ -223,7 +202,7 @@ export default class rateit {
             });
 
 
-            dataset.set('init', JSON.stringify(item.dataset));//cheap way to create a clone
+            dataset.set('init', JSON.stringify(this.options(item)));//cheap way to create a clone
 
             this.redraw(item);
         }
@@ -235,7 +214,7 @@ export default class rateit {
     public options(element: HTMLElement): RateItOptions
     public options(selectorOrElement: any, options?: RateItOptions): any {
         const element: HTMLElement = rateit.getElementFromSelectorOrElement(selectorOrElement);
-        const dataset = getDataSetWrapper(element);
+        const dataset = rateit.getDataSetWrapper(element);
         if (typeof (options) === 'undefined') {
             let opts: any = {};
             for (var property in element.dataset) {
@@ -251,7 +230,11 @@ export default class rateit {
                 dataset.set(<RateItItemDataTypes>property, options[property]);
             }
         }
-
+        if (options.hasOwnProperty('value')) 
+        {
+            //if we also got the value passed in, call the value method, since that takes also care of setting the correct value in the backingfield.
+            this.value(element, options.value, false);
+        }
         this.redraw(element);
 
     }
@@ -265,7 +248,7 @@ export default class rateit {
     public value(selector: string, value: number, raiseEvents: boolean): boolean
     public value(selectorOrElement: any, value?: number, raiseEvents?: boolean): any {
         const element: HTMLElement = rateit.getElementFromSelectorOrElement(selectorOrElement);
-        const dataset: DataSetWrapper = getDataSetWrapper(element);
+        const dataset: DataSetWrapper = rateit.getDataSetWrapper(element);
 
         if (typeof (value) === 'undefined')
             return dataset.getNumber('value');
@@ -323,18 +306,18 @@ export default class rateit {
     }
 
 
-    public reset(element: HTMLElement): void
-    public reset(selector: string): void
-    public reset(selectorOrElement: any): void {
+    public revert(element: HTMLElement): void
+    public revert(selector: string): void
+    public revert(selectorOrElement: any): void {
         const element: HTMLElement = rateit.getElementFromSelectorOrElement(selectorOrElement);
-        const dataset: DataSetWrapper = getDataSetWrapper(element);
+        const dataset: DataSetWrapper = rateit.getDataSetWrapper(element);
 
-
+        this.options(selectorOrElement, <RateItOptions>JSON.parse(dataset.getString('init')));
     }
 
 
     private setHover(element: HTMLElement, score: number): void {
-        const dataset = getDataSetWrapper(element);
+        const dataset = rateit.getDataSetWrapper(element);
         const range = <HTMLElement>element.querySelector('.rateit-range');
 
         var w = score * dataset.getNumber('starwidth') * dataset.getNumber('step');
@@ -359,7 +342,7 @@ export default class rateit {
         const pageX: number = (event.type.substring(0, 5) === 'touch')
             ? (<TouchEvent>ev).changedTouches[0].pageX
             : (<MouseEvent>ev).pageX;
-        const dataset = getDataSetWrapper(el);
+        const dataset = rateit.getDataSetWrapper(el);
         const range = <HTMLElement>el.querySelector('.rateit-range');
         const rangeComputedStyle = window.getComputedStyle(range);
 
@@ -375,19 +358,13 @@ export default class rateit {
 
 
     private redraw(element: HTMLElement) {
-        const dataset = getDataSetWrapper(element);
+        const dataset = rateit.getDataSetWrapper(element);
 
         const isfont = dataset.getString('mode') === 'font';
         const range = <HTMLElement>element.querySelector('.rateit-range');
         let rangeComputedStyle = window.getComputedStyle(range);
         const ltr = rangeComputedStyle.direction === 'ltr';
 
-        //resize the height of all elements, 
-        if (!isfont) {
-            Array.prototype.forEach.call(element.querySelectorAll('.rateit-selected, .rateit-hover'), function (item: HTMLElement) {
-                item.style.height = `${dataset.getNumber('starheight')}px`;
-            });
-        }
 
         if (isfont) {
 
@@ -409,8 +386,15 @@ export default class rateit {
 
             dataset.set('starwidth', parseInt(rangeComputedStyle.width) / (dataset.getNumber('max') - dataset.getNumber('min')));
 
+            range.style.width = '';
+            range.style.height = '';
+
+            Array.prototype.forEach.call(element.querySelectorAll('.rateit-selected, .rateit-hover'), function (item: HTMLElement) {
+                item.style.height = '';
+            });
         }
         else {
+
 
             element.classList.add('rateit-bg');
             element.classList.remove('rateit-font');
@@ -422,10 +406,12 @@ export default class rateit {
             //set the range element to fit all the stars.
             range.style.width = `${dataset.getNumber('starwidth') * (dataset.getNumber('max') - dataset.getNumber('min'))}px`;
             range.style.height = `${dataset.getNumber('starheight')}px`;
+
+            Array.prototype.forEach.call(element.querySelectorAll('.rateit-selected, .rateit-hover'), function (item: HTMLElement) {
+                item.style.height = `${dataset.getNumber('starheight')}px`;
+            });
+
         }
-
-
-
 
         //add/remove the preset class
         const presetclass = `rateit-preset${(ltr) ? '' : '-rtl'}`;
@@ -443,13 +429,7 @@ export default class rateit {
         }
 
 
-
-
-
-
         //sets the hover element based on the score.
-
-
         const resetbtn = <HTMLElement>element.querySelector('.rateit-reset');
         if (!dataset.getBoolean('readonly')) {
             //if we are not read only, add all the events
@@ -501,6 +481,32 @@ export default class rateit {
         event.preventDefault();
     }
 
+private static getDataSetWrapper(item: HTMLElement): DataSetWrapper {
+    const createKey = function (key: string) {
+        return 'rateit' + key.charAt(0).toUpperCase() + key.substr(1);
+    };
+    return {
+        getNumber: (key: RateItItemDataTypes): number => Number(item.dataset[createKey(key)]),
+        getBoolean: (key: RateItItemDataTypes): boolean => item.dataset[createKey(key)] === 'true',
+        getString: (key: RateItItemDataTypes): string => item.dataset[createKey(key)],
+        set: (key: RateItItemDataTypes, value: any) => {
+            if (value == null) {
+                delete item.dataset[createKey(key)]; //might not work in safari http://stackoverflow.com/questions/9200712/how-to-remove-data-attributes-using-html5-dataset
+            }
+            else {
+                item.dataset[createKey(key)] = value.toString();
+            }
+        }
+    };
+}
+}
+
+interface DataSetWrapper {
+
+    getNumber(key: RateItItemDataTypes): number;
+    getBoolean(key: RateItItemDataTypes): boolean;
+    getString(key: RateItItemDataTypes): string;
+    set(key: RateItItemDataTypes, value: any): void;
 }
 
 
