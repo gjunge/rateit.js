@@ -10,13 +10,13 @@ var rename = require('gulp-rename');
 var sourcemaps = require('gulp-sourcemaps');
 var typescript = require('gulp-tsc');
 gulp.task('compile', function(){
-  gulp.src(['scripts/*.ts'])
+  gulp.src(['src/*.ts'])
     .pipe(typescript({ target: 'es5'}))
     .pipe(gulp.dest('scripts/'))
 });
 
 gulp.task('minify', function () {
-    return gulp.src('scripts/*rateit.js')
+    return gulp.src(['scripts/rateit.js','scripts/jquery.rateit.js'])
        .pipe(sourcemaps.init())
        .pipe(plumber())
        .pipe(uglify({ preserveComments: 'license' }))
