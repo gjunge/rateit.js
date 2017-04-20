@@ -144,7 +144,6 @@ export default class rateit {
                 if (!item.dispatchEvent(beforeResetEvent)) {
                     return false;
                 }
-
                 const initialOptions = <RateItOptions>JSON.parse(dataset.getString('init'));
                 if (initialOptions.ispreset) {
                     this.options(item, { ispreset: true, value: initialOptions.value });
@@ -225,16 +224,18 @@ export default class rateit {
             return opts;
         }
 
-        for (var property in options) {
-            if (options.hasOwnProperty(property) && property !== 'init') {
-                dataset.set(<RateItItemDataTypes>property, options[property]);
-            }
-        }
         if (options.hasOwnProperty('value')) 
         {
             //if we also got the value passed in, call the value method, since that takes also care of setting the correct value in the backingfield.
             this.value(element, options.value, false);
         }
+
+        for (var property in options) {
+            if (options.hasOwnProperty(property) && property !== 'init') {
+                dataset.set(<RateItItemDataTypes>property, options[property]);
+            }
+        }
+
         this.redraw(element);
 
     }
