@@ -1,6 +1,6 @@
 {
   "name": "jquery.rateit",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Rating plugin for jQuery.",
   "main": "scripts/jquery.rateit.js",
   "scripts": {
@@ -24,10 +24,10 @@
     "jquery": ">=1.6"
   },
   "devDependencies": {
-    "gulp": "~3.9.1",
-    "gulp-plumber": "~1.1.0",
-    "gulp-uglify": "~2.0.0",
-    "gulp-rename": "~1.2.2",
-    "gulp-sourcemaps": "~2.1.1"
+    "gulp": "^4.0.0",
+    "gulp-plumber": "^1.2.1",
+    "gulp-uglify": "^3.0.2",
+    "gulp-rename": "^1.4.0",
+    "gulp-sourcemaps": "^2.6.5"
   }
 }

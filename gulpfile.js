@@ -15,7 +15,7 @@ gulp.task('default', function () {
     return gulp.src('scripts/jquery.rateit.js')
        .pipe(sourcemaps.init())
        .pipe(plumber())
-       .pipe(uglify({ preserveComments: 'license' }))
+       .pipe(uglify({ output: { comments: '/\/\*!/'} }))
        .pipe(rename({ extname: '.min.js' }))
        .pipe(sourcemaps.write(''))
        .pipe(gulp.dest('scripts')) // save .min.js
