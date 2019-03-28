@@ -3,7 +3,6 @@
 
 [![npm version](https://img.shields.io/npm/v/jquery.rateit.svg)](https://www.npmjs.com/package/jquery.rateit)
 [![NuGet](https://img.shields.io/nuget/v/jQuery.RateIt.svg)](https://www.nuget.org/packages/jQuery.RateIt)
-![Bower version](https://img.shields.io/bower/v/jquery.rateit.svg)
 
 ## Quick start
 
@@ -12,7 +11,6 @@ Several quick start options are available:
 * [Download the latest release](https://github.com/gjunge/rateit.js/archive/master.zip).
 * Clone the repo: `git clone https://github.com/gjunge/rateit.js.git`.
 * Install with [npm](https://www.npmjs.com): `npm install jquery.rateit`.
-* Install with [Bower](http://bower.io): `bower install jquery.rateit`.
 * Install with [NuGet](https://www.nuget.org): `Install-Package jQuery.RateIt`.
 
 Read the [Wiki documentation](https://github.com/gjunge/rateit.js/wiki) or look at the [examples page](http://gjunge.github.io/rateit.js/examples/).

@@ -18,6 +18,10 @@ Check out the examples link on the project page for implementation and examples.
         <summary>A rating plugin for jQuery.</summary>
         <releaseNotes>
           ==== CHANGE LOG ====
+          1.1.2 (03/28/2019)
+          Bug Fix: #22 tabindex on readonly is not good for accessibility (Thanks to @MPolleke)
+          Project: updated Gulp script, added this Change Log.
+
           1.1.1
           Fix looks of icon font reset button.
 
