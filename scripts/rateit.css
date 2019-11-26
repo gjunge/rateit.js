@@ -108,7 +108,7 @@
         color: #ccc;
     }
 
-    .rateit-font .rateit-range > div {
+    .rateit-font .rateit-range > div, .rateit-font .rateit-range > span {
         background: none;
         overflow: hidden;
         cursor: default;
