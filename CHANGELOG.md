@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.1.3 (11/26/2019)
+- Bug Fix: #29 fix bug when using <span> with mode:font (Thanks to @macronom)
+
 ## 1.1.2 (03/28/2019)
 - Bug Fix: #22 tabindex on readonly is not good for accessibility (Thanks to @MPolleke)
 - Project: updated Gulp script, added this Change Log.
