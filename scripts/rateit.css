@@ -70,7 +70,7 @@
             }
 
             .rateit .rateit-preset-rtl {
-                background: url(star.gif) left -48px;
+                background: url(star.gif) right -48px;
             }
 
             .rateit button.rateit-reset {
