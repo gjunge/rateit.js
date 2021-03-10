@@ -1,5 +1,7 @@
 # Change Log
 
+## 1.1.5 (03/10/2021)
+- Fix deprecated jQuery calls with jQuery 3.5 (Thanks to  @MPolleke)
 ## 1.1.4 (12/01/2020)
 - Bug Fix: PR 34 fix rtl bug, displaying preset start incorrectly  (Thanks to @mossaab0)
 
