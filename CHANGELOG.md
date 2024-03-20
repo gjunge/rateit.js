@@ -1,4 +1,6 @@
 # Change Log
+## 1.1.6 (03/20/2024)
+- Bug Fix: #47 The reset button is not accessible to visually impaired users  (Thanks to @lal65)
 
 ## 1.1.5 (03/10/2021)
 - Fix deprecated jQuery calls with jQuery 3.5 (Thanks to  @MPolleke)
