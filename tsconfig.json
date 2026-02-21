@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"module": "commonjs",
+		"module": "umd",
 	
 		"noImplicitAny": true,
 		"removeComments": true,
@@ -11,6 +11,6 @@
 	},
 	"compileOnSave": true,
 	"files": [
-		"./scripts/rateit.ts"
+		"./src/rateit.ts"
 	]
 }

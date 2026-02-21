@@ -53,6 +53,11 @@ export default class rateit {
             //let dataSet = new DataSetWrapper(item);
             let dataset: DataSetWrapper = rateit.getDataSetWrapper(item);
 
+            if (dataset.getString('init')) {
+                this.redraw(item);
+                continue;
+            }
+
             item.classList.add('rateit');
 
             let ltr = window.getComputedStyle(item).direction === 'ltr';
@@ -162,43 +167,45 @@ export default class rateit {
             //setup other events
             const range = <HTMLElement>item.querySelector('.rateit-range');
 
-            range.addEventListener('touchmove', rateit.touchHandler, false);
-            range.addEventListener('touchend', rateit.touchHandler, false);
-            range.addEventListener('mousemove', (e: MouseEvent) => {
-                var score = this.calcRawScore(item, e);
-                this.setHover(item, score);
-            });
+            if (!dataset.getBoolean('readonly')) {
+                range.addEventListener('touchmove', rateit.touchHandler, false);
+                range.addEventListener('touchend', rateit.touchHandler, false);
+                range.addEventListener('mousemove', (e: MouseEvent) => {
+                    var score = this.calcRawScore(item, e);
+                    this.setHover(item, score);
+                });
 
-            //when the mouse leaves the range, we have to hide the hover stars, and show the current value.
-            range.addEventListener('mouseleave', (e: MouseEvent) => {
-                const rateitHover = (<HTMLElement>(range.querySelector('.rateit-hover')));
-                rateitHover.style.display = 'none';
-                rateitHover.style.width = '0';
-                rateitHover.dataset['width'] = '';;
-                item.dispatchEvent(new CustomEvent('hover'));
-                item.dispatchEvent(new CustomEvent('over'));
+                //when the mouse leaves the range, we have to hide the hover stars, and show the current value.
+                range.addEventListener('mouseleave', (e: MouseEvent) => {
+                    const rateitHover = (<HTMLElement>(range.querySelector('.rateit-hover')));
+                    rateitHover.style.display = 'none';
+                    rateitHover.style.width = '0';
+                    rateitHover.dataset['width'] = '';
+                    item.dispatchEvent(new CustomEvent('hover'));
+                    item.dispatchEvent(new CustomEvent('over'));
 
-                (<HTMLElement>(range.querySelector('.rateit-selected'))).style.display = 'block';
-            });
-            //when we click on the range, we have to set the value, hide the hover.
-            range.addEventListener('mouseup', (e: MouseEvent) => {
-                var score = this.calcRawScore(item, e);
-                var value = (score * dataset.getNumber('step')) + dataset.getNumber('min');
-                this.value(item, value, true);
-                range.blur();
-            });
-
-            //support key nav
-            range.addEventListener('keyup', (e: KeyboardEvent) => {
-                if (e.which == 38 || e.which == (ltr ? 39 : 37)) {
-                    const value = Math.min(dataset.getNumber('value') + dataset.getNumber('step'), dataset.getNumber('max'));
+                    (<HTMLElement>(range.querySelector('.rateit-selected'))).style.display = 'block';
+                });
+                //when we click on the range, we have to set the value, hide the hover.
+                range.addEventListener('mouseup', (e: MouseEvent) => {
+                    var score = this.calcRawScore(item, e);
+                    var value = (score * dataset.getNumber('step')) + dataset.getNumber('min');
                     this.value(item, value, true);
-                }
-                if (e.which == 40 || e.which == (ltr ? 37 : 39)) {
-                    const value = Math.max(dataset.getNumber('value') - dataset.getNumber('step'), dataset.getNumber('min'));
-                    this.value(element, value, true);
-                }
-            });
+                    range.blur();
+                });
+
+                //support key nav
+                range.addEventListener('keyup', (e: KeyboardEvent) => {
+                    if (e.which == 38 || e.which == (ltr ? 39 : 37)) {
+                        const value = Math.min(dataset.getNumber('value') + dataset.getNumber('step'), dataset.getNumber('max'));
+                        this.value(item, value, true);
+                    }
+                    if (e.which == 40 || e.which == (ltr ? 37 : 39)) {
+                        const value = Math.max(dataset.getNumber('value') - dataset.getNumber('step'), dataset.getNumber('min'));
+                        this.value(item, value, true);
+                    }
+                });
+            }
 
 
             dataset.set('init', JSON.stringify(this.options(item)));//cheap way to create a clone
@@ -215,10 +222,20 @@ export default class rateit {
         const element: HTMLElement = rateit.getElementFromSelectorOrElement(selectorOrElement);
         const dataset = rateit.getDataSetWrapper(element);
         if (typeof (options) === 'undefined') {
+            const numberProps = ['value', 'min', 'max', 'step', 'starwidth', 'starheight'];
+            const booleanProps = ['readonly', 'ispreset', 'resetable'];
             let opts: any = {};
             for (var property in element.dataset) {
                 if (element.dataset.hasOwnProperty(property) && property !== 'rateitInit') {
-                    opts[property.substring('rateit'.length).toLowerCase()] = element.dataset[property];
+                    const key = property.substring('rateit'.length).toLowerCase();
+                    const raw = element.dataset[property];
+                    if (numberProps.indexOf(key) !== -1) {
+                        opts[key] = Number(raw);
+                    } else if (booleanProps.indexOf(key) !== -1) {
+                        opts[key] = raw === 'true';
+                    } else {
+                        opts[key] = raw;
+                    }
                 }
             }
             return opts;
@@ -243,16 +260,20 @@ export default class rateit {
 
     public value(element: HTMLElement): Number
     public value(selector: HTMLElement): Number
-    public value(element: HTMLElement, value: number): boolean
-    public value(selector: string, value: number): boolean
-    public value(element: HTMLElement, value: number, raiseEvents: boolean): boolean
-    public value(selector: string, value: number, raiseEvents: boolean): boolean
-    public value(selectorOrElement: any, value?: number, raiseEvents?: boolean): any {
+    public value(element: HTMLElement, value: number | null): boolean
+    public value(selector: string, value: number | null): boolean
+    public value(element: HTMLElement, value: number | null, raiseEvents: boolean): boolean
+    public value(selector: string, value: number | null, raiseEvents: boolean): boolean
+    public value(selectorOrElement: any, value?: number | null, raiseEvents?: boolean): any {
         const element: HTMLElement = rateit.getElementFromSelectorOrElement(selectorOrElement);
         const dataset: DataSetWrapper = rateit.getDataSetWrapper(element);
 
         if (typeof (value) === 'undefined')
             return dataset.getNumber('value');
+
+        if (value === null) {
+            value = dataset.getNumber('min');
+        }
 
         const range = <HTMLElement>element.querySelector('.rateit-range');
         const rangeComputedStyle = window.getComputedStyle(range);
@@ -340,7 +361,7 @@ export default class rateit {
     }
 
     private calcRawScore(el: HTMLElement, ev: UIEvent): number {
-        const pageX: number = (event.type.substring(0, 5) === 'touch')
+        const pageX: number = (ev.type.substring(0, 5) === 'touch')
             ? (<TouchEvent>ev).changedTouches[0].pageX
             : (<MouseEvent>ev).pageX;
         const dataset = rateit.getDataSetWrapper(el);
@@ -510,5 +531,9 @@ interface DataSetWrapper {
     set(key: RateItItemDataTypes, value: any): void;
 }
 
-
-
+if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', function () {
+        var _rateit = new rateit();
+        _rateit.enable();
+    });
+}
